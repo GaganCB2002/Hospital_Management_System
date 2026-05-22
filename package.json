@@ -1,0 +1,8 @@
+{
+  "name": "hospital-management-system-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix hospital-dashboard install && npm --prefix hospital-dashboard run build"
+  }
+}
