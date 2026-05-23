@@ -26,6 +26,7 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
           { name: 'Patient Records', path: '/doctor/patients', icon: 'patient_list' },
           { name: 'My Profile', path: '/doctor/profile', icon: 'person' },
           { name: 'Consultations', path: '/doctor/consultations', icon: 'history' },
+          { name: 'AI Health Analytics', path: '/doctor/ai-insights', icon: 'monitoring' },
         ];
       case 'receptionist':
         return [

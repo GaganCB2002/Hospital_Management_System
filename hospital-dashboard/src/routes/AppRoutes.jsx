@@ -24,6 +24,7 @@ import DoctorAppointments from '../modules/appointments/DoctorAppointments';
 import PatientRecords from '../modules/patients/PatientRecords';
 import DoctorProfile from '../modules/doctors/DoctorProfile';
 import ConsultationHistory from '../modules/doctors/ConsultationHistory';
+import AIHealthAnalytics from '../modules/dashboard/doctor/AIHealthAnalytics';
 
 // Receptionist Pages
 import ReceptionistDashboard from '../modules/dashboard/receptionist/ReceptionistDashboard';
@@ -93,6 +94,8 @@ export default function AppRoutes() {
         <Route path="patients" element={<PatientRecords />} />
         <Route path="profile" element={<DoctorProfile />} />
         <Route path="consultations" element={<ConsultationHistory />} />
+        <Route path="ai-insights" element={<AIHealthAnalytics />} />
+        <Route path="ai_insights" element={<AIHealthAnalytics />} />
         <Route path="emergency" element={<EmergencyDashboard />} />
         <Route path="settings" element={<SettingsModule />} />
       </Route>

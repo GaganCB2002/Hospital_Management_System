@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { formatResetTime } from '../../services/rateLimiter.js';
 import {
   FiEye, FiEyeOff, FiActivity, FiAlertCircle,
-  FiArrowLeft, FiShield, FiServer, FiCheckCircle
+  FiArrowLeft, FiShield, FiServer, FiCheckCircle,
+  FiClock as FiTimer
 } from 'react-icons/fi';
 
 function FloatingOrbs({ isDark }) {
@@ -39,20 +41,64 @@ function FloatingOrbs({ isDark }) {
 export default function Signup() {
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', phone: '',
-    password: '', age: '', gender: 'Male', role: 'patient',
+    password: '', confirmPassword: '', age: '', gender: 'Male', role: 'patient',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { signup } = useAuth();
+  const [countdown, setCountdown] = useState(0);
+  const countdownRef = useRef(null);
+  const { signup, rateLimitState, clearRateLimit } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (rateLimitState && !rateLimitState.allowed && rateLimitState.resetInMs > 0) {
+      setCountdown(Math.ceil(rateLimitState.resetInMs / 1000));
+    }
+  }, [rateLimitState]);
+
+  useEffect(() => {
+    if (countdown <= 0) {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+        countdownRef.current = null;
+      }
+      return;
+    }
+    countdownRef.current = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownRef.current);
+          countdownRef.current = null;
+          clearRateLimit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => {
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+        countdownRef.current = null;
+      }
+    };
+  }, [countdown, clearRateLimit]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (countdown > 0) return;
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.phone || !formData.age) {
       setError('Please fill in all fields.');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
       return;
     }
     setIsLoading(true);
@@ -63,12 +109,17 @@ export default function Signup() {
       navigate(`/${formData.role}/dashboard`);
     } else {
       setError(result.error || 'Registration failed.');
+      if (result.rateLimit && !result.rateLimit.allowed) {
+        setCountdown(Math.ceil(result.rateLimit.resetInMs / 1000));
+      }
     }
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const isRateLimited = countdown > 0;
 
   return (
     <div className={`min-h-screen w-full relative ${
@@ -208,6 +259,24 @@ export default function Signup() {
               </p>
             </motion.div>
 
+            <AnimatePresence>
+              {isRateLimited && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={`mb-4 flex items-center gap-2 p-3 rounded-xl text-xs font-bold ${
+                    isDark
+                      ? 'bg-amber-500/10 text-amber-300 border border-amber-500/15'
+                      : 'bg-amber-50 text-amber-700 border border-amber-200 shadow-sm'
+                  }`}
+                >
+                  <FiTimer className="text-base shrink-0 animate-pulse" />
+                  <span>Too many attempts. Try again in {countdown} second{countdown !== 1 ? 's' : ''}.</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
@@ -326,6 +395,21 @@ export default function Signup() {
               </div>
 
               <div className="space-y-1.5">
+                <label className={`block text-xs font-semibold ${isDark ? 'text-white/50' : 'text-slate-600'}`} htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  id="confirmPassword" name="confirmPassword"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.confirmPassword} onChange={handleChange}
+                  className={`w-full px-3 py-2.5 text-sm rounded-xl border outline-none transition-all ${
+                    isDark
+                      ? 'bg-white/[0.04] border-white/[0.08] text-white placeholder:text-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20'
+                      : 'bg-white/70 border-slate-200 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 shadow-sm'
+                  }`}
+                  placeholder="••••••••" required
+                />
+              </div>
+
+              <div className="space-y-1.5">
                 <label className={`block text-xs font-semibold ${isDark ? 'text-white/50' : 'text-slate-600'}`} htmlFor="role">Role / Account Type</label>
                 <select
                   id="role" name="role"
@@ -360,9 +444,9 @@ export default function Signup() {
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || isRateLimited}
                 className={`w-full py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.99] transition-all duration-300 cursor-pointer border-none mt-1 shadow-md flex items-center justify-center gap-2 ${
-                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                  (isLoading || isRateLimited) ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
                 {isLoading ? (
@@ -372,6 +456,11 @@ export default function Signup() {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
                     <span>Creating Account...</span>
+                  </>
+                ) : isRateLimited ? (
+                  <>
+                    <FiTimer className="text-sm animate-pulse" />
+                    <span>Wait {countdown}s</span>
                   </>
                 ) : (
                   'Create Account'

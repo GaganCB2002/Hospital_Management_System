@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import EmptyState from '../../../components/common/EmptyState';
 import BedOccupancyPanel from '../../../components/common/BedOccupancyPanel';
+import AIDiagnosticAssistant from './AIDiagnosticAssistant';
 import { useAuth } from '../../../context/AuthContext';
 import { useHospital } from '../../../context/HospitalContext';
 import { useTheme } from '../../../context/ThemeContext';
@@ -136,6 +137,8 @@ export default function DoctorDashboard() {
           </div>
         </section>
       </div>
+
+      <AIDiagnosticAssistant />
 
       <section className="rounded-3xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
         <div className="flex items-center justify-between mb-4 w-full min-w-0 max-w-full">
