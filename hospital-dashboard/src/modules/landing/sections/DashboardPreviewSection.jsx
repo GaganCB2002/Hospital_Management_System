@@ -70,12 +70,12 @@ export default function DashboardPreviewSection() {
   }, []);
 
   return (
-    <section id="analytics" className="relative py-24 lg:py-32 bg-[#020817] border-t border-white/[0.04]">
+    <section id="analytics" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Live Dashboard</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F8FAFC] leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
               Real-time intelligence at your
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">fingertips</span>

@@ -51,15 +51,15 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section id="testimonials" className="relative py-24 lg:py-32 bg-[#020817] border-t border-white/[0.04]">
+    <section id="testimonials" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Testimonials</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F8FAFC] leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
               Trusted by healthcare
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4">leaders worldwide</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">leaders worldwide</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -80,10 +80,10 @@ export default function TestimonialsSection() {
                   <div className="text-6xl leading-none mb-4" style={{ color: `${testimonials[current].color}30` }}>
                     &ldquo;
                   </div>
-                  <p className="text-lg sm:text-xl text-[#94A3B8] leading-relaxed">
+                  <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">
                     {testimonials[current].quote}
                   </p>
-                  <div className="flex items-center gap-4 mt-8 pt-6 border-t border-white/[0.06]">
+                  <div className="flex items-center gap-4 mt-8 pt-6 border-t border-slate-200/50">
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm"
                       style={{ background: `linear-gradient(135deg, ${testimonials[current].color}, ${testimonials[current].color}88)` }}
@@ -91,8 +91,8 @@ export default function TestimonialsSection() {
                       {testimonials[current].name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-[#F8FAFC]">{testimonials[current].name}</p>
-                      <p className="text-sm text-[#64748B]">{testimonials[current].role}</p>
+                      <p className="font-semibold text-slate-900">{testimonials[current].name}</p>
+                      <p className="text-sm text-slate-500">{testimonials[current].role}</p>
                     </div>
                     <div className="flex gap-0.5">
                       {[...Array(testimonials[current].rating)].map((_, i) => (
@@ -111,7 +111,7 @@ export default function TestimonialsSection() {
                   key={i}
                   onClick={() => setCurrent(i)}
                   className={`h-2 rounded-full transition-all duration-300 cursor-pointer border-none ${
-                    i === current ? 'w-8 bg-[#3B82F6]' : 'w-2 bg-white/[0.12] hover:bg-white/[0.2]'
+                    i === current ? 'w-8 bg-[#3B82F6]' : 'w-2 bg-slate-200 hover:bg-slate-300'
                   }`}
                 />
               ))}

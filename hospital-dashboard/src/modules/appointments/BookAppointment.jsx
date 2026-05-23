@@ -69,7 +69,8 @@ export default function BookAppointment() {
       return selectedDoctor.availabilitySchedule?.flatMap((schedule) => schedule.slots) || [];
     }
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const selectedDayName = days[new Date(formData.date).getDay()];
+    const [year, month, day] = formData.date.split('-').map(Number);
+    const selectedDayName = days[new Date(year, month - 1, day).getDay()];
     const daySchedule = selectedDoctor.availabilitySchedule?.find(
       (s) => s.day.toLowerCase() === selectedDayName.toLowerCase()
     );

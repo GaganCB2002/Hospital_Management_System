@@ -3,49 +3,111 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import Modal from '../../components/common/Modal';
+import PatientDetailModal from '../../components/details/PatientDetailModal';
+import DoctorDetailModal from '../../components/details/DoctorDetailModal';
+import AppointmentDetailModal from '../../components/details/AppointmentDetailModal';
+import EditPatientModal from '../../components/details/EditPatientModal';
+import ConfirmDialog from '../../components/common/ConfirmDialog';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useHospital } from '../../context/HospitalContext';
 import { useNotifications } from '../../context/NotificationContext';
 import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 
-function SearchDropdown({ results, onNavigate }) {
-  const groups = [
-    ['Patients', results?.patients || [], '/admin/patients'],
-    ['Doctors', results?.doctors || [], '/admin/doctors'],
-    ['Appointments', results?.appointments || [], '/admin/doctors'],
-    ['Billing', results?.billing || [], '/admin/financials'],
-  ];
-
-  const hasResults = groups.some(([, items]) => items.length > 0);
+function SearchDropdown({ results, onSelectPatient, onSelectDoctor, onSelectAppointment, onNavigate }) {
+  const hasResults = [results?.patients, results?.doctors, results?.appointments, results?.billing].some((arr) => arr?.length);
 
   return (
-    <div className="absolute left-0 top-12 z-30 w-full overflow-hidden rounded-2xl border border-outline-variant bg-surface shadow-xl">
+    <div className="absolute left-0 top-12 z-30 w-full min-w-0 overflow-hidden rounded-2xl border border-outline-variant bg-surface shadow-xl">
       {hasResults ? (
-        <div className="max-h-[420px] overflow-y-auto p-2">
-          {groups.map(([label, items, path]) => (
-            items.length ? (
-              <div key={label} className="mb-2 last:mb-0">
-                <p className="px-3 py-2 text-label-md uppercase text-on-surface-variant">{label}</p>
-                {items.map((item) => (
-                  <button
-                    key={item.id || item.appointmentId || item.doctorId}
-                    type="button"
-                    onClick={() => onNavigate(path)}
-                    className="w-full rounded-xl px-3 py-3 text-left hover:bg-surface-container-low"
-                  >
-                    <p className="text-body-md font-bold text-on-surface">{item.name || item.patient || item.doctor || item.id}</p>
-                    <p className="text-body-md text-on-surface-variant">
-                      {item.id || item.appointmentId || item.department || item.specialization || item.status}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            ) : null
-          ))}
+        <div className="max-h-[420px] overflow-y-auto p-2 w-full min-w-0">
+          {results?.patients?.length > 0 && (
+            <div className="mb-3 last:mb-0">
+              <p className="px-3 py-2 text-label-md uppercase text-on-surface-variant flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm">patient_list</span> Patients
+              </p>
+              {results.patients.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onSelectPatient(item)}
+                  className="w-full min-w-0 rounded-xl px-3 py-3 text-left hover:bg-surface-container-low flex items-center gap-3"
+                >
+                  <span className="material-symbols-outlined text-on-surface-variant/60 text-lg">person</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-body-md font-bold text-on-surface break-words">{item.name}</p>
+                    <p className="text-body-md text-on-surface-variant break-words">{item.id} &bull; {item.department} &bull; {item.status}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {results?.doctors?.length > 0 && (
+            <div className="mb-3 last:mb-0">
+              <p className="px-3 py-2 text-label-md uppercase text-on-surface-variant flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm">stethoscope</span> Doctors
+              </p>
+              {results.doctors.map((item) => (
+                <button
+                  key={item.doctorId || item.id}
+                  type="button"
+                  onClick={() => onSelectDoctor(item)}
+                  className="w-full min-w-0 rounded-xl px-3 py-3 text-left hover:bg-surface-container-low flex items-center gap-3"
+                >
+                  <span className="material-symbols-outlined text-on-surface-variant/60 text-lg">stethoscope</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-body-md font-bold text-on-surface break-words">{item.name}</p>
+                    <p className="text-body-md text-on-surface-variant break-words">{item.specialization} &bull; {item.department} &bull; {item.status}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {results?.appointments?.length > 0 && (
+            <div className="mb-3 last:mb-0">
+              <p className="px-3 py-2 text-label-md uppercase text-on-surface-variant flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm">event</span> Appointments
+              </p>
+              {results.appointments.map((item) => (
+                <button
+                  key={item.appointmentId || item.id}
+                  type="button"
+                  onClick={() => onSelectAppointment(item)}
+                  className="w-full min-w-0 rounded-xl px-3 py-3 text-left hover:bg-surface-container-low flex items-center gap-3"
+                >
+                  <span className="material-symbols-outlined text-on-surface-variant/60 text-lg">event</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-body-md font-bold text-on-surface break-words">{item.patient || item.doctor}</p>
+                    <p className="text-body-md text-on-surface-variant break-words">{item.appointmentId || item.id} &bull; {item.type} &bull; {item.status}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {results?.billing?.length > 0 && (
+            <div className="mb-0">
+              <p className="px-3 py-2 text-label-md uppercase text-on-surface-variant flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-sm">payments</span> Billing
+              </p>
+              {results.billing.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => { onNavigate('/admin/financials'); }}
+                  className="w-full min-w-0 rounded-xl px-3 py-3 text-left hover:bg-surface-container-low flex items-center gap-3"
+                >
+                  <span className="material-symbols-outlined text-on-surface-variant/60 text-lg">receipt</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-body-md font-bold text-on-surface break-words">{item.id}</p>
+                    <p className="text-body-md text-on-surface-variant break-words">{item.patient} &bull; {item.department} &bull; {item.status}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
-        <div className="p-4 text-body-md text-on-surface-variant">Data not present</div>
+        <div className="p-4 text-body-md text-on-surface-variant break-words">No matching records found</div>
       )}
     </div>
   );
@@ -54,7 +116,7 @@ function SearchDropdown({ results, onNavigate }) {
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
-  const { doctors, globalSearch } = useHospital();
+  const { doctors, patients, globalSearch, deletePatient } = useHospital();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState({ patients: [], doctors: [], appointments: [], billing: [] });
@@ -62,6 +124,12 @@ export default function Navbar() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedAppt, setSelectedAppt] = useState(null);
+  const [editPatient, setEditPatient] = useState(null);
+  const [deletePatientTarget, setDeletePatientTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const notifRef = useRef(null);
   const notifBtnRef = useRef(null);
@@ -169,6 +237,39 @@ export default function Navbar() {
     navigate(path);
   }
 
+  function handleSelectPatient(patient) {
+    setShowSearchResults(false);
+    setSearchTerm('');
+    setSelectedPatient(patient);
+  }
+
+  function handleSelectDoctor(doctor) {
+    setShowSearchResults(false);
+    setSearchTerm('');
+    setSelectedDoctor(doctor);
+  }
+
+  function handleSelectAppointment(appointment) {
+    setShowSearchResults(false);
+    setSearchTerm('');
+    setSelectedAppt(appointment);
+  }
+
+  async function handleDeletePatient() {
+    if (!deletePatientTarget) return;
+    setDeleting(true);
+    try {
+      await deletePatient(deletePatientTarget.id, user?.name || 'Admin');
+      toast.success('Patient record deleted');
+      setDeletePatientTarget(null);
+      setSelectedPatient(null);
+    } catch {
+      toast.error('Failed to delete patient');
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   return (
     <>
       <header className="h-16 shrink-0 border-b border-outline-variant bg-surface">
@@ -185,7 +286,13 @@ export default function Navbar() {
               type="text"
             />
             {showSearchResults && searchTerm.trim() ? (
-              <SearchDropdown results={searchResults} onNavigate={handleNavigate} />
+              <SearchDropdown
+                results={searchResults}
+                onSelectPatient={handleSelectPatient}
+                onSelectDoctor={handleSelectDoctor}
+                onSelectAppointment={handleSelectAppointment}
+                onNavigate={handleNavigate}
+              />
             ) : null}
           </div>
           {user?.role === 'admin' && (
@@ -236,12 +343,12 @@ export default function Navbar() {
                     className="absolute right-0 top-14 z-50 w-[380px] min-w-[320px] max-w-[95vw] max-h-[500px] overflow-y-auto rounded-2xl border border-outline-variant bg-surface shadow-2xl"
                     style={{ overscrollBehavior: 'contain' }}
                   >
-                    <div className="sticky top-0 z-10 flex items-center justify-between border-b border-outline-variant bg-surface/95 backdrop-blur-md px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-xl">notifications</span>
-                        <span className="text-base font-extrabold text-on-surface">Notifications</span>
+                    <div className="sticky top-0 z-10 flex items-center justify-between border-b border-outline-variant bg-surface/95 backdrop-blur-md px-5 py-4 w-full min-w-0">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="material-symbols-outlined text-primary text-xl shrink-0">notifications</span>
+                        <span className="text-base font-extrabold text-on-surface break-words">Notifications</span>
                         {unreadCount > 0 && (
-                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">
+                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary shrink-0">
                             {unreadCount} new
                           </span>
                         )}
@@ -257,11 +364,11 @@ export default function Navbar() {
                     </div>
 
                     {notifications.length > 0 ? (
-                      <div className="divide-y divide-outline-variant">
+                      <div className="divide-y divide-outline-variant w-full min-w-0">
                         {notifications.map((n) => (
                           <div
                             key={n.id}
-                            className={`flex items-start gap-3 px-4 py-3 border-b border-outline-variant transition-all duration-200 ${
+                            className={`flex items-start gap-3 px-4 py-3 border-b border-outline-variant transition-all duration-200 w-full min-w-0 ${
                               n.type === 'emergency'
                                 ? 'bg-error-container/10 border-l-4 border-error'
                                 : !n.read
@@ -286,15 +393,15 @@ export default function Navbar() {
                             </div>
                             <div
                               onClick={() => { setSelectedNotification(n); markAsRead(n.id); closeNotifications(); }}
-                              className="flex-1 min-w-[180px] cursor-pointer"
+                              className="flex-1 min-w-0 cursor-pointer"
                             >
-                              <div className="flex items-start justify-between gap-2">
-                                <p className={`text-sm leading-snug font-bold text-on-surface break-words ${!n.read ? '' : ''}`}>
+                              <div className="flex items-start justify-between gap-2 w-full min-w-0">
+                                <p className={`text-sm leading-snug font-bold text-on-surface break-words min-w-0 flex-1 ${!n.read ? '' : ''}`}>
                                   {n.title}
                                 </p>
                                 <span className="shrink-0 text-[10px] font-medium text-on-surface-variant whitespace-nowrap">{n.time}</span>
                               </div>
-                              <p className="text-sm text-on-surface-variant leading-relaxed break-words whitespace-normal mt-1">
+                              <p className="text-sm text-on-surface-variant leading-relaxed break-words mt-1">
                                 {n.shortDescription}
                               </p>
                             </div>
@@ -309,17 +416,17 @@ export default function Navbar() {
                         ))}
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center py-14 px-6">
+                      <div className="flex flex-col items-center justify-center py-14 px-6 w-full min-w-0">
                         <div className="h-14 w-14 rounded-full bg-surface-container-high flex items-center justify-center mb-4">
                           <span className="material-symbols-outlined text-3xl text-on-surface-variant/40">notifications_off</span>
                         </div>
-                        <p className="text-base font-bold text-on-surface">No notifications</p>
-                        <p className="text-sm text-on-surface-variant mt-1 text-center max-w-[220px]">You are all caught up. New updates will appear here.</p>
+                        <p className="text-base font-bold text-on-surface text-center w-full">No notifications</p>
+                        <p className="text-sm text-on-surface-variant mt-1 text-center w-full break-words">You are all caught up. New updates will appear here.</p>
                       </div>
                     )}
 
                     {notifications.length > 0 && (
-                      <div className="sticky bottom-0 border-t border-outline-variant bg-surface/95 backdrop-blur-md px-5 py-3">
+                      <div className="sticky bottom-0 border-t border-outline-variant bg-surface/95 backdrop-blur-md px-5 py-3 w-full min-w-0">
                         <button
                           onClick={() => { markAllAsRead?.(); toast.success('All marked as read'); }}
                           className="w-full rounded-xl bg-primary/10 py-2.5 text-xs font-bold text-primary hover:bg-primary/20 transition-colors cursor-pointer border-none"
@@ -354,9 +461,9 @@ export default function Navbar() {
                 alt="Profile"
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
               />
-              <div className="hidden flex-col md:flex text-left">
-                <span className="text-label-md font-bold text-on-surface">{user?.name}</span>
-                <span className="text-[10px] uppercase tracking-wider text-on-surface-variant">{user?.role}</span>
+              <div className="hidden flex-col md:flex text-left min-w-0">
+                <span className="text-label-md font-bold text-on-surface break-words">{user?.name}</span>
+                <span className="text-[10px] uppercase tracking-wider text-on-surface-variant break-words">{user?.role}</span>
               </div>
             </button>
 
@@ -367,11 +474,13 @@ export default function Navbar() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -8 }}
                   transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="absolute right-0 top-full mt-2 w-48 overflow-hidden rounded-xl border border-outline-variant bg-surface shadow-lg z-50"
+                  className="absolute right-0 top-full mt-2 w-48 min-w-0 overflow-hidden rounded-xl border border-outline-variant bg-surface shadow-lg z-50"
                 >
-                  <button onClick={() => { navigate(profilePath); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm hover:bg-surface-container-low text-on-surface">My Profile</button>
-                  <button onClick={() => { navigate(`/${user?.role || 'admin'}/settings`); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm hover:bg-surface-container-low text-on-surface">Settings</button>
-                  <button onClick={() => { logout(); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm text-error hover:bg-error/10">Sign Out</button>
+                  <div className="w-full min-w-0">
+                    <button onClick={() => { navigate(profilePath); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm hover:bg-surface-container-low text-on-surface break-words">My Profile</button>
+                    <button onClick={() => { navigate(`/${user?.role || 'admin'}/settings`); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm hover:bg-surface-container-low text-on-surface break-words">Settings</button>
+                    <button onClick={() => { logout(); setShowProfileMenu(false); }} className="w-full px-4 py-3 text-left text-sm text-error hover:bg-error/10 break-words">Sign Out</button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -419,6 +528,58 @@ export default function Navbar() {
           </>
         )}
       </Modal>
+
+      {/* Search Result Detail Modals */}
+      <PatientDetailModal
+        patient={selectedPatient}
+        isOpen={!!selectedPatient}
+        onClose={() => { setSelectedPatient(null); setEditPatient(null); setDeletePatientTarget(null); }}
+        onDoctorClick={(id) => {
+          const doc = doctors.find((d) => d.doctorId === id || d.id === id);
+          if (doc) handleSelectDoctor(doc);
+        }}
+        onEdit={(pat) => setEditPatient(pat)}
+        onDelete={(pat) => setDeletePatientTarget(pat)}
+      />
+
+      {selectedPatient && (user?.role === 'admin' || user?.role === 'receptionist') && (
+        <EditPatientModal
+          patient={editPatient || selectedPatient}
+          isOpen={!!editPatient}
+          onClose={() => setEditPatient(null)}
+        />
+      )}
+
+      <ConfirmDialog
+        isOpen={!!deletePatientTarget}
+        onClose={() => setDeletePatientTarget(null)}
+        onConfirm={handleDeletePatient}
+        title="Delete Patient Record"
+        message={`Are you sure you want to delete ${deletePatientTarget?.name}'s record? This action cannot be undone and will also remove all related appointments and billing data.`}
+        confirmLabel={deleting ? 'Deleting...' : 'Delete Record'}
+        loading={deleting}
+        tone="danger"
+      />
+
+      <DoctorDetailModal
+        doctor={selectedDoctor}
+        isOpen={!!selectedDoctor}
+        onClose={() => setSelectedDoctor(null)}
+      />
+
+      <AppointmentDetailModal
+        appointment={selectedAppt}
+        isOpen={!!selectedAppt}
+        onClose={() => setSelectedAppt(null)}
+        onPatientClick={(id) => {
+          const pat = patients.find((p) => p.id === id);
+          if (pat) handleSelectPatient(pat);
+        }}
+        onDoctorClick={(id) => {
+          const doc = doctors.find((d) => d.doctorId === id || d.id === id);
+          if (doc) handleSelectDoctor(doc);
+        }}
+      />
     </>
   );
 }

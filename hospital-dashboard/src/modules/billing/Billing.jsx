@@ -4,13 +4,42 @@ import toast from 'react-hot-toast';
 import { useHospital } from '../../context/HospitalContext';
 import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 import EmptyState from '../../components/common/EmptyState';
+import Modal from '../../components/common/Modal';
 import { formatDate, formatInr } from '../../lib/formatters';
 
 export default function Billing() {
-  const { billing, markInvoicePaid } = useHospital();
+  const { billing, patients, createInvoice, markInvoicePaid } = useHospital();
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearch = useDebouncedValue(searchTerm, 250);
   const [updatingInvoice, setUpdatingInvoice] = useState('');
+  const [isNewInvoiceModalOpen, setIsNewInvoiceModalOpen] = useState(false);
+  const [selectedPatientId, setSelectedPatientId] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+
+  async function handleCreateInvoice(e) {
+    e.preventDefault();
+    if (!selectedPatientId) {
+      toast.error('Please select a patient');
+      return;
+    }
+    const patientObj = patients.find((p) => p.id === selectedPatientId);
+    if (!patientObj) {
+      toast.error('Selected patient not found');
+      return;
+    }
+
+    setIsCreating(true);
+    try {
+      await createInvoice(patientObj, 'Receptionist');
+      toast.success(`Invoice generated successfully for ${patientObj.name}`);
+      setIsNewInvoiceModalOpen(false);
+      setSelectedPatientId('');
+    } catch (err) {
+      toast.error(err.message || 'Unable to create invoice');
+    } finally {
+      setIsCreating(false);
+    }
+  }
 
   const filteredBilling = useMemo(
     () => billing.filter((invoice) => {
@@ -78,7 +107,15 @@ export default function Billing() {
               className="w-full rounded-lg border border-outline-variant bg-surface pl-10 pr-4 py-2 text-sm focus:border-primary focus:outline-none dark:border-outline dark:bg-surface-container "
             />
           </div>
-          <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:bg-primary-container">
+          <button 
+            onClick={() => {
+              if (patients && patients.length > 0) {
+                setSelectedPatientId(patients[0].id);
+              }
+              setIsNewInvoiceModalOpen(true);
+            }}
+            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:bg-primary-container cursor-pointer"
+          >
             <FiFileText /> New Invoice
           </button>
         </div>
@@ -139,6 +176,64 @@ export default function Billing() {
           )}
         </div>
       </div>
+
+      <Modal isOpen={isNewInvoiceModalOpen} onClose={() => setIsNewInvoiceModalOpen(false)} title="Generate New Invoice" size="md">
+        <form onSubmit={handleCreateInvoice} className="space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-on-surface-variant mb-1.5">Select Patient</label>
+            <select
+              value={selectedPatientId}
+              onChange={(e) => setSelectedPatientId(e.target.value)}
+              className="w-full rounded-lg border border-outline-variant bg-surface p-2.5 text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary dark:border-outline dark:bg-on-primary-fixed"
+              required
+            >
+              <option value="">-- Choose Patient --</option>
+              {patients.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} ({p.id}) - {p.department}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {selectedPatientId && (
+            <div className="rounded-xl border border-outline-variant p-4 space-y-2 dark:border-outline bg-surface-container-low">
+              <p className="text-body-md">
+                <strong>Department:</strong> {patients.find(p => p.id === selectedPatientId)?.department || 'General'}
+              </p>
+              <p className="text-body-md">
+                <strong>Primary Doctor:</strong> {patients.find(p => p.id === selectedPatientId)?.doctor || 'Unassigned'}
+              </p>
+              <p className="text-body-md">
+                <strong>Estimated Amount:</strong> {
+                  formatInr(Number(
+                    patients.find(p => p.id === selectedPatientId)?.assignedDoctor?.consultationFee || 
+                    patients.find(p => p.id === selectedPatientId)?.consultationFee || 
+                    1500
+                  ))
+                }
+              </p>
+            </div>
+          )}
+
+          <div className="flex gap-3 justify-end pt-4 border-t border-outline-variant dark:border-outline">
+            <button
+              type="button"
+              onClick={() => setIsNewInvoiceModalOpen(false)}
+              className="px-5 py-2.5 border border-outline-variant rounded-lg text-body-md font-bold text-on-surface hover:bg-surface-container transition-colors dark:border-outline"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isCreating || !selectedPatientId}
+              className="px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/95 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isCreating ? 'Generating...' : 'Generate Invoice'}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

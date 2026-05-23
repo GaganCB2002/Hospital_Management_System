@@ -41,12 +41,12 @@ export default function HeroSection() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#020817]"
+      className="relative min-h-screen flex items-center bg-slate-50 w-full"
     >
       {/* Animated Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute w-[800px] h-[800px] rounded-full opacity-[0.08] blur-[120px] transition-all duration-700 ease-out"
+          className="absolute w-[800px] h-[800px] rounded-full opacity-[0.14] blur-[120px] transition-all duration-700 ease-out"
           style={{
             background: 'radial-gradient(circle, #3B82F6, #06B6D4)',
             left: `${glowX - 10}%`,
@@ -56,16 +56,16 @@ export default function HeroSection() {
         <motion.div
           animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-[#3B82F6]/5 blur-[100px]"
+          className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-[#3B82F6]/8 blur-[100px]"
         />
         <motion.div
           animate={{ x: [0, -30, 20, 0], y: [0, 40, -20, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-          className="absolute -bottom-40 -left-40 w-[700px] h-[700px] rounded-full bg-[#06B6D4]/5 blur-[100px]"
+          className="absolute -bottom-40 -left-40 w-[700px] h-[700px] rounded-full bg-[#06B6D4]/8 blur-[100px]"
         />
         {/* Grid Background */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage: 'linear-gradient(#3B82F6 1px, transparent 1px), linear-gradient(90deg, #3B82F6 1px, transparent 1px)',
             backgroundSize: '60px 60px',
@@ -87,9 +87,9 @@ export default function HeroSection() {
               opacity: { delay: 1 + i * 0.2, duration: 0.6 },
               y: { duration: 4 + i * 0.5, repeat: Infinity, ease: 'easeInOut' },
             }}
-            className="absolute flex items-center gap-3 px-4 py-3 rounded-xl backdrop-blur-xl border border-white/[0.08] shadow-2xl"
+            className="absolute flex items-center gap-3 px-4 py-3 rounded-xl backdrop-blur-xl border border-slate-200/80 shadow-lg"
             style={{
-              background: 'rgba(15, 23, 42, 0.7)',
+              background: 'rgba(255, 255, 255, 0.85)',
               left: i < 2 ? '6%' : 'auto',
               right: i >= 2 ? '6%' : 'auto',
               top: `${20 + i * 18}%`,
@@ -102,8 +102,8 @@ export default function HeroSection() {
               <span className="material-symbols-outlined text-base" style={{ color: stat.color }}>{stat.icon}</span>
             </div>
             <div>
-              <p className="text-xs text-[#94A3B8]">{stat.label}</p>
-              <p className="text-sm font-bold text-[#F8FAFC]">{stat.value}</p>
+              <p className="text-xs text-slate-500">{stat.label}</p>
+              <p className="text-sm font-bold text-slate-900">{stat.value}</p>
             </div>
           </motion.div>
         ))}
@@ -117,22 +117,22 @@ export default function HeroSection() {
             initial={{ opacity: 0, x: i < 2 ? -20 : 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2.5 + i * 0.15, duration: 0.5 }}
-            className="absolute px-3.5 py-2.5 rounded-lg backdrop-blur-xl border border-white/[0.06] shadow-lg"
+            className="absolute px-3.5 py-2.5 rounded-lg backdrop-blur-xl border border-slate-200/80 shadow-md"
             style={{
-              background: 'rgba(15, 23, 42, 0.6)',
+              background: 'rgba(255, 255, 255, 0.8)',
               top: `${56 + i * 13}%`,
               left: i < 2 ? 'auto' : '4%',
               right: i >= 2 ? 'auto' : '4%',
             }}
           >
             <div className="flex items-center justify-between gap-4">
-              <span className="text-[10px] text-[#64748B] font-medium">{kpi.label}</span>
+              <span className="text-[10px] text-slate-600 font-medium">{kpi.label}</span>
               <span className={`text-[10px] font-bold flex items-center gap-0.5 ${kpi.trend === 'up' ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
                 <span className="material-symbols-outlined text-[10px]">{kpi.trend === 'up' ? 'trending_up' : 'trending_down'}</span>
                 {kpi.change}
               </span>
             </div>
-            <p className="text-lg font-bold text-[#F8FAFC] mt-0.5">{kpi.value}</p>
+            <p className="text-lg font-bold text-slate-900 mt-0.5">{kpi.value}</p>
           </motion.div>
         ))}
       </div>
@@ -145,10 +145,10 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3B82F6]/10 backdrop-blur-sm border border-[#3B82F6]/20 mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3B82F6]/8 backdrop-blur-sm border border-[#3B82F6]/15 mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-[#06B6D4] animate-pulse" />
-            <span className="text-sm font-medium text-[#94A3B8]">
+            <span className="text-sm font-medium text-slate-600">
               <span className="text-[#3B82F6] font-semibold">AI-Powered</span> Healthcare Platform
             </span>
           </motion.div>
@@ -158,9 +158,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.05] tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight w-full"
           >
-            <span className="text-[#F8FAFC]">AI-Powered Smart</span>
+            <span className="text-slate-900">AI-Powered Smart</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] via-[#06B6D4] to-[#3B82F6]">
               Hospital Management
@@ -172,7 +172,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-6 text-lg sm:text-xl text-[#64748B] max-w-3xl mx-auto leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
           >
             Manage patients, doctors, appointments, analytics, emergency monitoring, AI health predictions, and hospital operations from one intelligent healthcare ecosystem.
           </motion.p>
@@ -197,7 +197,7 @@ export default function HeroSection() {
             </button>
             <button
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-3.5 text-base font-semibold text-[#F8FAFC] bg-white/[0.06] hover:bg-white/[0.1] backdrop-blur-sm rounded-xl border border-white/[0.1] hover:border-white/[0.2] transition-all cursor-pointer border-solid"
+              className="px-8 py-3.5 text-base font-semibold text-slate-800 bg-slate-100/80 hover:bg-slate-200/60 backdrop-blur-sm rounded-xl border border-slate-200/80 hover:border-slate-300 transition-all cursor-pointer border-solid"
             >
               <span className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-lg">play_arrow</span>
@@ -206,7 +206,7 @@ export default function HeroSection() {
             </button>
             <button
               onClick={() => document.getElementById('analytics')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-3.5 text-base font-semibold text-[#94A3B8] hover:text-[#F8FAFC] transition-colors cursor-pointer border-none bg-transparent"
+              className="px-8 py-3.5 text-base font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer border-none bg-transparent"
             >
               Explore Dashboard
             </button>
@@ -225,7 +225,7 @@ export default function HeroSection() {
               { icon: 'update', text: '99.99% Uptime' },
               { icon: 'groups', text: '200+ Hospitals' },
             ].map((item) => (
-              <div key={item.text} className="flex items-center gap-2 text-sm text-[#64748B]">
+              <div key={item.text} className="flex items-center gap-2 text-sm text-slate-600">
                 <span className="material-symbols-outlined text-base text-[#06B6D4]">{item.icon}</span>
                 {item.text}
               </div>
@@ -235,7 +235,7 @@ export default function HeroSection() {
       </div>
 
       {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#020817] to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#F8FAFC] to-transparent z-10 pointer-events-none" />
     </section>
   );
 }

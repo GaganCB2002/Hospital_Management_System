@@ -7,7 +7,7 @@ const partners = [
 
 export default function PartnersSection() {
   return (
-    <section className="relative py-16 border-b border-white/[0.04] bg-[#020817]">
+    <section className="relative py-16 border-b border-slate-200/50 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.p
           initial={{ opacity: 0 }}

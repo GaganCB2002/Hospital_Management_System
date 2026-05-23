@@ -36,13 +36,13 @@ function FAQItem({ faq, index, isOpen, toggle }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="rounded-xl border border-white/[0.06] overflow-hidden transition-colors hover:border-white/[0.1]"
+      className="rounded-xl border border-slate-200/60 overflow-hidden bg-white shadow-sm hover:border-slate-300 transition-colors"
     >
       <button
         onClick={toggle}
         className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer border-none bg-transparent"
       >
-        <span className="text-sm font-semibold text-[#F8FAFC] pr-4">{faq.q}</span>
+        <span className="text-sm font-semibold text-slate-900 pr-4">{faq.q}</span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -72,12 +72,12 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section id="faq" className="relative py-24 lg:py-32 bg-[#020817] border-t border-white/[0.04]">
+    <section id="faq" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">FAQ</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F8FAFC] leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
               Frequently asked
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">questions</span>

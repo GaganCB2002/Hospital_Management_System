@@ -1,25 +1,76 @@
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 import Modal from '../common/Modal';
 import DocumentList from '../documents/DocumentList';
+import { useHospital } from '../../context/HospitalContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatDate, formatDateTime, formatInr } from '../../lib/formatters';
 
 export default function AppointmentDetailModal({ appointment, isOpen, onClose, onPatientClick, onDoctorClick }) {
+  const { updateAppointmentStatus } = useHospital();
+  const { user } = useAuth();
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+
   if (!appointment) {
     return null;
   }
 
+  const role = user?.role;
+  const canUpdateStatus = role === 'admin' || role === 'receptionist' || role === 'doctor';
+
+  async function handleStatusChange(newStatus) {
+    setUpdatingStatus(true);
+    try {
+      await updateAppointmentStatus(appointment.appointmentId || appointment.id, newStatus, { actor: user?.name || 'Staff' });
+      toast.success(`Appointment status updated to ${newStatus}`);
+    } catch {
+      toast.error('Failed to update appointment status');
+    } finally {
+      setUpdatingStatus(false);
+    }
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`Appointment ${appointment.appointmentId}`} size="xl">
+    <Modal isOpen={isOpen} onClose={onClose} title={`Appointment ${appointment.appointmentId || appointment.id}`} size="xl">
       <div className="space-y-6">
-        <div className="rounded-2xl bg-surface-container p-4 dark:bg-on-primary-fixed">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
+        <div className="rounded-2xl bg-surface-container p-4 dark:bg-on-primary-fixed w-full min-w-0">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between w-full min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-label-md uppercase text-on-surface-variant">Scheduled Visit</p>
-              <h3 className="text-headline-lg text-on-surface dark:text-white">{appointment.type}</h3>
-              <p className="text-body-md text-on-surface-variant">
+              <h3 className="text-headline-lg text-on-surface dark:text-white break-words">{appointment.type}</h3>
+              <p className="text-body-md text-on-surface-variant break-words">
                 {formatDateTime(appointment.date, appointment.time)} • {appointment.department}
               </p>
             </div>
-            <span className="rounded-full bg-primary px-3 py-1 text-label-md text-white">{appointment.status}</span>
+            <div className="flex items-center gap-2 shrink-0">
+              {canUpdateStatus ? (
+                <div className="relative flex items-center gap-1">
+                  <select
+                    value={appointment.status}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                    disabled={updatingStatus}
+                    className="rounded-full bg-primary px-3 py-1 text-label-md text-white outline-none cursor-pointer appearance-none pr-6 border-none"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 6px center',
+                    }}
+                  >
+                    <option value="Pending" className="text-on-surface bg-surface">Pending</option>
+                    <option value="Confirmed" className="text-on-surface bg-surface">Confirmed</option>
+                    <option value="Checked In" className="text-on-surface bg-surface">Checked In</option>
+                    <option value="In Progress" className="text-on-surface bg-surface">In Progress</option>
+                    <option value="Completed" className="text-on-surface bg-surface">Completed</option>
+                    <option value="Cancelled" className="text-on-surface bg-surface">Cancelled</option>
+                    <option value="Rejected" className="text-on-surface bg-surface">Rejected</option>
+                    <option value="No-Show" className="text-on-surface bg-surface">No-Show</option>
+                  </select>
+                  {updatingStatus && <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+                </div>
+              ) : (
+                <span className="rounded-full bg-primary px-3 py-1 text-label-md text-white">{appointment.status}</span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -46,11 +97,11 @@ export default function AppointmentDetailModal({ appointment, isOpen, onClose, o
           </section>
         </div>
 
-        <section className="rounded-xl border border-outline-variant p-4 dark:border-outline">
-          <h4 className="text-headline-md text-on-surface dark:text-white">Notes</h4>
-          <p className="mt-2 text-body-md text-on-surface-variant">{appointment.notes || 'No notes added.'}</p>
+        <section className="rounded-xl border border-outline-variant p-4 dark:border-outline w-full min-w-0">
+          <h4 className="text-headline-md text-on-surface dark:text-white break-words">Notes</h4>
+          <p className="mt-2 text-body-md text-on-surface-variant break-words">{appointment.notes || 'No notes added.'}</p>
           {appointment.rejectionReason ? (
-            <p className="mt-3 rounded-lg bg-error-container/60 px-3 py-2 text-body-md text-error">
+            <p className="mt-3 rounded-lg bg-error-container/60 px-3 py-2 text-body-md text-error break-words">
               Rejection reason: {appointment.rejectionReason}
             </p>
           ) : null}

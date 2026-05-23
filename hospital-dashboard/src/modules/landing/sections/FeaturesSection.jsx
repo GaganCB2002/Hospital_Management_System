@@ -70,7 +70,7 @@ function FeatureCard({ feature, index }) {
         const rect = e.currentTarget.getBoundingClientRect();
         setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       }}
-      className="relative group p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden"
+      className="relative group p-6 rounded-2xl border border-slate-200/60 bg-white hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
     >
       {/* Spotlight */}
       <div
@@ -94,9 +94,9 @@ function FeatureCard({ feature, index }) {
         >
           <span className="material-symbols-outlined text-xl" style={{ color: feature.color }}>{feature.icon}</span>
         </div>
-        <h3 className="text-base font-bold text-[#F8FAFC] mb-2">{feature.title}</h3>
+        <h3 className="text-base font-bold text-slate-900 mb-2">{feature.title}</h3>
         <p className="text-sm text-[#64748B] leading-relaxed">{feature.desc}</p>
-        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-white/[0.06]">
+        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100">
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: feature.color }} />
           <span className="text-xs font-medium" style={{ color: feature.color }}>{feature.stat}</span>
         </div>
@@ -107,7 +107,7 @@ function FeatureCard({ feature, index }) {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="relative py-24 lg:py-32 bg-[#020817]">
+    <section id="features" className="relative py-24 lg:py-32 bg-[#F8FAFC]">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#3B82F6]/3 blur-[120px]" />
       </div>
@@ -116,7 +116,7 @@ export default function FeaturesSection() {
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Platform Features</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F8FAFC] leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
               Everything you need to run a
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">world-class hospital</span>

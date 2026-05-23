@@ -261,6 +261,10 @@ export default function ConsultationHistory() {
                     notes={record.notes}
                     priority="normal"
                     variant="minimal"
+                    patientName={record.name}
+                    patientId={record.patientId?.split(' •')[0]}
+                    patientDob={record.patientId?.split('DOB: ')[1]}
+                    prescriptions={record.medications}
                   />
                 </div>
 

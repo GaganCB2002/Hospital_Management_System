@@ -9,7 +9,6 @@ import DashboardPreviewSection from './sections/DashboardPreviewSection';
 import AIInsightsSection from './sections/AIInsightsSection';
 import TestimonialsSection from './sections/TestimonialsSection';
 import SecuritySection from './sections/SecuritySection';
-import PricingSection from './sections/PricingSection';
 import FAQSection from './sections/FAQSection';
 import CTASection from './sections/CTASection';
 import FooterSection from './sections/FooterSection';
@@ -33,7 +32,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-[#020817] text-[#F8FAFC] overflow-x-hidden min-h-screen">
+    <div className="bg-[#F8FAFC] text-slate-800 min-h-screen w-full">
       <FloatingParticles count={40} />
       <NavbarSection />
       <HeroSection />
@@ -43,7 +42,6 @@ export default function LandingPage() {
       <AIInsightsSection />
       <TestimonialsSection />
       <SecuritySection />
-      <PricingSection />
       <FAQSection />
       <CTASection />
       <FooterSection />

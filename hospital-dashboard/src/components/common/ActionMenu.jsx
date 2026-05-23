@@ -26,22 +26,24 @@ export default function ActionMenu({ actions }) {
       </button>
       {isOpen ? (
         <div className="absolute right-0 top-12 z-30 min-w-[190px] overflow-hidden rounded-xl border border-outline-variant bg-white shadow-xl dark:border-outline dark:bg-surface-container">
-          {actions.map((action) => (
-            <button
-              key={action.label}
-              type="button"
-              onClick={() => {
-                setIsOpen(false);
-                action.onClick();
-              }}
-              className={`flex w-full items-center gap-2 px-4 py-3 text-left text-body-md transition-colors hover:bg-surface-container-low dark:text-white dark:hover:bg-on-primary-fixed ${
-                action.destructive ? 'text-error dark:text-error-container' : 'text-on-surface'
-              }`}
-            >
-              {action.icon ? <span className="material-symbols-outlined text-[18px]">{action.icon}</span> : null}
-              {action.label}
-            </button>
-          ))}
+          <div className="w-full min-w-0">
+            {actions.map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  action.onClick();
+                }}
+                className={`flex w-full items-center gap-2 px-4 py-3 text-left text-body-md transition-colors hover:bg-surface-container-low dark:text-white dark:hover:bg-on-primary-fixed ${
+                  action.destructive ? 'text-error dark:text-error-container' : 'text-on-surface'
+                }`}
+              >
+                {action.icon ? <span className="material-symbols-outlined text-[18px] shrink-0">{action.icon}</span> : null}
+                <span className="min-w-0 break-words">{action.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>

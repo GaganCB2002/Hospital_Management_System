@@ -152,6 +152,10 @@ export default function MedicalHistory() {
                 date={formatDate(instruction.createdAt)}
                 notes={instruction.note}
                 priority="normal"
+                patientName={patient.name}
+                patientId={patient.id}
+                patientAge={patient.age ? `${patient.age} yrs` : undefined}
+                patientDob={patient.dob}
               />
             )) : (
               <NotesEmptyState />

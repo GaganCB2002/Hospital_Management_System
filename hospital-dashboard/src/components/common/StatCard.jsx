@@ -12,9 +12,9 @@ export default function StatCard({ title, value, subtitle, icon: Icon, trend, tr
       whileHover={{ y: -4 }}
       className={`bg-surface border ${variants[variant]} p-4 rounded-xl flex items-center justify-between shadow-sm transition-all ${className}`}
     >
-      <div className="flex flex-col">
-        <span className="text-xs text-on-surface-variant mb-1">{title}</span>
-        <span className="text-3xl font-bold text-on-surface">{value}</span>
+      <div className="flex flex-col min-w-0 flex-1">
+        <span className="text-xs text-on-surface-variant mb-1 break-words">{title}</span>
+        <span className="text-3xl font-bold text-on-surface break-words">{value}</span>
         {trend && (
           <span className={`text-[10px] font-medium mt-2 flex items-center gap-1 ${
             trend === 'up' ? 'text-secondary' : trend === 'down' ? 'text-error' : 'text-on-surface-variant'
@@ -24,7 +24,7 @@ export default function StatCard({ title, value, subtitle, icon: Icon, trend, tr
           </span>
         )}
         {subtitle && (
-          <span className="text-[10px] text-on-surface-variant font-medium mt-2">{subtitle}</span>
+          <span className="text-[10px] text-on-surface-variant font-medium mt-2 break-words">{subtitle}</span>
         )}
       </div>
       <div className={`p-3 rounded-lg ${

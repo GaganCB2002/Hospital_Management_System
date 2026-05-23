@@ -4,13 +4,25 @@ import PatientDetailModal from '../../components/details/PatientDetailModal';
 import EditPatientModal from '../../components/details/EditPatientModal';
 import EmptyState from '../../components/common/EmptyState';
 import { useHospital } from '../../context/HospitalContext';
+import toast from 'react-hot-toast';
 
 export default function ReceptionistPatients() {
-  const { patients, doctors, appointments } = useHospital();
+  const { patients, doctors, appointments, deletePatient } = useHospital();
   const [search, setSearch] = useState('');
   const [selectedPatientId, setSelectedPatientId] = useState('');
   const [selectedDoctorId, setSelectedDoctorId] = useState('');
   const [editingPatient, setEditingPatient] = useState(null);
+
+  const handleDeletePatient = async (patientId, patientName) => {
+    if (window.confirm(`Are you sure you want to delete patient ${patientName}?`)) {
+      try {
+        await deletePatient(patientId, 'Receptionist');
+        toast.success(`Patient ${patientName} deleted successfully`);
+      } catch (error) {
+        toast.error('Failed to delete patient');
+      }
+    }
+  };
 
   const filteredPatients = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -63,6 +75,22 @@ export default function ReceptionistPatients() {
                         title="Edit patient details"
                       >
                         <span className="material-symbols-outlined text-lg">edit</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPatientId(patient.id)}
+                        className="p-1.5 rounded-lg text-on-surface-variant hover:text-info hover:bg-info/10 transition-all cursor-pointer border-none bg-transparent"
+                        title="View patient details"
+                      >
+                        <span className="material-symbols-outlined text-lg">visibility</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeletePatient(patient.id, patient.name)}
+                        className="p-1.5 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-all cursor-pointer border-none bg-transparent"
+                        title="Delete patient"
+                      >
+                        <span className="material-symbols-outlined text-lg">delete</span>
                       </button>
                     </div>
                     <p className="mt-1 text-body-md text-on-surface-variant">

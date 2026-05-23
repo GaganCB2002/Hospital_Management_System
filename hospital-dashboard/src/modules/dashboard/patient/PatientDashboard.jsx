@@ -232,10 +232,10 @@ export default function PatientDashboard() {
       {/* Cards Grid */}
       <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <div key={card.title} className="w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
-            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">{card.title}</p>
-            <p className="mt-3 text-xl font-bold text-on-surface">{card.value}</p>
-            <p className="mt-2 text-sm text-on-surface-variant">{card.detail}</p>
+          <div key={card.title} className="w-full min-w-0 rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
+            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant break-words">{card.title}</p>
+            <p className="mt-3 text-xl font-bold text-on-surface break-words">{card.value}</p>
+            <p className="mt-2 text-sm text-on-surface-variant break-words">{card.detail}</p>
           </div>
         ))}
       </section>
@@ -418,24 +418,24 @@ export default function PatientDashboard() {
           </div>
           <div className="mt-4 space-y-3">
             {upcomingAppointments.slice(0, 5).map((appointment) => (
-              <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline">
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                    <div className="flex-1 min-w-0">
+              <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline w-full min-w-0">
+                <div className="flex flex-col gap-3 w-full min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full min-w-0">
+                    <div className="flex-1 min-w-0 w-full">
                       <button
                         type="button"
                         onClick={() => setSelectedAppointment(appointment)}
-                        className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0"
+                        className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0 break-words"
                       >
                         {appointment.doctor}
                       </button>
-                      <p className="text-sm text-on-surface-variant mt-0.5">
+                      <p className="text-sm text-on-surface-variant mt-0.5 break-words">
                         {appointment.type} &bull; {appointment.department} &bull; {formatDateTime(appointment.date, appointment.time)}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs font-semibold text-primary">{appointment.bookingMode || 'Clinic'}</span>
-                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${
+                      <span className="text-xs font-semibold text-primary break-words">{appointment.bookingMode || 'Clinic'}</span>
+                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 ${
                         appointment.status === 'Confirmed'
                           ? 'bg-confirmed-bg text-confirmed-text'
                           : appointment.status === 'Pending'
@@ -446,7 +446,7 @@ export default function PatientDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50">
+                  <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50 flex-wrap w-full min-w-0">
                     <button
                       type="button"
                       onClick={() => openReschedule(appointment)}
@@ -492,6 +492,10 @@ export default function PatientDashboard() {
                 date={formatDate(instruction.createdAt)}
                 notes={instruction.note}
                 priority="medium"
+                patientName={patient.name}
+                patientId={patient.id}
+                patientAge={patient.age ? `${patient.age} yrs` : undefined}
+                patientDob={patient.dob}
               />
             )) : (
               <NotesEmptyState />

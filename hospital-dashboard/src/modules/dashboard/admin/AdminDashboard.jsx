@@ -67,11 +67,11 @@ export default function AdminDashboard() {
             key={card.title}
             type="button"
             onClick={card.action}
-            className="rounded-2xl border border-outline-variant bg-surface p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-md"
+            className="rounded-2xl border border-outline-variant bg-surface p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-md w-full min-w-0"
           >
-            <p className="text-label-md uppercase text-on-surface-variant">{card.title}</p>
-            <h2 className="mt-2 text-display-lg text-on-surface">{card.value}</h2>
-            <p className="text-body-md text-on-surface-variant">{card.subtitle}</p>
+            <p className="text-label-md uppercase text-on-surface-variant break-words">{card.title}</p>
+            <h2 className="mt-2 text-display-lg text-on-surface break-words">{card.value}</h2>
+            <p className="text-body-md text-on-surface-variant break-words">{card.subtitle}</p>
           </button>
         ))}
       </div>
@@ -93,25 +93,25 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 mt-6 md:grid-cols-5">
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest">
-            <p className="text-xs uppercase text-on-surface-variant">Total Employees</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{totalEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
+            <p className="text-xs uppercase text-on-surface-variant break-words">Total Employees</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words">{totalEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest">
-            <p className="text-xs uppercase text-secondary">Present Today</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-secondary">{presentEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
+            <p className="text-xs uppercase text-secondary break-words">Present Today</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-secondary break-words">{presentEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest">
-            <p className="text-xs uppercase text-on-surface-variant">Available Duty</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{availableEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
+            <p className="text-xs uppercase text-on-surface-variant break-words">Available Duty</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words">{availableEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest">
-            <p className="text-xs uppercase text-on-surface">On Call</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{onCallEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
+            <p className="text-xs uppercase text-on-surface break-words">On Call</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words">{onCallEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest">
-            <p className="text-xs uppercase text-error">On Leave</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-error">{leaveEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
+            <p className="text-xs uppercase text-error break-words">On Leave</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-error break-words">{leaveEmployees}</h3>
           </div>
         </div>
 
@@ -132,12 +132,12 @@ export default function AdminDashboard() {
           <h4 className="text-body-md font-bold text-on-surface mb-3">Live Roster Status</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {doctors.map(doctor => (
-              <div key={doctor.id} className="flex items-center justify-between p-3 rounded-xl border border-outline-variant bg-surface-container-lowest">
-                <div className="flex items-center gap-3">
-                  <img src={doctor.avatar} alt={doctor.name} className="h-10 w-10 rounded-full border border-outline-variant bg-surface object-cover" />
-                  <div>
-                    <p className="text-body-md font-bold text-on-surface">{doctor.name}</p>
-                    <p className="text-xs text-on-surface-variant">{doctor.role || 'Doctor'} • {doctor.department}</p>
+              <div key={doctor.id} className="flex items-center justify-between p-3 rounded-xl border border-outline-variant bg-surface-container-lowest w-full min-w-0">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <img src={doctor.avatar} alt={doctor.name} className="h-10 w-10 rounded-full border border-outline-variant bg-surface object-cover shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-body-md font-bold text-on-surface break-words">{doctor.name}</p>
+                    <p className="text-xs text-on-surface-variant break-words">{doctor.role || 'Doctor'} • {doctor.department}</p>
                   </div>
                 </div>
                 <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${

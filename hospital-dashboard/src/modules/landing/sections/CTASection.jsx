@@ -5,12 +5,12 @@ export default function CTASection() {
   const navigate = useNavigate();
 
   return (
-    <section id="contact" className="relative py-24 lg:py-32 bg-[#020817] border-t border-white/[0.04] overflow-hidden">
+    <section id="contact" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#3B82F6]/5 blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#3B82F6]/10 blur-[120px]" />
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage: 'radial-gradient(circle at 1px 1px, #3B82F6 1px, transparent 0)',
             backgroundSize: '40px 40px',
@@ -21,7 +21,7 @@ export default function CTASection() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Get Started</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F8FAFC] leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
             Ready to transform your
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">hospital operations?</span>
@@ -46,7 +46,7 @@ export default function CTASection() {
             </button>
             <button
               onClick={() => window.open('mailto:sales@curepulse.com')}
-              className="px-8 py-3.5 text-base font-semibold text-[#F8FAFC] bg-white/[0.06] hover:bg-white/[0.1] backdrop-blur-sm rounded-xl border border-white/[0.1] hover:border-white/[0.2] transition-all cursor-pointer border-solid"
+              className="px-8 py-3.5 text-base font-semibold text-slate-800 bg-slate-100/80 hover:bg-slate-200/60 backdrop-blur-sm rounded-xl border border-slate-200/80 hover:border-slate-300 transition-all cursor-pointer border-solid"
             >
               Talk to Sales
             </button>

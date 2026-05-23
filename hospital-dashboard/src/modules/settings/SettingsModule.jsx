@@ -15,7 +15,10 @@ const ALL_SECTIONS = [
 export default function SettingsModule() {
   const { user } = useAuth();
   const { settings, saveSettings, updatePassword, loading } = useHospital();
-  const [activeSection, setActiveSection] = useState('hospitalProfile');
+  const [activeSection, setActiveSection] = useState(() => {
+    const initialSections = ALL_SECTIONS.filter(s => !s.adminOnly || user?.role === 'admin');
+    return initialSections[0]?.id || 'hospitalProfile';
+  });
   const [draft, setDraft] = useState(settings);
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
   const [savingSection, setSavingSection] = useState('');

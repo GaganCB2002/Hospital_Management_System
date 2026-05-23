@@ -62,9 +62,9 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
             <span className="material-symbols-outlined text-on-primary text-2xl font-bold" style={{ fontVariationSettings: "'FILL' 1" }}>local_hospital</span>
           </div>
           {!isCollapsed && (
-            <div className="flex flex-col overflow-hidden whitespace-nowrap">
-              <span className="text-headline-sm text-on-primary font-bold tracking-tight">CurePulse</span>
-              <span className="text-[10px] text-nav-text uppercase tracking-widest font-bold">
+            <div className="flex flex-col overflow-hidden min-w-0">
+              <span className="text-headline-sm text-on-primary font-bold tracking-tight truncate w-full">CurePulse</span>
+              <span className="text-[10px] text-nav-text uppercase tracking-widest font-bold truncate w-full">
                 {user?.role ? `${user.role} Portal` : 'Clinical Management'}
               </span>
             </div>
@@ -93,7 +93,7 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
             }
           >
             <span className="material-symbols-outlined text-xl">{link.icon}</span>
-            {!isCollapsed && <span className="text-sm whitespace-nowrap">{link.name}</span>}
+            {!isCollapsed && <span className="text-sm truncate min-w-0">{link.name}</span>}
           </NavLink>
         ))}
       </nav>
@@ -102,16 +102,16 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
         {user?.role !== 'patient' && (
           <button onClick={() => navigate(emergencyPath)} className={`w-full bg-error/90 hover:bg-error text-white font-bold text-sm py-2 px-4 rounded-lg flex items-center ${isCollapsed ? 'justify-center p-2' : 'justify-center'} gap-2 transition-all shadow-sm cursor-pointer`}>
             <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span>
-            {!isCollapsed && <span>Emergency Alert</span>}
+            {!isCollapsed && <span className="truncate">Emergency Alert</span>}
           </button>
         )}
         <button type="button" title={isCollapsed ? 'Settings' : undefined} onClick={() => navigate(settingsPath)} className={`flex items-center ${isCollapsed ? 'justify-center mx-auto w-12 h-12' : 'gap-md px-md py-sm'} rounded-lg text-nav-text hover:text-nav-active hover:bg-white/10 transition-all cursor-pointer w-full`}>
           <span className="material-symbols-outlined">settings</span>
-          {!isCollapsed && <span className="text-sm">Settings</span>}
+          {!isCollapsed && <span className="text-sm truncate">Settings</span>}
         </button>
         <button type="button" title={isCollapsed ? 'Support' : undefined} onClick={() => toast.success('Support team has been notified')} className={`flex items-center ${isCollapsed ? 'justify-center mx-auto w-12 h-12' : 'gap-md px-md py-sm'} rounded-lg text-nav-text hover:text-nav-active hover:bg-white/10 transition-all cursor-pointer w-full`}>
           <span className="material-symbols-outlined">contact_support</span>
-          {!isCollapsed && <span className="text-sm">Support</span>}
+          {!isCollapsed && <span className="text-sm truncate">Support</span>}
         </button>
       </div>
     </aside>

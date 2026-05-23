@@ -11,8 +11,8 @@
   color-scheme: dark;
 }
 
-html, html * {
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
+html {
+  transition: background-color 0.2s ease-in-out;
 }
 
 @theme {
@@ -108,12 +108,12 @@ html, html * {
   --color-secondary-container: #064E3B;
   --color-on-secondary: #FFFFFF;
 
-  --color-background: #020817;
+  --color-background: #080D1A;
   --color-on-background: #F8FAFC;
 
   --color-surface: #0F172A;
   --color-surface-bright: #1E293B;
-  --color-surface-container-lowest: #020817;
+  --color-surface-container-lowest: #080D1A;
   --color-surface-container-low: #0F172A;
   --color-surface-container: #1E293B;
   --color-surface-container-high: #334155;
@@ -155,7 +155,7 @@ html, html * {
   --color-warning-container: #451A03;
   --color-warning-on-container: #FBBF24;
 
-  --color-nav-bg: #020617;
+  --color-nav-bg: #060A14;
   --color-nav-text: #94A3B8;
   --color-nav-active: #60A5FA;
 
@@ -241,4 +241,71 @@ html, html * {
   border: 1px solid var(--color-outline) !important;
   border-radius: 8px !important;
   color: var(--color-on-surface) !important;
+}
+
+/* ============================================
+   GLOBAL TEXT & LAYOUT STABILIZATION
+   Prevents vertical text rendering, collapsed
+   containers, and unreadable layouts across
+   all dashboards, modals, panels, and cards.
+   ============================================ */
+
+/* 1. Force horizontal writing mode on root elements */
+html, body, #root {
+  writing-mode: horizontal-tb;
+  -webkit-writing-mode: horizontal-tb;
+}
+
+/* 2. Safe writing-mode on all elements as a low-specificity safety net */
+* {
+  writing-mode: horizontal-tb !important;
+}
+
+/* 3. Text wrapping - ONLY on text-bearing elements, NOT on layout containers */
+p, h1, h2, h3, h4, h5, h6, li, td, th, label, a, span:not(.material-symbols-outlined):not(.material-icons) {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: normal;
+}
+
+/* 4. Material icons must stay inline and never break */
+.material-symbols-outlined,
+.material-icons {
+  white-space: nowrap !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 5. Flex-col children: min-width 0 prevents overflow, max-width 100% prevents horizontal scroll
+   Only applies to exact .flex-col class to avoid false positives */
+.flex-col > div,
+.flex-col > section,
+.flex-col > article,
+.flex-col > aside,
+.flex-col > main,
+.flex-col > header,
+.flex-col > footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 6. Inside flex-col, flex-1 layout containers fill width */
+.flex-col > [class*="flex-1"] {
+  width: 100%;
+}
+
+/* 7. Grid children - prevent overflow */
+.grid > *,
+[class*="grid-cols"] > * {
+  max-width: 100%;
+}
+
+/* 8. Truncate utility */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

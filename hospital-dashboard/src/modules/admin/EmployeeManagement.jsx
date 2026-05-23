@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { FiEdit2, FiPlus, FiSearch, FiTrash2, FiUsers } from 'react-icons/fi';
+import { FiEdit2, FiPlus, FiSearch, FiTrash2, FiUsers, FiEye } from 'react-icons/fi';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
 import EmptyState from '../../components/common/EmptyState';
 import Modal from '../../components/common/Modal';
@@ -258,6 +258,14 @@ export default function EmployeeManagement() {
                     </td>
                     <td className="px-3 py-4">
                       <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedEmployee(employee)}
+                          className="rounded-lg border border-outline-variant p-2 text-on-surface transition-colors hover:text-info dark:border-outline"
+                          title="View employee details"
+                        >
+                          <FiEye />
+                        </button>
                         <button
                           type="button"
                           onClick={() => openEditModal(employee)}

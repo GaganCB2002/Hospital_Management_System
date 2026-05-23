@@ -5,12 +5,14 @@ import {
 } from 'recharts';
 import Modal from '../common/Modal';
 import { useHospital } from '../../context/HospitalContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatInr, formatDate } from '../../lib/formatters';
 
 const PIE_COLORS = ['#2563EB', '#059669', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
 
-export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
+export default function DoctorDetailModal({ doctor, isOpen, onClose, onEdit, onDelete }) {
   const { patients, appointments } = useHospital();
+  const { user } = useAuth();
 
   const doctorPatients = useMemo(
     () => patients.filter((p) => p.doctorId === doctor?.doctorId || p.doctor === doctor?.name),
@@ -63,29 +65,29 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
 
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row gap-6 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-5 border border-outline-variant">
-          <div className="shrink-0 flex flex-col items-center md:items-start">
+          <div className="shrink-0 flex flex-col items-center md:items-start w-full md:w-auto min-w-0">
             <img src={doctor.avatar} alt={doctor.name} className="w-28 h-28 rounded-2xl border-2 border-outline-variant object-cover bg-surface shadow-md" />
             <div className="flex gap-1.5 mt-3">
               <button className="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors cursor-pointer border-none">Book</button>
               <button className="px-3 py-1.5 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">Contact</button>
             </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-bold text-on-surface">{doctor.name}</h2>
-            <p className="text-sm text-on-surface-variant mt-0.5">{doctor.specialization}</p>
+          <div className="flex-1 min-w-0 w-full">
+            <h2 className="text-xl font-bold text-on-surface break-words">{doctor.name}</h2>
+            <p className="text-sm text-on-surface-variant mt-0.5 break-words">{doctor.specialization}</p>
             <div className="flex flex-wrap gap-2 mt-3">
-              <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-primary/10 text-primary border border-primary/20">{doctor.department}</span>
-              <span className={`px-2.5 py-1 text-xs font-bold rounded-lg border ${
+              <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-primary/10 text-primary border border-primary/20 break-words">{doctor.department}</span>
+              <span className={`px-2.5 py-1 text-xs font-bold rounded-lg border break-words ${
                 doctor.status === 'Available' ? 'bg-secondary/10 text-secondary border-secondary/20' :
                 doctor.status === 'In-Surgery' ? 'bg-warning/10 text-warning border-warning/20' :
                 'bg-surface-container-high text-on-surface-variant border-outline-variant'
               }`}>{doctor.status}</span>
-              {doctor.leaveStatus && <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-surface-container-high text-on-surface-variant border border-outline-variant">{doctor.leaveStatus}</span>}
+              {doctor.leaveStatus && <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-surface-container-high text-on-surface-variant border border-outline-variant break-words">{doctor.leaveStatus}</span>}
             </div>
-            <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-on-surface-variant">
-              <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">school</span>{doctor.qualification || 'N/A'}</span>
-              <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">work_history</span>{doctor.experience}</span>
-              <span className="flex items-center gap-1"><span className="material-symbols-outlined text-base">payments</span>Fee: {formatInr(doctor.consultationFee)}</span>
+            <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-on-surface-variant w-full">
+              <span className="flex items-center gap-1 break-words"><span className="material-symbols-outlined text-base shrink-0">school</span><span className="min-w-0 break-words">{doctor.qualification || 'N/A'}</span></span>
+              <span className="flex items-center gap-1 break-words"><span className="material-symbols-outlined text-base shrink-0">work_history</span><span className="min-w-0 break-words">{doctor.experience}</span></span>
+              <span className="flex items-center gap-1 break-words"><span className="material-symbols-outlined text-base shrink-0">payments</span><span className="min-w-0 break-words">Fee: {formatInr(doctor.consultationFee)}</span></span>
             </div>
           </div>
         </div>
@@ -98,10 +100,10 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
             { label: 'Patients', value: doctorPatients.length || doctor.patients || 0, icon: 'patients', color: 'text-secondary' },
             { label: 'Consultations', value: stats.consultations, icon: 'monitoring', color: 'text-primary' },
           ].map((s) => (
-            <div key={s.label} className="bg-surface rounded-xl border border-outline-variant p-4 flex flex-col items-center text-center">
-              <span className={`material-symbols-outlined text-lg ${s.color}`}>{s.icon}</span>
-              <span className="text-lg font-bold text-on-surface mt-1">{s.value}</span>
-              <span className="text-[10px] font-bold text-on-surface-variant uppercase mt-0.5">{s.label}</span>
+            <div key={s.label} className="bg-surface rounded-xl border border-outline-variant p-4 flex flex-col items-center text-center w-full min-w-0">
+              <span className={`material-symbols-outlined text-lg ${s.color} shrink-0`}>{s.icon}</span>
+              <span className="text-lg font-bold text-on-surface mt-1 break-words w-full">{s.value}</span>
+              <span className="text-[10px] font-bold text-on-surface-variant uppercase mt-0.5 text-center w-full">{s.label}</span>
             </div>
           ))}
         </div>
@@ -120,10 +122,10 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
                 { label: 'Department', value: doctor.department, icon: 'business' },
                 { label: 'Employee ID', value: doctor.doctorId, icon: 'tag' },
               ].map((item) => (
-                <div key={item.label} className="flex items-center gap-2.5">
-                  <span className="material-symbols-outlined text-outline text-base">{item.icon}</span>
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-bold text-on-surface-variant uppercase block">{item.label}</span>
+                <div key={item.label} className="flex items-center gap-2.5 w-full">
+                  <span className="material-symbols-outlined text-outline text-base shrink-0">{item.icon}</span>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[10px] font-bold text-on-surface-variant uppercase block break-words">{item.label}</span>
                     <span className="text-sm text-on-surface break-words">{item.value || 'N/A'}</span>
                   </div>
                 </div>
@@ -140,7 +142,7 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
               <div>
                 <span className="text-[10px] font-bold text-on-surface-variant uppercase">Qualifications</span>
                 <ul className="mt-1 space-y-1">
-                  {qualList.map((q, i) => <li key={i} className="text-sm text-on-surface flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />{q}</li>)}
+                  {qualList.map((q, i) => <li key={i} className="text-sm text-on-surface flex items-center gap-1.5 w-full"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" /><span className="min-w-0 break-words">{q}</span></li>)}
                 </ul>
               </div>
               <div>
@@ -171,9 +173,9 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
               { label: 'Monthly Revenue', value: formatInr(stats.monthlyRevenue), color: 'text-primary' },
               { label: 'Completed Cases', value: completedAppts.length, color: 'text-secondary' },
             ].map((m) => (
-              <div key={m.label} className="text-center p-3 bg-surface-container-low rounded-xl">
-                <span className={`text-lg font-bold ${m.color}`}>{m.value}</span>
-                <p className="text-[10px] font-bold text-on-surface-variant uppercase mt-0.5">{m.label}</p>
+              <div key={m.label} className="text-center p-3 bg-surface-container-low rounded-xl w-full min-w-0">
+                <span className={`text-lg font-bold ${m.color} break-words`}>{m.value}</span>
+                <p className="text-[10px] font-bold text-on-surface-variant uppercase mt-0.5 break-words">{m.label}</p>
               </div>
             ))}
           </div>
@@ -321,14 +323,31 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose }) {
         </div>
 
         {/* Admin Actions */}
-        <div className="flex flex-wrap gap-2 pt-2 border-t border-outline-variant">
-          <button className="px-3.5 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors cursor-pointer border-none">Edit Profile</button>
-          <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">Assign Department</button>
-          <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">Update Schedule</button>
-          <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">Download Profile</button>
-          <button className="px-3.5 py-2 border border-error/30 text-xs font-bold text-error hover:bg-error/10 rounded-lg transition-colors cursor-pointer bg-transparent">Suspend Doctor</button>
-          <button className="px-3.5 py-2 bg-error text-white text-xs font-bold rounded-lg hover:bg-error/90 transition-colors cursor-pointer border-none">Delete Doctor</button>
-        </div>
+        {user?.role === 'admin' && (
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-outline-variant w-full min-w-0">
+            <button
+              onClick={() => onEdit?.(doctor)}
+              className="px-3.5 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors cursor-pointer border-none"
+            >
+              Edit Profile
+            </button>
+            <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">
+              Assign Department
+            </button>
+            <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">
+              Update Schedule
+            </button>
+            <button className="px-3.5 py-2 border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-low rounded-lg transition-colors cursor-pointer bg-transparent">
+              Download Profile
+            </button>
+            <button
+              onClick={() => onDelete?.(doctor)}
+              className="px-3.5 py-2 bg-error text-white text-xs font-bold rounded-lg hover:bg-error/90 transition-colors cursor-pointer border-none"
+            >
+              Delete Doctor
+            </button>
+          </div>
+        )}
       </div>
     </Modal>
   );

@@ -12,7 +12,7 @@ export default function DashboardLayout() {
       <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
       <main className="flex-1 flex flex-col h-screen min-w-0">
         <Navbar />
-        <section className="flex-1 w-full min-w-0 overflow-y-auto overflow-x-hidden p-lg bg-background text-on-background space-y-lg">
+        <section className="flex-1 w-full min-w-0 overflow-y-auto p-lg bg-background text-on-background space-y-lg">
           <Outlet />
         </section>
       </main>

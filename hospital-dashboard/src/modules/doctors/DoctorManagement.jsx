@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiX, FiStar, FiClock, FiUsers, FiPhone, FiMail, FiAward } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiEdit2, FiTrash2, FiX, FiStar, FiClock, FiUsers, FiPhone, FiMail, FiAward, FiEye } from 'react-icons/fi';
 import { useHospital } from '../../context/HospitalContext';
 import Modal from '../../components/common/Modal';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
@@ -202,6 +202,9 @@ export default function DoctorManagement() {
               {/* Card Header */}
               <div className="relative h-28 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent rounded-t-xl overflow-hidden">
                 <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                  <button onClick={() => setSelectedDoctor(doctor)} className="p-2 bg-white/90 backdrop-blur-sm rounded-lg text-on-surface hover:text-info shadow-sm transition-colors cursor-pointer border-none" title="View Profile">
+                    <FiEye size={13} />
+                  </button>
                   <button onClick={() => handleOpenModal(doctor)} className="p-2 bg-white/90 backdrop-blur-sm rounded-lg text-on-surface hover:text-primary shadow-sm transition-colors cursor-pointer border-none" title="Edit">
                     <FiEdit2 size={13} />
                   </button>
