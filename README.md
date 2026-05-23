@@ -74,7 +74,7 @@ To preview the portal workspaces, sign in with these demo profiles:
 | Receptionist | receptionist@curepulse.com | demo123 |
 | Patient | patient@curepulse.com | demo123 |
 
-You can also sign up as a new patient via the Signup page. On signup, a patient record (status "Pending") and an online booking appointment (status "New") are auto-created for the receptionist to process.
+You can also register a new account via the integrated Sign Up slide-panel on the login screen (or navigate to `/signup` which automatically slides the panel to the Sign Up view). On signup, a patient record (status "Pending") and an online booking appointment (status "New") are auto-created for the receptionist to process.
 
 ---
 
@@ -100,7 +100,7 @@ hospital-dashboard/
 │   ├── modules/             # Domain-driven feature modules:
 │   │   ├── admin/           # EmployeeManagement, RevenueReports, Financials, Settings, etc.
 │   │   ├── appointments/    # BookAppointment, AppointmentsBooking, DoctorAppointments
-│   │   ├── auth/            # Login, Signup
+│   │   ├── auth/            # Login & Signup (Unified dual-panel sliding UI)
 │   │   ├── billing/         # BillingDashboard
 │   │   ├── dashboard/       # Role-specific dashboards (admin/, doctor/, patient/, receptionist/)
 │   │   ├── doctors/         # DoctorManagement, DoctorProfile, ConsultationHistory, StaffSchedule
@@ -209,7 +209,7 @@ graph TD
     Auth --> Router[AppRoutes.jsx Router]:::router
 
     Router -->|Public| Landing[LandingPage.jsx]:::router
-    Router -->|Public| Login[Login.jsx / Signup.jsx]:::router
+    Router -->|Public| Login[Login.jsx / Unified Sign Up]:::router
 
     Router -->|Role Guard| AdminPortal["Admin Route Guard"]:::admin
     Router -->|Role Guard| DoctorPortal["Doctor Route Guard"]:::doctor
@@ -282,7 +282,7 @@ graph TD
     A[User Browser] -->|Request Route| B[React Router]
     B -->|Intercept| C{ProtectedRoute}
     H[AuthContext] -.->|Session Check| C
-    C -->|Unauthorized| D[/login]
+    C -->|Unauthorized| D["/login"]
     C -->|Authorized| E[DashboardLayout]
     E --> F[Sidebar & Navbar]
     E --> G[View Component]
