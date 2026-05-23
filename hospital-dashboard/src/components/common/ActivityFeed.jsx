@@ -49,8 +49,8 @@ export default function ActivityFeed({ activities }) {
               <div className="bg-white dark:bg-surface-container p-2 rounded-full shadow-sm">
                 <Icon className={`text-lg ${iconColorMap[activity.type] || 'text-outline'}`} />
               </div>
-              <div className="flex-1">
-                <p className="text-sm text-on-surface dark:text-white">{activity.message}</p>
+              <div className="flex-1 min-w-0 w-full max-w-full">
+                <p className="text-sm text-on-surface dark:text-white break-words whitespace-normal">{activity.message}</p>
                 <div className="flex justify-between items-center mt-1">
                   <span className="text-[10px] text-outline">{activity.time}</span>
                   <button className="text-xs text-primary font-semibold hover:underline">View Details</button>

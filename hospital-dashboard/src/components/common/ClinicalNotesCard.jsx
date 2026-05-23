@@ -213,11 +213,11 @@ function NotesSkeleton() {
 
 function NotesEmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center w-full min-w-0">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center w-full min-w-0 max-w-full">
       <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center mb-4 shrink-0">
         <span className="material-symbols-outlined text-3xl text-primary/40">clinical_notes</span>
       </div>
-      <h3 className="text-base font-bold text-on-surface mb-1 w-full min-w-0 break-words whitespace-normal text-center">No Consultation Notes Available</h3>
+      <h3 className="text-base font-bold text-on-surface mb-1 w-full min-w-0 max-w-full break-words whitespace-normal text-center">No Consultation Notes Available</h3>
       <p className="text-sm text-on-surface-variant max-w-sm leading-relaxed w-full min-w-0 break-words whitespace-normal text-center">
         Post-consultation guidance, prescriptions, and doctor recommendations will appear here after your appointments.
       </p>
@@ -315,8 +315,8 @@ export default function ClinicalNotesCard({
             </span>
           </div>
 
-          <div className="mt-3 pl-[52px] w-full min-w-0">
-            <p className="text-sm text-on-surface leading-relaxed break-words line-clamp-2 w-full min-w-0" style={{ lineHeight: '1.6' }}>
+          <div className="mt-3 pl-[52px] w-full min-w-0 max-w-full">
+            <p className="text-sm text-on-surface leading-relaxed break-words whitespace-normal line-clamp-2 w-full min-w-0 max-w-full" style={{ lineHeight: '1.6' }}>
               {notesLines[0] || notes || 'No clinical notes recorded.'}
             </p>
           </div>
@@ -330,25 +330,25 @@ export default function ClinicalNotesCard({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="overflow-hidden w-full min-w-0"
+            className="overflow-hidden w-full min-w-0 max-w-full"
           >
-            <div className="px-4 pb-4 pt-0 space-y-4 border-t border-outline-variant/50 dark:border-outline/50 w-full min-w-0">
+            <div className="px-4 pb-4 pt-0 space-y-4 border-t border-outline-variant/50 dark:border-outline/50 w-full min-w-0 max-w-full">
               {notesLines.length > 1 && (
-                <div className="pt-4 space-y-2 w-full min-w-0">
+                <div className="pt-4 space-y-2 w-full min-w-0 max-w-full">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Clinical Notes</p>
-                  <div className="space-y-1.5 w-full min-w-0">
+                  <div className="space-y-1.5 w-full min-w-0 max-w-full">
                     {notesLines.map((line, i) => {
                       const isBullet = line.trim().startsWith('-') || line.trim().startsWith('*') || line.trim().startsWith('•');
                       const content = line.trim().replace(/^[-*•]\s*/, '');
                       return (
-                        <p key={i} className={`text-sm leading-relaxed break-words w-full min-w-0 ${isBullet ? 'flex items-start gap-2' : ''}`} style={{ lineHeight: '1.6' }}>
+                        <p key={i} className={`text-sm leading-relaxed break-words w-full min-w-0 max-w-full ${isBullet ? 'flex items-start gap-2' : ''}`} style={{ lineHeight: '1.6' }}>
                           {isBullet ? (
                             <>
                               <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 shrink-0" />
-                              <span className="text-on-surface min-w-0 break-words">{content}</span>
+                              <span className="text-on-surface min-w-0 break-words whitespace-normal w-full">{content}</span>
                             </>
                           ) : (
-                            <span className="text-on-surface min-w-0 break-words w-full">{line}</span>
+                            <span className="text-on-surface min-w-0 break-words whitespace-normal w-full">{line}</span>
                           )}
                         </p>
                       );

@@ -84,7 +84,6 @@ export function NotificationProvider({ children }) {
       addNotification,
       deleteNotification
     }}>
-      <Toaster position="top-right" />
       {children}
     </NotificationContext.Provider>
   );

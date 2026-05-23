@@ -141,7 +141,7 @@ export default function Billing() {
                     <td className="p-4 text-sm text-outline">{formatDate(invoice.date)}</td>
                     <td className="p-4 text-sm font-bold text-on-surface ">{formatInr(invoice.amount)}</td>
                     <td className="p-4">
-                      <span className={`inline-flex w-max items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
                         invoice.status === 'Paid' ? 'bg-secondary-container text-on-secondary-container' : 'bg-pending-bg text-pending-text'
                       }`}>
                         {invoice.status === 'Paid' ? <FiCheckCircle /> : null}

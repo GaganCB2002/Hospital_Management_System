@@ -400,7 +400,7 @@ export default function PharmacyInventory() {
           <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent flex flex-col justify-end p-6">
             <p className="text-xl font-bold text-white mb-2">Central Storage Overview</p>
             <p className="text-sm font-medium text-white mb-6 max-w-sm">Visual verification system enabled for Zone 4-B Cold Storage.</p>
-            <button className="w-fit bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform shadow-lg shadow-black/20">
+            <button className="bg-secondary-fixed text-on-secondary-fixed px-6 py-3 rounded-lg font-bold hover:scale-105 transition-transform shadow-lg shadow-black/20">
               Access Live Cam
             </button>
           </div>

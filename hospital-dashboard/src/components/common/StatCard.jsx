@@ -12,11 +12,11 @@ export default function StatCard({ title, value, subtitle, icon: Icon, trend, tr
       whileHover={{ y: -4 }}
       className={`bg-surface border ${variants[variant]} p-4 rounded-xl flex items-center justify-between shadow-sm transition-all ${className}`}
     >
-      <div className="flex flex-col min-w-0 flex-1">
-        <span className="text-xs text-on-surface-variant mb-1 break-words">{title}</span>
-        <span className="text-3xl font-bold text-on-surface break-words">{value}</span>
+      <div className="flex flex-col min-w-0 flex-1 w-full">
+        <span className="text-xs text-on-surface-variant mb-1 break-words whitespace-normal w-full min-w-0">{title}</span>
+        <span className="text-3xl font-bold text-on-surface break-words whitespace-normal w-full min-w-0">{value}</span>
         {trend && (
-          <span className={`text-[10px] font-medium mt-2 flex items-center gap-1 ${
+          <span className={`text-[10px] font-medium mt-2 flex items-center gap-1 w-full min-w-0 ${
             trend === 'up' ? 'text-secondary' : trend === 'down' ? 'text-error' : 'text-on-surface-variant'
           }`}>
             <span className={`w-2 h-2 rounded-full ${trend === 'up' ? 'bg-secondary' : trend === 'down' ? 'bg-error' : 'bg-on-surface-variant'}`}></span>
@@ -24,7 +24,7 @@ export default function StatCard({ title, value, subtitle, icon: Icon, trend, tr
           </span>
         )}
         {subtitle && (
-          <span className="text-[10px] text-on-surface-variant font-medium mt-2 break-words">{subtitle}</span>
+          <span className="text-[10px] text-on-surface-variant font-medium mt-2 break-words whitespace-normal w-full min-w-0">{subtitle}</span>
         )}
       </div>
       <div className={`p-3 rounded-lg ${

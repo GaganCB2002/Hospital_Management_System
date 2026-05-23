@@ -613,7 +613,7 @@ export default function BookAppointment() {
                     </div>
                     <div className="flex items-center gap-3 text-body-md text-on-surface">
                       <FiMail className="text-on-surface-variant shrink-0" />
-                      <a href={`mailto:${selectedDoctor.email}`} className="hover:text-primary transition break-all leading-tight">{selectedDoctor.email}</a>
+                      <a href={`mailto:${selectedDoctor.email}`} className="hover:text-primary transition break-words leading-tight">{selectedDoctor.email}</a>
                     </div>
                     <div className="flex items-center gap-3 text-body-md text-on-surface pt-1 border-t border-outline-variant/30 dark:border-outline/30">
                       <FiGlobe className="text-on-surface-variant shrink-0" />

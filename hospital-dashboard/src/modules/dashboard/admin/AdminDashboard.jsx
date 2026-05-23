@@ -60,87 +60,87 @@ export default function AdminDashboard() {
   const presenceRate = totalEmployees ? Math.round((presentEmployees / totalEmployees) * 100) : 0;
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="space-y-6 w-full min-w-0 max-w-full">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 w-full min-w-0 max-w-full">
         {dashboardCards.map((card) => (
           <button
             key={card.title}
             type="button"
             onClick={card.action}
-            className="rounded-2xl border border-outline-variant bg-surface p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-md w-full"
+            className="rounded-2xl border border-outline-variant bg-surface p-5 text-left shadow-sm transition-all hover:-translate-y-1 hover:shadow-md w-full min-w-0"
           >
-            <p className="text-label-md uppercase text-on-surface-variant">{card.title}</p>
-            <h2 className="mt-2 text-display-lg text-on-surface">{card.value}</h2>
-            <p className="text-body-md text-on-surface-variant">{card.subtitle}</p>
+            <p className="text-label-md uppercase text-on-surface-variant break-words whitespace-normal">{card.title}</p>
+            <h2 className="mt-2 text-display-lg text-on-surface break-words whitespace-normal">{card.value}</h2>
+            <p className="text-body-md text-on-surface-variant break-words whitespace-normal">{card.subtitle}</p>
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr,0.7fr] w-full min-w-0">
-        <div className="w-full min-w-0"><RevenueChart data={revenueData} /></div>
-        <div className="w-full min-w-0"><DepartmentChart data={departmentStats} /></div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr,0.7fr] w-full min-w-0 max-w-full">
+        <div className="w-full min-w-0 max-w-full"><RevenueChart data={revenueData} /></div>
+        <div className="w-full min-w-0 max-w-full"><DepartmentChart data={departmentStats} /></div>
       </div>
 
-      <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between border-b border-outline-variant pb-4">
-          <div>
-            <h2 className="text-headline-md text-on-surface">Workforce Availability & Attendance</h2>
-            <p className="text-body-md text-on-surface-variant">Real-time status of hospital roster, active staff duty, and leave records.</p>
+      <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm w-full min-w-0 max-w-full">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between border-b border-outline-variant pb-4 w-full min-w-0 max-w-full">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-headline-md text-on-surface break-words whitespace-normal">Workforce Availability & Attendance</h2>
+            <p className="text-body-md text-on-surface-variant break-words whitespace-normal">Real-time status of hospital roster, active staff duty, and leave records.</p>
           </div>
-          <button type="button" onClick={() => navigate('/admin/employees')} className="rounded-xl bg-primary px-4 py-2 text-body-md font-bold text-on-primary transition-all hover:bg-primary/95">
+          <button type="button" onClick={() => navigate('/admin/employees')} className="rounded-xl bg-primary px-4 py-2 text-body-md font-bold text-on-primary transition-all hover:bg-primary/95 shrink-0">
             Manage Roster
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mt-6 md:grid-cols-5">
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0">
-            <p className="text-xs uppercase text-on-surface-variant">Total Employees</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{totalEmployees}</h3>
+        <div className="grid grid-cols-2 gap-4 mt-6 md:grid-cols-5 w-full min-w-0 max-w-full">
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0 max-w-full">
+            <p className="text-xs uppercase text-on-surface-variant break-words whitespace-normal">Total Employees</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words whitespace-normal">{totalEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full">
-            <p className="text-xs uppercase text-secondary">Present Today</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-secondary">{presentEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0 max-w-full">
+            <p className="text-xs uppercase text-secondary break-words whitespace-normal">Present Today</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-secondary break-words whitespace-normal">{presentEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full">
-            <p className="text-xs uppercase text-on-surface-variant">Available Duty</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{availableEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0 max-w-full">
+            <p className="text-xs uppercase text-on-surface-variant break-words whitespace-normal">Available Duty</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words whitespace-normal">{availableEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full">
-            <p className="text-xs uppercase text-on-surface">On Call</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-on-surface">{onCallEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0 max-w-full">
+            <p className="text-xs uppercase text-on-surface break-words whitespace-normal">On Call</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-on-surface break-words whitespace-normal">{onCallEmployees}</h3>
           </div>
-          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full">
-            <p className="text-xs uppercase text-error">On Leave</p>
-            <h3 className="mt-1 text-headline-lg font-bold text-error">{leaveEmployees}</h3>
+          <div className="rounded-xl border border-outline-variant p-4 bg-surface-container-lowest w-full min-w-0 max-w-full">
+            <p className="text-xs uppercase text-error break-words whitespace-normal">On Leave</p>
+            <h3 className="mt-1 text-headline-lg font-bold text-error break-words whitespace-normal">{leaveEmployees}</h3>
           </div>
         </div>
 
-        <div className="mt-6 p-4 rounded-xl bg-surface-container-low border border-outline-variant">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-body-md font-bold text-on-surface">Staff Roster Attendance Rate</span>
-            <span className="text-body-md font-bold text-secondary">{presenceRate}% Active</span>
+        <div className="mt-6 p-4 rounded-xl bg-surface-container-low border border-outline-variant w-full min-w-0 max-w-full">
+          <div className="flex items-center justify-between mb-2 w-full min-w-0 max-w-full">
+            <span className="text-body-md font-bold text-on-surface break-words whitespace-normal">Staff Roster Attendance Rate</span>
+            <span className="text-body-md font-bold text-secondary shrink-0">{presenceRate}% Active</span>
           </div>
           <div className="w-full bg-outline-variant/30 h-3 rounded-full overflow-hidden">
             <div className="h-full bg-secondary transition-all" style={{ width: `${presenceRate}%` }}></div>
           </div>
-          <p className="mt-3 text-body-md text-on-surface-variant leading-relaxed">
+          <p className="mt-3 text-body-md text-on-surface-variant leading-relaxed break-words whitespace-normal w-full min-w-0">
             <strong>Workforce Analysis:</strong> Out of {totalEmployees} registered employees, {presentEmployees} are present on active duty today ({availableEmployees} Available, {inSurgeryEmployees} in Surgery operations, {onCallEmployees} on emergency On-Call). Currently, {leaveEmployees} employee(s) are on leave today. Roster efficiency is operating at {presenceRate}% capacity.
           </p>
         </div>
 
-        <div className="mt-6">
-          <h4 className="text-body-md font-bold text-on-surface mb-3">Live Roster Status</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="mt-6 w-full min-w-0 max-w-full">
+          <h4 className="text-body-md font-bold text-on-surface mb-3 break-words whitespace-normal">Live Roster Status</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full min-w-0 max-w-full">
             {doctors.map(doctor => (
-              <div key={doctor.id} className="flex items-center justify-between p-3 rounded-xl border border-outline-variant bg-surface-container-lowest w-full">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div key={doctor.id} className="flex items-center justify-between p-3 rounded-xl border border-outline-variant bg-surface-container-lowest w-full min-w-0 max-w-full">
+                <div className="flex items-center gap-3 min-w-0 flex-1 w-full max-w-full">
                   <img src={doctor.avatar} alt={doctor.name} className="h-10 w-10 rounded-full border border-outline-variant bg-surface object-cover shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-body-md font-bold text-on-surface">{doctor.name}</p>
-                    <p className="text-xs text-on-surface-variant">{doctor.role || 'Doctor'} • {doctor.department}</p>
+                  <div className="min-w-0 flex-1 w-full max-w-full">
+                    <p className="text-body-md font-bold text-on-surface break-words whitespace-normal">{doctor.name}</p>
+                    <p className="text-xs text-on-surface-variant break-words whitespace-normal">{doctor.role || 'Doctor'} &bull; {doctor.department}</p>
                   </div>
                 </div>
-                <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold shrink-0 ${
                   doctor.status === 'Available' ? 'bg-secondary/15 text-secondary' :
                   doctor.status === 'In-Surgery' ? 'bg-error-container text-error' :
                   doctor.status === 'On-Call' ? 'bg-primary/15 text-on-surface' :
@@ -154,18 +154,18 @@ export default function AdminDashboard() {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr,0.7fr]">
-        <section className="rounded-2xl border border-outline-variant bg-surface shadow-sm">
-          <div className="flex items-center justify-between border-b border-outline-variant p-5">
-            <div>
-              <h2 className="text-headline-md text-on-surface">Appointments Overview</h2>
-              <p className="text-body-md text-on-surface-variant">Upcoming appointments with direct access to the workflow queue.</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr,0.7fr] w-full min-w-0 max-w-full">
+        <section className="rounded-2xl border border-outline-variant bg-surface shadow-sm w-full min-w-0 max-w-full">
+          <div className="flex items-center justify-between border-b border-outline-variant p-5 w-full min-w-0 max-w-full">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-headline-md text-on-surface break-words whitespace-normal">Appointments Overview</h2>
+              <p className="text-body-md text-on-surface-variant break-words whitespace-normal">Upcoming appointments with direct access to the workflow queue.</p>
             </div>
-            <button type="button" onClick={() => navigate('/admin/doctors')} className="text-body-md font-bold text-on-surface">
+            <button type="button" onClick={() => navigate('/admin/doctors')} className="text-body-md font-bold text-on-surface shrink-0">
               View Calendar
             </button>
           </div>
-          <div className="overflow-x-auto p-5">
+          <div className="overflow-x-auto p-5 w-full min-w-0 max-w-full">
             <table className="min-w-[760px] w-full border-collapse text-left">
               <thead>
                 <tr className="border-b border-outline-variant">
@@ -179,12 +179,12 @@ export default function AdminDashboard() {
               <tbody>
                 {upcomingAppointments.map((appointment) => (
                   <tr key={appointment.id} className="border-b border-outline-variant/40">
-                    <td className="px-3 py-4 text-body-md font-bold text-on-surface">{appointment.patient}</td>
-                    <td className="px-3 py-4 text-body-md text-on-surface">{appointment.doctor}</td>
-                    <td className="px-3 py-4 text-body-md text-on-surface-variant">{formatDateTime(appointment.date, appointment.time)}</td>
-                    <td className="px-3 py-4 text-body-md text-on-surface">{appointment.department}</td>
+                    <td className="px-3 py-4 text-body-md font-bold text-on-surface break-words whitespace-normal">{appointment.patient}</td>
+                    <td className="px-3 py-4 text-body-md text-on-surface break-words whitespace-normal">{appointment.doctor}</td>
+                    <td className="px-3 py-4 text-body-md text-on-surface-variant break-words whitespace-normal">{formatDateTime(appointment.date, appointment.time)}</td>
+                    <td className="px-3 py-4 text-body-md text-on-surface break-words whitespace-normal">{appointment.department}</td>
                     <td className="px-3 py-4">
-                      <span className={`rounded-full px-3 py-1 text-label-md ${appointment.status === 'Pending' ? 'bg-pending-bg text-pending-text' : 'bg-secondary/15 text-secondary'}`}>
+                      <span className={`rounded-full px-3 py-1 text-label-md whitespace-nowrap ${appointment.status === 'Pending' ? 'bg-pending-bg text-pending-text' : 'bg-secondary/15 text-secondary'}`}>
                         {appointment.status}
                       </span>
                     </td>
@@ -195,38 +195,38 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm">
-          <h2 className="text-headline-md text-on-surface">Daily Reports</h2>
-          <div className="mt-4 space-y-3">
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm w-full min-w-0 max-w-full">
+          <h2 className="text-headline-md text-on-surface break-words whitespace-normal">Daily Reports</h2>
+          <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
             {['Patient Census Report', 'Financial Summary', 'Inventory Snapshot'].map((report) => (
-              <button key={report} type="button" onClick={() => handleDownload(report)} className="w-full rounded-xl border border-outline-variant px-4 py-3 text-left transition-colors hover:bg-surface-container-low">
-                <p className="text-body-md font-bold text-on-surface">{report}</p>
-                <p className="text-body-md text-on-surface-variant">Download latest report</p>
+              <button key={report} type="button" onClick={() => handleDownload(report)} className="w-full min-w-0 rounded-xl border border-outline-variant px-4 py-3 text-left transition-colors hover:bg-surface-container-low">
+                <p className="text-body-md font-bold text-on-surface break-words whitespace-normal">{report}</p>
+                <p className="text-body-md text-on-surface-variant break-words whitespace-normal">Download latest report</p>
               </button>
             ))}
           </div>
         </section>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr,0.8fr]">
-        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h2 className="text-headline-md text-on-surface">Hospital Activity</h2>
-            <button type="button" onClick={() => navigate('/admin/settings')} className="text-body-md font-bold text-on-surface">Audit Logs</button>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr,0.8fr] w-full min-w-0 max-w-full">
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm w-full min-w-0 max-w-full">
+          <div className="flex items-center justify-between w-full min-w-0 max-w-full">
+            <h2 className="text-headline-md text-on-surface break-words whitespace-normal min-w-0 flex-1">Hospital Activity</h2>
+            <button type="button" onClick={() => navigate('/admin/settings')} className="text-body-md font-bold text-on-surface shrink-0">Audit Logs</button>
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
             {activityFeed.slice(0, 5).map((feed) => (
-              <div key={feed.id} className="rounded-xl border border-outline-variant p-4">
-                <p className="text-body-md text-on-surface">{feed.message}</p>
+              <div key={feed.id} className="rounded-xl border border-outline-variant p-4 w-full min-w-0">
+                <p className="text-body-md text-on-surface break-words whitespace-normal">{feed.message}</p>
                 <p className="mt-2 text-label-md text-on-surface-variant">{feed.time}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm">
-          <h2 className="text-headline-md text-on-surface">Quick Actions</h2>
-          <div className="mt-4 space-y-3">
+        <section className="rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm w-full min-w-0 max-w-full">
+          <h2 className="text-headline-md text-on-surface break-words whitespace-normal">Quick Actions</h2>
+          <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
             <button type="button" onClick={() => navigate('/admin/patients')} className="w-full rounded-xl bg-primary px-4 py-3 text-body-md font-bold text-on-primary">
               Open Patient Records
             </button>

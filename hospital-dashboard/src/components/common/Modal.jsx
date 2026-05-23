@@ -70,7 +70,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md', s
               )}
 
               {/* Body */}
-              <div className="overflow-y-auto p-6 custom-scrollbar flex-1 w-full min-w-0 break-words whitespace-normal text-left">
+              <div className="overflow-y-auto p-6 custom-scrollbar flex-1 w-full min-w-0 max-w-full break-words whitespace-normal text-left">
                 {children}
               </div>
             </motion.div>

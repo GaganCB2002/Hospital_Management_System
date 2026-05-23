@@ -186,18 +186,18 @@ export default function PatientDashboard() {
   ];
 
   return (
-    <div className="space-y-6 pb-8 w-full min-w-0">
-      <section className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold text-on-surface">Welcome back, {patient.name}</h1>
-        <p className="text-sm text-on-surface-variant">
+    <div className="space-y-6 pb-8 w-full min-w-0 max-w-full">
+      <section className="flex flex-col gap-2 w-full min-w-0 max-w-full">
+        <h1 className="text-2xl font-bold text-on-surface break-words whitespace-normal">Welcome back, {patient.name}</h1>
+        <p className="text-sm text-on-surface-variant break-words whitespace-normal w-full max-w-full">
           Track doctor appointments, instructions, billing, documents, and your health chart from one place.
         </p>
       </section>
 
       {/* Emergency Assistance Banner */}
-      <section className="relative overflow-hidden rounded-2xl border border-error/30 bg-gradient-to-r from-error/5 to-error/15 dark:from-error/10 dark:to-error/25 p-5 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+      <section className="relative overflow-hidden rounded-2xl border border-error/30 bg-gradient-to-r from-error/5 to-error/15 dark:from-error/10 dark:to-error/25 p-5 shadow-sm w-full min-w-0 max-w-full">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full min-w-0 max-w-full">
+          <div className="flex items-center gap-4 min-w-0 flex-1">
             <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-error text-white shadow-md">
               <span className="material-symbols-outlined text-2xl animate-pulse">emergency</span>
               <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
@@ -205,9 +205,9 @@ export default function PatientDashboard() {
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-200"></span>
               </span>
             </div>
-            <div>
-              <h2 className="text-base font-bold text-error dark:text-error-container">Emergency Medical Assistance</h2>
-              <p className="text-sm text-on-surface-variant mt-0.5">Need immediate medical attention? Contact our 24/7 hotline or request emergency ambulance & staff dispatch.</p>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-base font-bold text-error dark:text-error-container break-words whitespace-normal">Emergency Medical Assistance</h2>
+              <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">Need immediate medical attention? Contact our 24/7 hotline or request emergency ambulance & staff dispatch.</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2.5 shrink-0">
@@ -230,23 +230,23 @@ export default function PatientDashboard() {
       </section>
 
       {/* Cards Grid */}
-      <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid w-full min-w-0 max-w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <div key={card.title} className="w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
-            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">{card.title}</p>
-            <p className="mt-3 text-xl font-bold text-on-surface">{card.value}</p>
-            <p className="mt-2 text-sm text-on-surface-variant">{card.detail}</p>
+          <div key={card.title} className="w-full min-w-0 max-w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
+            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant break-words whitespace-normal">{card.title}</p>
+            <p className="mt-3 text-xl font-bold text-on-surface break-words whitespace-normal">{card.value}</p>
+            <p className="mt-2 text-sm text-on-surface-variant break-words whitespace-normal">{card.detail}</p>
           </div>
         ))}
       </section>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full">
-        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-bold text-on-surface">Vitals Timeline</h2>
-              <p className="text-sm text-on-surface-variant">Live view of your latest recorded vitals.</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
+        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+          <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Vitals Timeline</h2>
+              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Live view of your latest recorded vitals.</p>
             </div>
             <button
               type="button"
@@ -256,7 +256,7 @@ export default function PatientDashboard() {
               View full history
             </button>
           </div>
-          <div className="mt-6 h-72 w-full">
+          <div className="mt-6 h-72 w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={patient.vitalsTimeline || []}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
@@ -277,12 +277,12 @@ export default function PatientDashboard() {
           </div>
         </section>
 
-        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline">
-          <div>
-            <h2 className="text-lg font-bold text-on-surface">Appointment Status Mix</h2>
-            <p className="text-sm text-on-surface-variant">Every doctor booking in your portal.</p>
+        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+          <div className="w-full min-w-0 max-w-full">
+            <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Appointment Status Mix</h2>
+            <p className="text-sm text-on-surface-variant break-words whitespace-normal">Every doctor booking in your portal.</p>
           </div>
-          <div className="mt-6 h-72 w-full">
+          <div className="mt-6 h-72 w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={appointmentStats}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
@@ -309,21 +309,21 @@ export default function PatientDashboard() {
 
       {/* Discharge Report Section */}
       {patient.dischargeSummary && patient.status === 'Discharged' && (
-        <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+        <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+          <div className="flex items-center gap-3 mb-4 w-full min-w-0 max-w-full">
+            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-secondary">assignment</span>
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-on-surface">Discharge Report</h2>
-              <p className="text-sm text-on-surface-variant">Summary of your treatment and follow-up plan</p>
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Discharge Report</h2>
+              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Summary of your treatment and follow-up plan</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full min-w-0 max-w-full">
+            <div className="lg:col-span-2 space-y-4 w-full min-w-0 max-w-full">
+              <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
                 <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Disease / Condition Details</p>
-                <p className="text-sm text-on-surface leading-relaxed">{patient.dischargeSummary}</p>
+                <p className="text-sm text-on-surface leading-relaxed break-words whitespace-normal">{patient.dischargeSummary}</p>
               </div>
               {patient.diagnosisHistory?.length ? (
                 <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
@@ -401,12 +401,12 @@ export default function PatientDashboard() {
       )}
 
       {/* Visits & Instructions Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full">
-        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-bold text-on-surface">Upcoming Visits</h2>
-              <p className="text-sm text-on-surface-variant">Appointments booked from online and front desk channels.</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
+        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+          <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Upcoming Visits</h2>
+              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Appointments booked from online and front desk channels.</p>
             </div>
             <button
               type="button"
@@ -416,26 +416,26 @@ export default function PatientDashboard() {
               Book appointment
             </button>
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
             {upcomingAppointments.slice(0, 5).map((appointment) => (
-              <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline w-full min-w-0">
-                <div className="flex flex-col gap-3 w-full min-w-0">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full min-w-0">
-                    <div className="flex-1 min-w-0 w-full">
+              <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline w-full min-w-0 max-w-full">
+                <div className="flex flex-col gap-3 w-full min-w-0 max-w-full">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full min-w-0 max-w-full">
+                    <div className="flex-1 min-w-0 w-full max-w-full">
                       <button
                         type="button"
                         onClick={() => setSelectedAppointment(appointment)}
-                        className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0 break-words"
+                        className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0 break-words whitespace-normal"
                       >
                         {appointment.doctor}
                       </button>
-                      <p className="text-sm text-on-surface-variant mt-0.5 break-words">
+                      <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">
                         {appointment.type} &bull; {appointment.department} &bull; {formatDateTime(appointment.date, appointment.time)}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs font-semibold text-primary break-words">{appointment.bookingMode || 'Clinic'}</span>
-                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 ${
+                      <span className="text-xs font-semibold text-primary break-words whitespace-normal">{appointment.bookingMode || 'Clinic'}</span>
+                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 whitespace-nowrap ${
                         appointment.status === 'Confirmed'
                           ? 'bg-confirmed-bg text-confirmed-text'
                           : appointment.status === 'Pending'
@@ -446,7 +446,7 @@ export default function PatientDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50 flex-wrap w-full min-w-0">
+                  <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50 flex-wrap w-full min-w-0 max-w-full">
                     <button
                       type="button"
                       onClick={() => openReschedule(appointment)}
@@ -473,7 +473,7 @@ export default function PatientDashboard() {
               </div>
             ))}
             {upcomingAppointments.length === 0 && (
-              <div className="text-center py-8">
+              <div className="text-center py-8 w-full min-w-0">
                 <span className="material-symbols-outlined text-3xl text-on-surface-variant/50 mb-2 block">event_busy</span>
                 <p className="text-sm text-on-surface-variant">No upcoming appointments</p>
               </div>
@@ -481,10 +481,10 @@ export default function PatientDashboard() {
           </div>
         </section>
 
-        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline">
-          <h2 className="text-lg font-bold text-on-surface">Latest Doctor Instructions</h2>
-          <p className="text-sm text-on-surface-variant mb-4">Post-consultation guidance and notes.</p>
-          <div className="space-y-3">
+        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+          <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Latest Doctor Instructions</h2>
+          <p className="text-sm text-on-surface-variant mb-4 break-words whitespace-normal">Post-consultation guidance and notes.</p>
+          <div className="space-y-3 w-full min-w-0 max-w-full">
             {patient.doctorInstructionLog?.length ? patient.doctorInstructionLog.slice(0, 4).map((instruction) => (
               <ClinicalNotesCard
                 key={instruction.id}

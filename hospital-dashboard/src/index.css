@@ -339,3 +339,42 @@ html, body, #root {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* 9. Overflow flex/grid children must have min-width: 0 to prevent width collapse.
+   Without this, text containers inside overflow:auto flex children can shrink to
+   0px width, forcing vertical word-by-word rendering. This only targets common
+   structural overflow containers, not all elements. */
+.flex > .overflow-y-auto,
+.flex > .overflow-x-auto,
+.flex > .overflow-auto,
+.flex > [class*="overflow-y-auto"],
+.flex > [class*="overflow-x-auto"],
+.flex > [class*="overflow-auto"],
+[class*="flex-col"] > .overflow-y-auto,
+[class*="flex-col"] > .overflow-x-auto,
+[class*="flex-col"] > .overflow-auto {
+  min-width: 0;
+}
+
+/* 10. Grid items in overflow contexts: prevent content from forcing grid wider */
+.grid > .overflow-y-auto,
+.grid > .overflow-x-auto,
+.grid > .overflow-auto,
+.grid > [class*="overflow-y-auto"],
+.grid > [class*="overflow-x-auto"],
+.grid > [class*="overflow-auto"] {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 11. Ensure text in all common block containers wraps properly */
+p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, figcaption {
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* 12. Long single-word strings (like emails, codes) break safely */
+a, code, pre {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
