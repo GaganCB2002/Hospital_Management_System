@@ -16,10 +16,10 @@ export default function StatCard({ title, value, subtitle, icon: Icon, trend, tr
         <span className="text-xs text-on-surface-variant mb-1 break-words whitespace-normal w-full min-w-0">{title}</span>
         <span className="text-3xl font-bold text-on-surface break-words whitespace-normal w-full min-w-0">{value}</span>
         {trend && (
-          <span className={`text-[10px] font-medium mt-2 flex items-center gap-1 w-full min-w-0 ${
+          <span className={`text-[10px] font-medium mt-2 flex items-center gap-1 w-full min-w-0 break-words whitespace-normal ${
             trend === 'up' ? 'text-secondary' : trend === 'down' ? 'text-error' : 'text-on-surface-variant'
           }`}>
-            <span className={`w-2 h-2 rounded-full ${trend === 'up' ? 'bg-secondary' : trend === 'down' ? 'bg-error' : 'bg-on-surface-variant'}`}></span>
+            <span className={`w-2 h-2 rounded-full shrink-0 ${trend === 'up' ? 'bg-secondary' : trend === 'down' ? 'bg-error' : 'bg-on-surface-variant'}`}></span>
             {trendValue} vs last week
           </span>
         )}

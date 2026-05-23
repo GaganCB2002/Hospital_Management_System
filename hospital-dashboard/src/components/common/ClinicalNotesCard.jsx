@@ -264,7 +264,7 @@ export default function ClinicalNotesCard({
     });
   };
 
-  if (!notes && !prescriptions.length && !followUpDate) return null;
+  if (!notes && !prescriptions?.length && !followUpDate) return null;
 
   const notesLines = typeof notes === 'string'
     ? notes.split('\n').filter(Boolean)
@@ -294,17 +294,17 @@ export default function ClinicalNotesCard({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-bold text-on-surface truncate max-w-[200px] sm:max-w-[300px]">{doctorName || 'Doctor'}</h3>
+                  <h3 className="text-sm font-bold text-on-surface break-words whitespace-normal w-full min-w-0">{doctorName || 'Doctor'}</h3>
                   <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${priorityStyle.class}`}>
                     {priorityStyle.label}
                   </span>
                 </div>
                 {doctorSpecialty && (
-                  <p className="text-xs text-on-surface-variant mt-0.5">{doctorSpecialty}</p>
+                  <p className="text-xs text-on-surface-variant mt-0.5 break-words whitespace-normal w-full min-w-0">{doctorSpecialty}</p>
                 )}
                 {date && (
-                  <p className="text-xs text-on-surface-variant/70 mt-0.5 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px]">calendar_today</span>
+                  <p className="text-xs text-on-surface-variant/70 mt-0.5 flex items-center gap-1 break-words whitespace-normal w-full min-w-0">
+                    <span className="material-symbols-outlined text-[12px] shrink-0">calendar_today</span>
                     {date}
                   </p>
                 )}
@@ -335,13 +335,13 @@ export default function ClinicalNotesCard({
             <div className="px-4 pb-4 pt-0 space-y-4 border-t border-outline-variant/50 dark:border-outline/50 w-full min-w-0 max-w-full">
               {notesLines.length > 1 && (
                 <div className="pt-4 space-y-2 w-full min-w-0 max-w-full">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Clinical Notes</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant break-words whitespace-normal">Clinical Notes</p>
                   <div className="space-y-1.5 w-full min-w-0 max-w-full">
                     {notesLines.map((line, i) => {
                       const isBullet = line.trim().startsWith('-') || line.trim().startsWith('*') || line.trim().startsWith('•');
                       const content = line.trim().replace(/^[-*•]\s*/, '');
                       return (
-                        <p key={i} className={`text-sm leading-relaxed break-words w-full min-w-0 max-w-full ${isBullet ? 'flex items-start gap-2' : ''}`} style={{ lineHeight: '1.6' }}>
+                        <p key={i} className={`text-sm leading-relaxed break-words whitespace-normal w-full min-w-0 max-w-full ${isBullet ? 'flex items-start gap-2' : ''}`} style={{ lineHeight: '1.6' }}>
                           {isBullet ? (
                             <>
                               <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 shrink-0" />
@@ -359,18 +359,18 @@ export default function ClinicalNotesCard({
 
               {prescriptions.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2">Prescription</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 break-words whitespace-normal">Prescription</p>
                   <div className="space-y-1.5">
                     {prescriptions.map((rx, i) => {
                       const name = typeof rx === 'string' ? rx : rx.medication || rx.name || '';
                       const dosage = typeof rx === 'string' ? '' : rx.dosage || '';
                       const freq = typeof rx === 'string' ? '' : rx.frequency || '';
                       return (
-                        <div key={i} className="flex items-center gap-2 text-sm">
-                          <span className="material-symbols-outlined text-base text-secondary">medication</span>
-                          <span className="font-medium text-on-surface">{name}</span>
-                          {dosage && <span className="text-on-surface-variant">{dosage}</span>}
-                          {freq && <span className="text-on-surface-variant/70">{freq}</span>}
+                        <div key={i} className="flex items-center gap-2 text-sm w-full min-w-0">
+                          <span className="material-symbols-outlined text-base text-secondary shrink-0">medication</span>
+                          <span className="font-medium text-on-surface break-words whitespace-normal w-full min-w-0">{name}</span>
+                          {dosage && <span className="text-on-surface-variant break-words whitespace-normal shrink-0">{dosage}</span>}
+                          {freq && <span className="text-on-surface-variant/70 break-words whitespace-normal shrink-0">{freq}</span>}
                         </div>
                       );
                     })}
@@ -379,22 +379,22 @@ export default function ClinicalNotesCard({
               )}
 
               {followUpDate && (
-                <div className="flex items-center gap-2 text-sm bg-primary/5 rounded-lg px-3 py-2 border border-primary/10">
-                  <span className="material-symbols-outlined text-base text-primary">event_repeat</span>
-                  <span className="font-medium text-on-surface">Follow-up:</span>
-                  <span className="text-on-surface-variant">{followUpDate}</span>
+                <div className="flex items-center gap-2 text-sm bg-primary/5 rounded-lg px-3 py-2 border border-primary/10 w-full min-w-0">
+                  <span className="material-symbols-outlined text-base text-primary shrink-0">event_repeat</span>
+                  <span className="font-medium text-on-surface break-words whitespace-normal shrink-0">Follow-up:</span>
+                  <span className="text-on-surface-variant break-words whitespace-normal w-full min-w-0">{followUpDate}</span>
                 </div>
               )}
 
               {(attachments?.length > 0) && (
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2">Attachments ({attachments.length})</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2 break-words whitespace-normal">Attachments ({attachments.length})</p>
                   <div className="space-y-1.5">
                     {attachments.map((att, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm p-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer">
-                        <span className="material-symbols-outlined text-base text-primary">description</span>
-                        <span className="text-on-surface truncate flex-1">{att.name || `Report ${i + 1}`}</span>
-                        <span className="material-symbols-outlined text-base text-on-surface-variant/60">download</span>
+                      <div key={i} className="flex items-center gap-2 text-sm p-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer w-full min-w-0">
+                        <span className="material-symbols-outlined text-base text-primary shrink-0">description</span>
+                        <span className="text-on-surface break-words whitespace-normal w-full min-w-0 flex-1">{att.name || `Report ${i + 1}`}</span>
+                        <span className="material-symbols-outlined text-base text-on-surface-variant/60 shrink-0">download</span>
                       </div>
                     ))}
                   </div>

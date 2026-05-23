@@ -51,7 +51,7 @@ export default function ReceptionistDashboard() {
   return (
     <div className="space-y-6 pb-xl w-full min-w-0 max-w-full">
       <header className="flex flex-col gap-2 w-full min-w-0 max-w-full">
-        <p className="text-label-md font-bold uppercase tracking-widest text-primary">Front Desk Operations</p>
+        <p className="text-label-md font-bold uppercase tracking-widest text-primary break-words whitespace-normal">Front Desk Operations</p>
         <h1 className="text-headline-lg font-bold text-on-surface break-words whitespace-normal">Good day, {user?.name?.split(' ')[0] || 'Receptionist'}</h1>
         <p className="text-body-md text-on-surface-variant break-words whitespace-normal w-full max-w-full">
           Manage patient details, booking channels, admissions, and queue visibility for doctors from one connected dashboard.

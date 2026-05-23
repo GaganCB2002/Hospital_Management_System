@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useGoogleLogin, googleLogout } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { formatResetTime } from '../../services/rateLimiter.js';
 import {
   FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle,
   FiActivity, FiUsers, FiCalendar, FiHeart, FiArrowRight,
@@ -277,6 +276,37 @@ export default function Login() {
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
+  const googleLoginAction = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsLoading(true);
+      try {
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const googleUser = await userInfoRes.json();
+        const result = loginWithGoogle({
+          email: googleUser.email,
+          name: googleUser.name,
+          picture: googleUser.picture,
+        });
+        if (result.success) {
+          navigate('/patient/dashboard');
+        } else {
+          setError(result.error || 'Google sign-in failed.');
+        }
+      } catch {
+        setError('Could not fetch Google profile.');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onError: () => {
+      setIsLoading(false);
+      setError('Google sign-in was cancelled or failed.');
+    },
+    flow: 'implicit',
+  });
+
   useEffect(() => {
     setEmail(demoCredentials[selectedRole].email);
     setPassword(demoCredentials[selectedRole].password);
@@ -335,42 +365,12 @@ export default function Login() {
 
   const handleGoogleLogin = useCallback(async () => {
     try {
-      const googleLogin = useGoogleLogin({
-        onSuccess: async (tokenResponse) => {
-          setIsLoading(true);
-          try {
-            const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-              headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-            });
-            const googleUser = await userInfoRes.json();
-            const result = loginWithGoogle({
-              email: googleUser.email,
-              name: googleUser.name,
-              picture: googleUser.picture,
-            });
-            if (result.success) {
-              navigate('/patient/dashboard');
-            } else {
-              setError(result.error || 'Google sign-in failed.');
-            }
-          } catch {
-            setError('Could not fetch Google profile.');
-          } finally {
-            setIsLoading(false);
-          }
-        },
-        onError: () => {
-          setIsLoading(false);
-          setError('Google sign-in was cancelled or failed.');
-        },
-        flow: 'implicit',
-      });
-      googleLogin();
+      googleLoginAction();
     } catch {
       setIsLoading(false);
       setError('Google sign-in unavailable. Check your client ID.');
     }
-  }, [loginWithGoogle, navigate]);
+  }, [googleLoginAction]);
 
   const handleRoleClick = (role) => {
     setSelectedRole(role);

@@ -4,7 +4,7 @@ export default function Pagination({ page, pageSize, total, hasMore, onPrev, onN
 
   return (
     <div className="flex items-center justify-between border-t border-outline-variant px-5 py-4 dark:border-outline">
-      <p className="text-body-md text-on-surface-variant">
+      <p className="text-body-md text-on-surface-variant break-words whitespace-normal w-full min-w-0">
         Showing {start} to {end} of {total}
       </p>
       <div className="flex items-center gap-3">

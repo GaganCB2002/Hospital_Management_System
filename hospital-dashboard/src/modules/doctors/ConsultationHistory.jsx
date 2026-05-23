@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import toast from 'react-hot-toast';
@@ -6,7 +7,6 @@ import ClinicalNotesCard from '../../components/common/ClinicalNotesCard';
 import { useHospital } from '../../context/HospitalContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatDateTime } from '../../lib/formatters';
-import { matchesQuery } from '../../lib/search';
 
 function exportConsultationPDF(records) {
   try {
@@ -65,6 +65,7 @@ const statusBadgeMap = {
 export default function ConsultationHistory() {
   const { appointments, patients, doctors } = useHospital();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
@@ -130,7 +131,13 @@ export default function ConsultationHistory() {
 
   const filteredRecords = useMemo(() => {
     return records.filter(r => {
-      if (search && !matchesQuery(r.name, search) && !matchesQuery(r.patientId, search) && !matchesQuery(r.diagnosis, search)) return false;
+      if (search) {
+        const q = search.toLowerCase();
+        const nameMatch = r.name?.toLowerCase().includes(q);
+        const idMatch = r.patientId?.toLowerCase().includes(q);
+        const diagMatch = r.diagnosis?.toLowerCase().includes(q);
+        if (!nameMatch && !idMatch && !diagMatch) return false;
+      }
       if (departmentFilter) {
         const apt = appointments.find(a => a.patientId === r.patientId?.split(' •')[0]);
         if (apt?.department !== departmentFilter) return false;
@@ -226,13 +233,27 @@ export default function ConsultationHistory() {
                       </div>
                       <div>
                         <h3 className="font-headline-md text-headline-md font-bold text-on-surface">{record.name}</h3>
-                        <p className="font-data-mono text-data-mono text-on-surface-variant">{record.patientId}</p>
+                        <button
+                          type="button"
+                          onClick={() => navigate('/doctor/patients')}
+                          className="font-data-mono text-data-mono text-on-surface-variant hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 text-left"
+                          title="View patient records"
+                        >
+                          {record.patientId}
+                        </button>
                       </div>
                     </div>
                   ) : (
                     <div>
                       <h3 className="font-headline-md text-[18px] font-bold text-on-surface">{record.name}</h3>
-                      <p className="font-data-mono text-[12px] text-on-surface-variant">{record.patientId}</p>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/doctor/patients')}
+                        className="font-data-mono text-[12px] text-on-surface-variant hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 text-left"
+                        title="View patient records"
+                      >
+                        {record.patientId}
+                      </button>
                     </div>
                   )}
 

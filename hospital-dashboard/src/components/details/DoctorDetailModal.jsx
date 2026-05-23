@@ -24,15 +24,16 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose, onEdit, onD
   );
   const completedAppts = doctorAppointments.filter((a) => a.status === 'Completed');
   const stats = doctor?.performanceStats || { consultations: 0, successRate: '0%', averageWait: '0 mins', monthlyRevenue: 0 };
+  const numericId = doctor ? (parseInt(doctor.id, 10) || parseInt(String(doctor.doctorId)?.replace('DOC-', ''), 10) || 1) : 0;
 
   const monthlyData = useMemo(() => [
-    { month: 'Jan', consultations: 28 + (doctor ? (doctor.id * 3) % 10 : 0) },
-    { month: 'Feb', consultations: 32 + (doctor ? (doctor.id * 7) % 10 : 0) },
-    { month: 'Mar', consultations: 25 + (doctor ? (doctor.id * 4) % 10 : 0) },
-    { month: 'Apr', consultations: 38 + (doctor ? (doctor.id * 9) % 10 : 0) },
-    { month: 'May', consultations: 42 + (doctor ? (doctor.id * 2) % 10 : 0) },
-    { month: 'Jun', consultations: 35 + (doctor ? (doctor.id * 5) % 10 : 0) },
-  ], [doctor]);
+    { month: 'Jan', consultations: 28 + (numericId * 3) % 10 },
+    { month: 'Feb', consultations: 32 + (numericId * 7) % 10 },
+    { month: 'Mar', consultations: 25 + (numericId * 4) % 10 },
+    { month: 'Apr', consultations: 38 + (numericId * 9) % 10 },
+    { month: 'May', consultations: 42 + (numericId * 2) % 10 },
+    { month: 'Jun', consultations: 35 + (numericId * 5) % 10 },
+  ], [numericId]);
 
   const caseDistribution = [
     { name: 'Routine Checkups', value: 40 },
@@ -43,12 +44,12 @@ export default function DoctorDetailModal({ doctor, isOpen, onClose, onEdit, onD
   ];
 
   const ratingBreakdown = useMemo(() => [
-    { stars: '5 Star', count: 72 + (doctor ? (doctor.id * 11) % 15 : 0) },
-    { stars: '4 Star', count: 18 + (doctor ? (doctor.id * 3) % 7 : 0) },
-    { stars: '3 Star', count: 7 + (doctor ? (doctor.id * 2) % 5 : 0) },
-    { stars: '2 Star', count: 2 + (doctor ? (doctor.id * 1) % 3 : 0) },
+    { stars: '5 Star', count: 72 + (numericId * 11) % 15 },
+    { stars: '4 Star', count: 18 + (numericId * 3) % 7 },
+    { stars: '3 Star', count: 7 + (numericId * 2) % 5 },
+    { stars: '2 Star', count: 2 + (numericId * 1) % 3 },
     { stars: '1 Star', count: 1 },
-  ], [doctor]);
+  ], [numericId]);
 
   if (!doctor) return null;
 

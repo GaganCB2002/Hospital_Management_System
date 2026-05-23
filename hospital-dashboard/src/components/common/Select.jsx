@@ -2,7 +2,7 @@ export default function Select({ label, error, options = [], className = '', pla
   return (
     <div className={className}>
       {label && (
-        <label className="block text-sm font-bold text-on-surface-variant mb-1.5">
+        <label className="block text-sm font-bold text-on-surface-variant mb-1.5 break-words whitespace-normal">
           {label}
         </label>
       )}
@@ -21,7 +21,7 @@ export default function Select({ label, error, options = [], className = '', pla
           );
         })}
       </select>
-      {error && <p className="mt-1 text-xs text-error font-medium">{error}</p>}
+      {error && <p className="mt-1 text-xs text-error font-medium break-words whitespace-normal w-full min-w-0">{error}</p>}
     </div>
   );
 }

@@ -20,13 +20,13 @@ export default function CTASection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <ScrollReveal>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Get Started</p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4 break-words whitespace-normal">Get Started</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
             Ready to transform your
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">hospital operations?</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] break-words whitespace-normal">hospital operations?</span>
           </h2>
-          <p className="mt-4 text-lg text-[#64748B] max-w-2xl mx-auto">
+          <p className="mt-4 text-lg text-[#64748B] max-w-2xl mx-auto break-words whitespace-normal">
             Join 200+ healthcare institutions already using CurePulse to deliver better patient outcomes.
           </p>
         </ScrollReveal>
@@ -55,16 +55,16 @@ export default function CTASection() {
 
         <ScrollReveal delay={0.3}>
           <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-12 text-sm text-[#475569]">
-            <span className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-[#10B981]">check_circle</span>
+            <span className="flex items-center gap-2 break-words whitespace-normal">
+              <span className="material-symbols-outlined text-sm text-[#10B981] shrink-0">check_circle</span>
               No credit card required
             </span>
-            <span className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-[#10B981]">check_circle</span>
+            <span className="flex items-center gap-2 break-words whitespace-normal">
+              <span className="material-symbols-outlined text-sm text-[#10B981] shrink-0">check_circle</span>
               14-day free trial
             </span>
-            <span className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-[#10B981]">check_circle</span>
+            <span className="flex items-center gap-2 break-words whitespace-normal">
+              <span className="material-symbols-outlined text-sm text-[#10B981] shrink-0">check_circle</span>
               Free onboarding support
             </span>
           </div>

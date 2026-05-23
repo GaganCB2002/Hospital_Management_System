@@ -11,7 +11,7 @@ export default function PatientRecords() {
   const { patients } = useHospital();
   
   // Doctor sees their assigned patients or all if admin testing
-  const myPatients = patients.filter(p => p.doctor === user.name || user.role === 'doctor');
+  const myPatients = patients.filter(p => p.doctor === user?.name || user?.role === 'doctor');
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPatient, setSelectedPatient] = useState(null);

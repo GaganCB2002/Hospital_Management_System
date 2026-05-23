@@ -74,11 +74,11 @@ export default function DashboardPreviewSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Live Dashboard</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4 break-words whitespace-normal">Live Dashboard</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
               Real-time intelligence at your
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">fingertips</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] break-words whitespace-normal">fingertips</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -95,7 +95,7 @@ export default function DashboardPreviewSection() {
                     <span className="w-3 h-3 rounded-full bg-[#F59E0B]" />
                     <span className="w-3 h-3 rounded-full bg-[#10B981]" />
                   </div>
-                  <span className="text-xs text-[#475569] font-mono">curepulse.com/dashboard</span>
+                  <span className="text-xs text-[#475569] font-mono break-words whitespace-normal">curepulse.com/dashboard</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
@@ -134,8 +134,8 @@ export default function DashboardPreviewSection() {
                         transition={{ duration: 0.3, delay: i * 0.05 }}
                         className="rounded-xl border border-white/[0.06] p-4 bg-white/[0.02]"
                       >
-                        <p className="text-[10px] font-medium text-[#64748B] uppercase tracking-wider">{widget.label}</p>
-                        <p className="text-xl sm:text-2xl font-bold text-[#F8FAFC] mt-1">{widget.value}</p>
+                        <p className="text-[10px] font-medium text-[#64748B] uppercase tracking-wider break-words whitespace-normal">{widget.label}</p>
+                        <p className="text-xl sm:text-2xl font-bold text-[#F8FAFC] mt-1 break-words whitespace-normal">{widget.value}</p>
                         <div className="flex items-center gap-1 mt-1.5">
                           <span className="material-symbols-outlined text-sm" style={{ color: widget.color }}>
                             {widget.change.startsWith('+') ? 'trending_up' : 'trending_down'}
@@ -191,9 +191,9 @@ export default function DashboardPreviewSection() {
                             {notifications[currentNotif].type === 'emergency' ? 'emergency' :
                              notifications[currentNotif].type === 'warning' ? 'warning' : 'notifications'}
                           </span>
-                          <div>
-                            <p className="text-xs text-[#F8FAFC] leading-relaxed">{notifications[currentNotif].text}</p>
-                            <p className="text-[10px] text-[#475569] mt-1">{notifications[currentNotif].time}</p>
+                          <div className="min-w-0 w-full">
+                            <p className="text-xs text-[#F8FAFC] leading-relaxed break-words whitespace-normal">{notifications[currentNotif].text}</p>
+                            <p className="text-[10px] text-[#475569] mt-1 break-words whitespace-normal">{notifications[currentNotif].time}</p>
                           </div>
                         </div>
                       </motion.div>

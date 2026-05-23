@@ -144,7 +144,7 @@ export default function DoctorProfile() {
                 </button>
               </div>
               <p className="text-sm text-on-surface-variant italic leading-relaxed">
-                {doctor.bio || `${doctor.name} is an experienced ${doctor.specialization} specialist with ${doctor.experience} of practice.`}
+                {doctor.bio || `${doctor.name} is an experienced ${doctor.specialization} specialist with ${doctor.experience || 'many years'} of practice.`}
               </p>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function DoctorProfile() {
             <div className="bg-surface rounded-xl border border-outline-variant p-6 shadow-sm">
               <h3 className="text-base font-bold text-on-surface border-b border-outline-variant pb-3 mb-4">Professional Biography</h3>
               <p className="text-sm text-on-surface-variant leading-relaxed mb-3">
-                Dr. {doctor.name} is a board-certified {doctor.specialization} specialist in the {doctor.department} department with {doctor.experience} of clinical experience.
+                Dr. {doctor.name} is a board-certified {doctor.specialization} specialist in the {doctor.department} department with {doctor.experience || 'extensive'} of clinical experience.
                 {doctor.bio ? ` ${doctor.bio}` : ''}
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed">

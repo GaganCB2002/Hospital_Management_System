@@ -346,7 +346,7 @@ export default function Navbar() {
                     <div className="sticky top-0 z-10 flex items-center justify-between border-b border-outline-variant bg-surface/95 backdrop-blur-md px-5 py-4 w-full min-w-0">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="material-symbols-outlined text-primary text-xl shrink-0">notifications</span>
-                        <span className="text-base font-extrabold text-on-surface break-words">Notifications</span>
+                        <span className="text-base font-extrabold text-on-surface break-words whitespace-normal">Notifications</span>
                         {unreadCount > 0 && (
                           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary shrink-0">
                             {unreadCount} new
@@ -401,7 +401,7 @@ export default function Navbar() {
                                 </p>
                                 <span className="shrink-0 text-[10px] font-medium text-on-surface-variant whitespace-nowrap">{n.time}</span>
                               </div>
-                              <p className="text-sm text-on-surface-variant leading-relaxed break-words mt-1">
+                              <p className="text-sm text-on-surface-variant leading-relaxed break-words whitespace-normal mt-1">
                                 {n.shortDescription}
                               </p>
                             </div>
@@ -462,8 +462,8 @@ export default function Navbar() {
                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
               />
               <div className="hidden flex-col md:flex text-left min-w-0">
-                <span className="text-label-md font-bold text-on-surface break-words">{user?.name}</span>
-                <span className="text-[10px] uppercase tracking-wider text-on-surface-variant break-words">{user?.role}</span>
+                <span className="text-label-md font-bold text-on-surface break-words whitespace-normal">{user?.name}</span>
+                <span className="text-[10px] uppercase tracking-wider text-on-surface-variant break-words whitespace-normal">{user?.role}</span>
               </div>
             </button>
 

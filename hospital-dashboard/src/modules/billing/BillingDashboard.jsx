@@ -12,9 +12,9 @@ export default function BillingDashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-on-surface dark:text-white">Billing & Pharmacy</h1>
-        <p className="text-sm text-on-surface-variant">Financial overview and inventory management</p>
+      <div className="w-full min-w-0">
+        <h1 className="text-2xl font-bold text-on-surface dark:text-white break-words whitespace-normal">Billing & Pharmacy</h1>
+        <p className="text-sm text-on-surface-variant break-words whitespace-normal w-full">Financial overview and inventory management</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -28,8 +28,8 @@ export default function BillingDashboard() {
         {/* Recent Billing */}
         <div className="bg-surface dark:bg-surface-container border border-outline-variant dark:border-outline rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-on-surface dark:text-white">Recent Invoices</h3>
-            <button className="text-sm font-medium text-primary hover:underline">View All</button>
+            <h3 className="text-lg font-bold text-on-surface dark:text-white break-words whitespace-normal">Recent Invoices</h3>
+            <button className="text-sm font-medium text-primary hover:underline break-words whitespace-normal shrink-0">View All</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -44,9 +44,9 @@ export default function BillingDashboard() {
               <tbody className="divide-y divide-outline-variant/30 dark:divide-[#233144]">
                 {billing.slice(0, 5).map((invoice, index) => (
                   <motion.tr key={invoice.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.1 }}>
-                    <td className="py-3 text-sm font-medium text-on-surface dark:text-white">{invoice.id}</td>
-                    <td className="py-3 text-sm text-on-surface-variant">{invoice.patient}</td>
-                    <td className="py-3 text-sm font-medium text-on-surface dark:text-white">₹{invoice.amount.toLocaleString()}</td>
+                    <td className="py-3 text-sm font-medium text-on-surface dark:text-white break-words whitespace-normal">{invoice.id}</td>
+                    <td className="py-3 text-sm text-on-surface-variant break-words whitespace-normal">{invoice.patient}</td>
+                    <td className="py-3 text-sm font-medium text-on-surface dark:text-white break-words whitespace-normal">₹{invoice.amount.toLocaleString()}</td>
                     <td className="py-3">
                       <span className={`px-2 py-1 text-[10px] uppercase font-bold rounded-full ${
                         invoice.status === 'Paid' ? 'bg-secondary-container text-on-secondary-container' : 'bg-warning-container text-warning-on-container text-amber-700 bg-amber-100'
@@ -64,22 +64,22 @@ export default function BillingDashboard() {
         {/* Pharmacy Inventory */}
         <div className="bg-surface dark:bg-surface-container border border-outline-variant dark:border-outline rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-on-surface dark:text-white">Medical Inventory Status</h3>
-            <button className="flex items-center gap-2 text-sm font-medium text-primary hover:underline">
-              <FiPackage /> Update Stock
+            <h3 className="text-lg font-bold text-on-surface dark:text-white break-words whitespace-normal">Medical Inventory Status</h3>
+            <button className="flex items-center gap-2 text-sm font-medium text-primary hover:underline shrink-0 break-words whitespace-normal">
+              <FiPackage className="shrink-0" /> Update Stock
             </button>
           </div>
           <div className="space-y-4">
             {inventory.slice(0, 5).map((item, index) => (
               <motion.div key={item.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }} className="flex items-center justify-between p-3 border border-outline-variant/30 dark:border-outline rounded-lg">
-                <div>
-                  <p className="text-sm font-bold text-on-surface dark:text-white">{item.name}</p>
-                  <p className="text-xs text-outline">{item.category}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold text-on-surface dark:text-white break-words whitespace-normal">{item.name}</p>
+                  <p className="text-xs text-outline break-words whitespace-normal">{item.category}</p>
                 </div>
-                <div className="text-right flex items-center gap-4">
+                <div className="text-right flex items-center gap-4 shrink-0">
                   <div>
-                    <p className="text-sm font-semibold text-on-surface dark:text-white">{item.stock} {item.unit}</p>
-                    <p className="text-xs text-outline">Threshold: {item.threshold}</p>
+                    <p className="text-sm font-semibold text-on-surface dark:text-white break-words whitespace-normal">{item.stock} {item.unit}</p>
+                    <p className="text-xs text-outline break-words whitespace-normal">Threshold: {item.threshold}</p>
                   </div>
                   <span className={`px-2 py-1 text-[10px] uppercase font-bold rounded-full ${
                     item.status === 'Normal' ? 'bg-secondary-container text-on-secondary-container' : 

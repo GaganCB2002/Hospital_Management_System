@@ -46,7 +46,7 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md', s
               {/* Header */}
               {title ? (
                 <div className="flex items-center justify-between border-b border-outline-variant px-6 py-4 dark:border-outline shrink-0">
-                  <h3 className="text-xl font-bold text-on-surface">{title}</h3>
+                  <h3 className="text-xl font-bold text-on-surface break-words whitespace-normal">{title}</h3>
                   {showClose && (
                     <button
                       onClick={onClose}

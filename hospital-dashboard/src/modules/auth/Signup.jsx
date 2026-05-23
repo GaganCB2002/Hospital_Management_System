@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { formatResetTime } from '../../services/rateLimiter.js';
+import { useHospital } from '../../context/HospitalContext';
 import {
   FiEye, FiEyeOff, FiActivity, FiAlertCircle,
   FiArrowLeft, FiShield, FiServer, FiCheckCircle,
@@ -50,6 +50,7 @@ export default function Signup() {
   const countdownRef = useRef(null);
   const { signup, rateLimitState, clearRateLimit } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const { addPatient, addAppointment } = useHospital();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -104,8 +105,39 @@ export default function Signup() {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 600));
     const result = signup(formData);
-    setIsLoading(false);
     if (result.success) {
+      try {
+        const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+        if (formData.role === 'patient') {
+          const newPatient = await addPatient({
+            name: fullName,
+            email: formData.email,
+            age: Number(formData.age) || 0,
+            gender: formData.gender || 'Unknown',
+            phone: formData.phone || '',
+            status: 'Pending',
+            doctor: 'Unassigned',
+            department: 'General',
+            ward: 'Pending Triage',
+            bookingMode: 'Online',
+          }, fullName);
+
+          await addAppointment({
+            patient: fullName,
+            patientId: newPatient?.id || `PT-${Date.now().toString().slice(-4)}`,
+            doctor: 'Unassigned',
+            type: 'Consultation',
+            date: new Date().toISOString().split('T')[0],
+            time: '09:00 AM',
+            department: 'General',
+            fees: 0,
+            bookingMode: 'Online',
+            status: 'New',
+          }, fullName);
+        }
+      } catch (err) {
+        console.error('Failed to create patient record:', err);
+      }
       navigate(`/${formData.role}/dashboard`);
     } else {
       setError(result.error || 'Registration failed.');
@@ -113,6 +145,7 @@ export default function Signup() {
         setCountdown(Math.ceil(result.rateLimit.resetInMs / 1000));
       }
     }
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {

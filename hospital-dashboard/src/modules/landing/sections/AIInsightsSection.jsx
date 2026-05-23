@@ -45,13 +45,13 @@ export default function AIInsightsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#06B6D4] mb-4">AI & Machine Learning</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#06B6D4] mb-4 break-words whitespace-normal">AI & Machine Learning</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
               Intelligence that transforms
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] to-[#3B82F6]">every clinical decision</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] to-[#3B82F6] break-words whitespace-normal">every clinical decision</span>
             </h2>
-            <p className="mt-4 text-[#64748B] text-lg max-w-2xl mx-auto">
+            <p className="mt-4 text-[#64748B] text-lg max-w-2xl mx-auto break-words whitespace-normal">
               Purpose-built AI models trained on millions of clinical encounters to augment medical expertise.
             </p>
           </div>

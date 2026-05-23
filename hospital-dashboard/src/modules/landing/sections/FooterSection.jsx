@@ -14,7 +14,7 @@ export default function FooterSection() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#3B82F6]/20">
                 <span className="material-symbols-outlined text-white text-xl">local_hospital</span>
               </div>
-              <span className="text-lg font-bold text-slate-900">Cure<span className="text-[#06B6D4]">Pulse</span></span>
+              <span className="text-lg font-bold text-slate-900 break-words whitespace-normal">Cure<span className="text-[#06B6D4]">Pulse</span></span>
             </div>
             <p className="text-sm text-[#475569] leading-relaxed max-w-sm w-full whitespace-normal break-words">
               AI-powered enterprise hospital management platform. Trusted by 200+ healthcare institutions to deliver better patient outcomes.
@@ -33,7 +33,7 @@ export default function FooterSection() {
 
           {/* Product */}
           <div>
-            <p className="text-sm font-semibold text-slate-900 mb-4">Product</p>
+            <p className="text-sm font-semibold text-slate-900 mb-4 break-words whitespace-normal">Product</p>
             <div className="space-y-2.5">
               {['Features', 'Integrations', 'API Docs', 'Changelog'].map((l) => (
                 <button key={l} onClick={() => l === 'Features' ? scrollTo('features') : null} className="block text-sm text-[#475569] hover:text-slate-900 transition-colors cursor-pointer border-none bg-transparent p-0 text-left">
@@ -45,7 +45,7 @@ export default function FooterSection() {
 
           {/* Company */}
           <div>
-            <p className="text-sm font-semibold text-slate-900 mb-4">Company</p>
+            <p className="text-sm font-semibold text-slate-900 mb-4 break-words whitespace-normal">Company</p>
             <div className="space-y-2.5">
               {['About', 'Blog', 'Careers', 'Press Kit', 'Partners'].map((l) => (
                 <p key={l} className="text-sm text-[#475569] hover:text-slate-900 transition-colors cursor-pointer">{l}</p>
@@ -55,7 +55,7 @@ export default function FooterSection() {
 
           {/* Contact */}
           <div>
-            <p className="text-sm font-semibold text-slate-900 mb-4">Contact</p>
+            <p className="text-sm font-semibold text-slate-900 mb-4 break-words whitespace-normal">Contact</p>
             <div className="space-y-2.5 text-sm text-[#475569]">
               <p>12 Innovation Drive</p>
               <p>Bengaluru, Karnataka 560001</p>

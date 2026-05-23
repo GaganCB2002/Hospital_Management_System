@@ -55,11 +55,11 @@ export default function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4">Testimonials</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4 break-words whitespace-normal">Testimonials</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
               Trusted by healthcare
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">leaders worldwide</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] break-words whitespace-normal">leaders worldwide</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -80,19 +80,19 @@ export default function TestimonialsSection() {
                   <div className="text-6xl leading-none mb-4" style={{ color: `${testimonials[current].color}30` }}>
                     &ldquo;
                   </div>
-                  <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">
+                  <p className="text-lg sm:text-xl text-slate-600 leading-relaxed break-words whitespace-normal">
                     {testimonials[current].quote}
                   </p>
-                  <div className="flex items-center gap-4 mt-8 pt-6 border-t border-slate-200/50">
+                  <div className="flex items-center gap-4 mt-8 pt-6 border-t border-slate-200/50 w-full min-w-0">
                     <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                       style={{ background: `linear-gradient(135deg, ${testimonials[current].color}, ${testimonials[current].color}88)` }}
                     >
                       {testimonials[current].name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-slate-900">{testimonials[current].name}</p>
-                      <p className="text-sm text-slate-500">{testimonials[current].role}</p>
+                    <div className="flex-1 min-w-0 w-full">
+                      <p className="font-semibold text-slate-900 break-words whitespace-normal">{testimonials[current].name}</p>
+                      <p className="text-sm text-slate-500 break-words whitespace-normal">{testimonials[current].role}</p>
                     </div>
                     <div className="flex gap-0.5">
                       {[...Array(testimonials[current].rating)].map((_, i) => (

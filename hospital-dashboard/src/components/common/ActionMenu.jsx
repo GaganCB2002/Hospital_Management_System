@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export default function ActionMenu({ actions }) {
+export default function ActionMenu({ actions = [] }) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
 
@@ -40,7 +40,7 @@ export default function ActionMenu({ actions }) {
                 }`}
               >
                 {action.icon ? <span className="material-symbols-outlined text-[18px] shrink-0">{action.icon}</span> : null}
-                <span className="min-w-0 break-words">{action.label}</span>
+                <span className="min-w-0 break-words whitespace-normal">{action.label}</span>
               </button>
             ))}
           </div>

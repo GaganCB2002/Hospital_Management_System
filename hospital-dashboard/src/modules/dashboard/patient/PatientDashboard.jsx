@@ -81,7 +81,7 @@ export default function PatientDashboard() {
     }
     setIsRescheduling(true);
     try {
-      await updateAppointment(rescheduleTarget.appointmentId, {
+      await updateAppointment(rescheduleTarget.appointmentId || rescheduleTarget.id, {
         date: rescheduleDate,
         time: rescheduleTime,
         notes: rescheduleNotes ? `${rescheduleTarget.notes || ''} | Rescheduled: ${rescheduleNotes}` : rescheduleTarget.notes,
@@ -98,7 +98,7 @@ export default function PatientDashboard() {
 
   async function handleCancelAppointment() {
     try {
-      await updateAppointment(cancelTarget.appointmentId, {
+      await updateAppointment(cancelTarget.appointmentId || cancelTarget.id, {
         status: 'Cancelled',
         notes: `${cancelTarget.notes || ''} | Cancelled by patient`,
       }, user?.name || 'Patient');
@@ -588,9 +588,9 @@ export default function PatientDashboard() {
             ? `Are you sure you want to cancel your ${cancelTarget.type} appointment with ${cancelTarget.doctor} on ${formatDateTime(cancelTarget.date, cancelTarget.time)}?`
             : ''
         }
-        confirmText="Yes, Cancel Appointment"
-        cancelText="Keep Appointment"
-        variant="danger"
+        confirmLabel="Yes, Cancel Appointment"
+        cancelLabel="Keep Appointment"
+        tone="danger"
       />
 
       {/* Detail Modal */}

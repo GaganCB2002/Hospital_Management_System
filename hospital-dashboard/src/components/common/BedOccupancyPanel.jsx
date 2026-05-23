@@ -14,9 +14,9 @@ function PatientBedCard({ patient, onView }) {
           <span className="material-symbols-outlined text-primary">person</span>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-on-surface truncate">{patient.name}</p>
-          <p className="text-xs text-on-surface-variant truncate">{patient.ward} &bull; {patient.doctor}</p>
-          <p className="text-xs text-on-surface-variant">Admitted: {patient.admittedDate}</p>
+          <p className="text-sm font-bold text-on-surface break-words whitespace-normal w-full min-w-0">{patient.name}</p>
+          <p className="text-xs text-on-surface-variant break-words whitespace-normal w-full min-w-0">{patient.ward} &bull; {patient.doctor}</p>
+          <p className="text-xs text-on-surface-variant break-words whitespace-normal w-full min-w-0">Admitted: {patient.admittedDate}</p>
         </div>
         <span className={`shrink-0 px-2 py-0.5 text-xs font-bold rounded-full ${
           patient.status === 'Admitted' ? 'bg-secondary/10 text-secondary' :
@@ -38,76 +38,76 @@ function PatientFullCard({ patient, doctors }) {
           alt=""
           className="w-20 h-20 rounded-full border-2 border-outline-variant bg-surface"
         />
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-on-surface">{patient.name}</h3>
-          <p className="text-sm text-on-surface-variant">{patient.id} &bull; {patient.age} yrs &bull; {patient.gender}</p>
-          <div className="flex flex-wrap gap-2 mt-2">
-            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-primary/10 text-primary">{patient.status}</span>
-            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-secondary/10 text-secondary">{patient.department}</span>
-            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-warning/10 text-warning">{patient.condition}</span>
+        <div className="flex-1 min-w-0 w-full max-w-full">
+          <h3 className="text-lg font-bold text-on-surface break-words whitespace-normal w-full min-w-0">{patient.name}</h3>
+          <p className="text-sm text-on-surface-variant break-words whitespace-normal w-full min-w-0">{patient.id} &bull; {patient.age} yrs &bull; {patient.gender}</p>
+          <div className="flex flex-wrap gap-2 mt-2 w-full min-w-0">
+            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-primary/10 text-primary break-words whitespace-normal">{patient.status}</span>
+            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-secondary/10 text-secondary break-words whitespace-normal">{patient.department}</span>
+            <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-warning/10 text-warning break-words whitespace-normal">{patient.condition}</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline">
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant">Bed / Ward</p>
-          <p className="text-sm font-bold text-on-surface mt-0.5">{patient.ward || 'Not assigned'}</p>
+        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant break-words whitespace-normal">Bed / Ward</p>
+          <p className="text-sm font-bold text-on-surface mt-0.5 break-words whitespace-normal">{patient.ward || 'Not assigned'}</p>
         </div>
-        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline">
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant">Admitted Date</p>
-          <p className="text-sm font-bold text-on-surface mt-0.5">{patient.admittedDate || 'N/A'}</p>
+        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant break-words whitespace-normal">Admitted Date</p>
+          <p className="text-sm font-bold text-on-surface mt-0.5 break-words whitespace-normal">{patient.admittedDate || 'N/A'}</p>
         </div>
-        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline">
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant">Doctor</p>
-          <p className="text-sm font-bold text-on-surface mt-0.5">{doctor?.name || patient.doctor || 'Unassigned'}</p>
+        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant break-words whitespace-normal">Doctor</p>
+          <p className="text-sm font-bold text-on-surface mt-0.5 break-words whitespace-normal">{doctor?.name || patient.doctor || 'Unassigned'}</p>
         </div>
-        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline">
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant">Contact</p>
-          <p className="text-sm font-bold text-on-surface mt-0.5">{patient.phone || patient.mobile || 'N/A'}</p>
+        <div className="rounded-xl bg-surface-container-low p-3 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant break-words whitespace-normal">Contact</p>
+          <p className="text-sm font-bold text-on-surface mt-0.5 break-words whitespace-normal">{patient.phone || patient.mobile || 'N/A'}</p>
         </div>
       </div>
 
-      <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-        <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Current Medications</p>
+      <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+        <p className="text-xs font-bold uppercase text-on-surface-variant mb-2 break-words whitespace-normal">Current Medications</p>
         {patient.prescriptions?.length ? (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full min-w-0">
             {patient.prescriptions.slice(0, 4).map((rx, i) => (
-              <div key={i} className="flex items-center justify-between text-sm">
-                <span className="font-medium text-on-surface">{rx.medication}</span>
-                <span className="text-xs text-on-surface-variant">{rx.dosage} &bull; {rx.frequency}</span>
+              <div key={i} className="flex items-center justify-between text-sm w-full min-w-0">
+                <span className="font-medium text-on-surface break-words whitespace-normal w-full min-w-0">{rx.medication}</span>
+                <span className="text-xs text-on-surface-variant shrink-0 break-words whitespace-normal">{rx.dosage} &bull; {rx.frequency}</span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-on-surface-variant italic">No medications recorded</p>
+          <p className="text-sm text-on-surface-variant italic break-words whitespace-normal">No medications recorded</p>
         )}
       </div>
 
-      <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-        <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Diagnosis / Disease Details</p>
+      <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+        <p className="text-xs font-bold uppercase text-on-surface-variant mb-2 break-words whitespace-normal">Diagnosis / Disease Details</p>
         {patient.diagnosisHistory?.length ? (
-          <div className="space-y-2">
+          <div className="space-y-2 w-full min-w-0">
             {patient.diagnosisHistory.slice(0, 3).map((dx, i) => (
-              <div key={i} className="text-sm">
-                <p className="font-medium text-on-surface">{dx.diagnosis}</p>
-                <p className="text-xs text-on-surface-variant">{dx.doctor} &bull; {dx.date}</p>
+              <div key={i} className="text-sm w-full min-w-0">
+                <p className="font-medium text-on-surface break-words whitespace-normal w-full min-w-0">{dx.diagnosis}</p>
+                <p className="text-xs text-on-surface-variant break-words whitespace-normal w-full min-w-0">{dx.doctor} &bull; {dx.date}</p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-on-surface-variant italic">Diagnosis history not available</p>
+          <p className="text-sm text-on-surface-variant italic break-words whitespace-normal">Diagnosis history not available</p>
         )}
       </div>
 
       {patient.documents?.length ? (
-        <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-          <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Documents ({patient.documents.length})</p>
-          <div className="space-y-1.5">
+        <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+          <p className="text-xs font-bold uppercase text-on-surface-variant mb-2 break-words whitespace-normal">Documents ({patient.documents.length})</p>
+          <div className="space-y-1.5 w-full min-w-0">
             {patient.documents.slice(0, 5).map((doc, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm">
-                <span className="material-symbols-outlined text-base text-primary">description</span>
-                <span className="text-on-surface">{doc.name || `Document ${i + 1}`}</span>
+              <div key={i} className="flex items-center gap-2 text-sm w-full min-w-0">
+                <span className="material-symbols-outlined text-base text-primary shrink-0">description</span>
+                <span className="text-on-surface break-words whitespace-normal w-full min-w-0">{doc.name || `Document ${i + 1}`}</span>
               </div>
             ))}
           </div>
@@ -130,17 +130,17 @@ export default function BedOccupancyPanel() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-primary/10 border border-primary/20 p-3 text-center">
-          <p className="text-2xl font-bold text-primary">{totalBeds}</p>
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5">Total Beds</p>
+        <div className="rounded-xl bg-primary/10 border border-primary/20 p-3 text-center w-full min-w-0">
+          <p className="text-2xl font-bold text-primary break-words whitespace-normal">{totalBeds}</p>
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5 break-words whitespace-normal">Total Beds</p>
         </div>
-        <div className="rounded-xl bg-secondary/10 border border-secondary/20 p-3 text-center">
-          <p className="text-2xl font-bold text-secondary">{occupiedBeds}</p>
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5">Occupied</p>
+        <div className="rounded-xl bg-secondary/10 border border-secondary/20 p-3 text-center w-full min-w-0">
+          <p className="text-2xl font-bold text-secondary break-words whitespace-normal">{occupiedBeds}</p>
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5 break-words whitespace-normal">Occupied</p>
         </div>
-        <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-3 text-center">
-          <p className="text-2xl font-bold text-emerald-600">{emptyBeds}</p>
-          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5">Available</p>
+        <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-3 text-center w-full min-w-0">
+          <p className="text-2xl font-bold text-emerald-600 break-words whitespace-normal">{emptyBeds}</p>
+          <p className="text-[10px] font-bold uppercase text-on-surface-variant mt-0.5 break-words whitespace-normal">Available</p>
         </div>
       </div>
 
@@ -159,8 +159,8 @@ export default function BedOccupancyPanel() {
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-lg text-primary">bed</span>
                   <div className="text-left">
-                    <p className="text-sm font-bold text-on-surface">{ward.ward}</p>
-                    <p className="text-xs text-on-surface-variant">{ward.occupied}/{ward.total} beds</p>
+                    <p className="text-sm font-bold text-on-surface break-words whitespace-normal">{ward.ward}</p>
+                    <p className="text-xs text-on-surface-variant break-words whitespace-normal">{ward.occupied}/{ward.total} beds</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -178,7 +178,7 @@ export default function BedOccupancyPanel() {
                   {wardPatients.length ? wardPatients.map((p) => (
                     <PatientBedCard key={p.id} patient={p} onView={setViewPatient} />
                   )) : (
-                    <p className="text-sm text-on-surface-variant italic text-center py-3">No patients in this ward</p>
+                    <p className="text-sm text-on-surface-variant italic text-center py-3 break-words whitespace-normal w-full min-w-0">No patients in this ward</p>
                   )}
                 </div>
               )}

@@ -101,9 +101,9 @@ export default function HeroSection() {
             >
               <span className="material-symbols-outlined text-base" style={{ color: stat.color }}>{stat.icon}</span>
             </div>
-            <div>
-              <p className="text-xs text-slate-500">{stat.label}</p>
-              <p className="text-sm font-bold text-slate-900">{stat.value}</p>
+            <div className="min-w-0">
+              <p className="text-xs text-slate-500 break-words whitespace-normal">{stat.label}</p>
+              <p className="text-sm font-bold text-slate-900 break-words whitespace-normal">{stat.value}</p>
             </div>
           </motion.div>
         ))}
@@ -148,7 +148,7 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3B82F6]/8 backdrop-blur-sm border border-[#3B82F6]/15 mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-[#06B6D4] animate-pulse" />
-            <span className="text-sm font-medium text-slate-600">
+            <span className="text-sm font-medium text-slate-600 break-words whitespace-normal">
               <span className="text-[#3B82F6] font-semibold">AI-Powered</span> Healthcare Platform
             </span>
           </motion.div>
@@ -158,11 +158,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight w-full"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight w-full break-words whitespace-normal"
           >
-            <span className="text-slate-900">AI-Powered Smart</span>
+            <span className="text-slate-900 break-words whitespace-normal">AI-Powered Smart</span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] via-[#06B6D4] to-[#3B82F6]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] via-[#06B6D4] to-[#3B82F6] break-words whitespace-normal">
               Hospital Management
             </span>
           </motion.h1>
@@ -172,7 +172,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed break-words whitespace-normal"
           >
             Manage patients, doctors, appointments, analytics, emergency monitoring, AI health predictions, and hospital operations from one intelligent healthcare ecosystem.
           </motion.p>

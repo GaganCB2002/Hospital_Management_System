@@ -171,8 +171,8 @@ export default function EmergencyDashboard() {
     <div className="flex flex-col gap-6 p-6">
       <div className="flex justify-between items-end mb-6">
         <div>
-          <h2 className="text-4xl font-bold text-on-surface">Emergency Center</h2>
-          <p className="text-lg text-on-surface-variant mt-1">Live monitoring across all critical wards.</p>
+          <h2 className="text-4xl font-bold text-on-surface break-words whitespace-normal">Emergency Center</h2>
+          <p className="text-lg text-on-surface-variant mt-1 break-words whitespace-normal">Live monitoring across all critical wards.</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -194,8 +194,8 @@ export default function EmergencyDashboard() {
         <div className="col-span-12 lg:col-span-4 bg-error text-white rounded-xl p-6 flex flex-col justify-between shadow-md relative overflow-hidden">
           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
           <div className="relative z-10 flex justify-between items-start">
-            <h3 className="text-xl font-bold uppercase tracking-wide flex items-center gap-2">
-              <span className="material-symbols-outlined animate-pulse">e911_emergency</span>
+            <h3 className="text-xl font-bold uppercase tracking-wide flex items-center gap-2 break-words whitespace-normal">
+              <span className="material-symbols-outlined animate-pulse shrink-0">e911_emergency</span>
               Active Criticals
             </h3>
             <span className="font-mono bg-white/20 px-2 py-1 rounded text-xs font-bold">Live Update</span>
@@ -220,8 +220,8 @@ export default function EmergencyDashboard() {
 
         <div className="col-span-12 lg:col-span-8 bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl flex flex-col shadow-sm overflow-hidden">
           <div className="p-4 border-b border-outline-variant bg-surface flex justify-between items-center dark:bg-surface dark:border-outline">
-            <h3 className="text-xl font-bold text-on-surface flex items-center gap-2">
-              <span className="material-symbols-outlined text-error animate-pulse">sensors</span>
+            <h3 className="text-xl font-bold text-on-surface flex items-center gap-2 break-words whitespace-normal">
+              <span className="material-symbols-outlined text-error animate-pulse shrink-0">sensors</span>
               Live Alerts Feed
             </h3>
 
@@ -290,8 +290,8 @@ export default function EmergencyDashboard() {
                     </span>
                   </div>
                   <div className="col-span-3">
-                    <p className="text-sm text-on-surface font-bold">{alert.location}</p>
-                    <p className="text-xs text-outline font-medium">{alert.bed}</p>
+                    <p className="text-sm text-on-surface font-bold break-words whitespace-normal">{alert.location}</p>
+                    <p className="text-xs text-outline font-medium break-words whitespace-normal">{alert.bed}</p>
                   </div>
                   <div className="col-span-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -325,16 +325,17 @@ export default function EmergencyDashboard() {
         </div>
 
         <div className="col-span-12 bg-surface dark:bg-surface border border-outline-variant dark:border-outline rounded-xl p-6 shadow-sm mt-4">
-          <h3 className="text-xl font-bold text-on-surface mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">inventory_2</span>
+          <h3 className="text-xl font-bold text-on-surface mb-4 flex items-center gap-2 break-words whitespace-normal">
+            <span className="material-symbols-outlined text-primary shrink-0">inventory_2</span>
             Critical Resource Availability
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {resources.map(res => (
               <div key={res.id} className="bg-surface p-4 rounded-lg border border-outline-variant/50 dark:bg-surface-container-high dark:border-outline">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-base font-bold text-on-surface flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary-container">{res.icon}</span> {res.name}
+                  <span className="text-base font-bold text-on-surface flex items-center gap-2 min-w-0 w-full">
+                    <span className="material-symbols-outlined text-primary-container shrink-0">{res.icon}</span>
+                    <span className="break-words whitespace-normal min-w-0">{res.name}</span>
                   </span>
                   <span className="text-xl text-on-surface font-bold">{res.available}</span>
                 </div>
@@ -351,7 +352,7 @@ export default function EmergencyDashboard() {
       <Modal isOpen={isBroadcastModalOpen} onClose={() => setIsBroadcastModalOpen(false)} title="" size="md">
         <div className="flex items-center gap-2 pb-2 border-b border-outline-variant dark:border-outline -mx-6 -mt-2 px-6 pb-4 mb-2">
           <span className="material-symbols-outlined text-error">campaign</span>
-          <h3 className="text-xl font-bold text-error">Broadcast Emergency Alert</h3>
+          <h3 className="text-xl font-bold text-error break-words whitespace-normal">Broadcast Emergency Alert</h3>
         </div>
         <form onSubmit={handleBroadcastSubmit} className="space-y-4">
           <div>
