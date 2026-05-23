@@ -88,8 +88,8 @@ export default function ReceptionistDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={bookingModeStats}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                  <XAxis dataKey="name" stroke={isDark ? '#cbd5e1' : '#475569'} />
-                  <YAxis allowDecimals={false} stroke={isDark ? '#cbd5e1' : '#475569'} />
+                  <XAxis dataKey="name" stroke={isDark ? '#94A3B8' : '#475569'} />
+                  <YAxis allowDecimals={false} stroke={isDark ? '#94A3B8' : '#475569'} />
                   <Tooltip />
                   <Bar dataKey="value" radius={[12, 12, 0, 0]}>
                     {bookingModeStats.map((entry) => (

@@ -37,10 +37,10 @@ export default function DoctorDashboard() {
   );
   const inPatients = myPatients.filter((patient) => ['Admitted', 'Emergency'].includes(patient.status));
   const appointmentStatusStats = [
-    { name: 'Pending', value: myAppointments.filter((appointment) => appointment.status === 'Pending').length, color: isDark ? '#3b82f6' : '#00355f' },
-    { name: 'Confirmed', value: myAppointments.filter((appointment) => appointment.status === 'Confirmed').length, color: isDark ? '#10b981' : '#006b5f' },
-    { name: 'Completed', value: myAppointments.filter((appointment) => appointment.status === 'Completed').length, color: isDark ? '#60a5fa' : '#0f4c81' },
-    { name: 'Rejected', value: myAppointments.filter((appointment) => appointment.status === 'Rejected').length, color: isDark ? '#ef4444' : '#ba1a1a' },
+    { name: 'Pending', value: myAppointments.filter((appointment) => appointment.status === 'Pending').length, color: isDark ? '#3B82F6' : '#00355f' },
+    { name: 'Confirmed', value: myAppointments.filter((appointment) => appointment.status === 'Confirmed').length, color: isDark ? '#10B981' : '#006b5f' },
+    { name: 'Completed', value: myAppointments.filter((appointment) => appointment.status === 'Completed').length, color: isDark ? '#3B82F6' : '#0f4c81' },
+    { name: 'Rejected', value: myAppointments.filter((appointment) => appointment.status === 'Rejected').length, color: isDark ? '#EF4444' : '#ba1a1a' },
   ];
   const revenueEstimate = myAppointments
     .filter((appointment) => ['Confirmed', 'Completed', 'Checked In'].includes(appointment.status))
@@ -123,8 +123,8 @@ export default function DoctorDashboard() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={appointmentStatusStats}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="name" stroke={isDark ? '#cbd5e1' : '#475569'} />
-                <YAxis allowDecimals={false} stroke={isDark ? '#cbd5e1' : '#475569'} />
+                <XAxis dataKey="name" stroke={isDark ? '#94A3B8' : '#475569'} />
+                <YAxis allowDecimals={false} stroke={isDark ? '#94A3B8' : '#475569'} />
                 <Tooltip />
                 <Bar dataKey="value" radius={[12, 12, 0, 0]}>
                   {appointmentStatusStats.map((entry) => (
@@ -168,7 +168,7 @@ export default function DoctorDashboard() {
               <p className="mt-2 text-label-md text-primary dark:text-primary-fixed-dim">{patient.condition}</p>
             </div>
           )) : (
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 w-full min-w-0">
               <EmptyState
                 icon="ward"
                 title="No admitted patients"

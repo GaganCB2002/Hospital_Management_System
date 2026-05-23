@@ -59,8 +59,8 @@ export default function PatientDashboard() {
   const unpaidInvoices = billing.filter((invoice) => invoice.patientId === patient?.id && invoice.status === 'Pending');
   const appointmentStats = [
     { name: 'Pending', value: myAppointments.filter((appointment) => appointment.status === 'Pending').length, color: isDark ? '#F59E0B' : '#B7791F' },
-    { name: 'Confirmed', value: myAppointments.filter((appointment) => appointment.status === 'Confirmed').length, color: '#0E8F6A' },
-    { name: 'Completed', value: myAppointments.filter((appointment) => appointment.status === 'Completed').length, color: isDark ? '#60A5FA' : '#0F4C81' },
+    { name: 'Confirmed', value: myAppointments.filter((appointment) => appointment.status === 'Confirmed').length, color: isDark ? '#10B981' : '#006b5f' },
+    { name: 'Completed', value: myAppointments.filter((appointment) => appointment.status === 'Completed').length, color: isDark ? '#3B82F6' : '#0F4C81' },
     { name: 'Rejected', value: myAppointments.filter((appointment) => appointment.status === 'Rejected').length, color: isDark ? '#EF4444' : '#D64545' },
   ];
 
@@ -232,10 +232,10 @@ export default function PatientDashboard() {
       {/* Cards Grid */}
       <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <div key={card.title} className="w-full min-w-0 rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
-            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant break-words">{card.title}</p>
-            <p className="mt-3 text-xl font-bold text-on-surface break-words">{card.value}</p>
-            <p className="mt-2 text-sm text-on-surface-variant break-words">{card.detail}</p>
+          <div key={card.title} className="w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
+            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">{card.title}</p>
+            <p className="mt-3 text-xl font-bold text-on-surface">{card.value}</p>
+            <p className="mt-2 text-sm text-on-surface-variant">{card.detail}</p>
           </div>
         ))}
       </section>

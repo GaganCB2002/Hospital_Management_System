@@ -213,12 +213,12 @@ function NotesSkeleton() {
 
 function NotesEmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-      <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center mb-4">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center w-full min-w-0">
+      <div className="w-16 h-16 rounded-full bg-primary/5 flex items-center justify-center mb-4 shrink-0">
         <span className="material-symbols-outlined text-3xl text-primary/40">clinical_notes</span>
       </div>
-      <h3 className="text-base font-bold text-on-surface mb-1">No Consultation Notes Available</h3>
-      <p className="text-sm text-on-surface-variant max-w-sm leading-relaxed">
+      <h3 className="text-base font-bold text-on-surface mb-1 w-full min-w-0 break-words whitespace-normal text-center">No Consultation Notes Available</h3>
+      <p className="text-sm text-on-surface-variant max-w-sm leading-relaxed w-full min-w-0 break-words whitespace-normal text-center">
         Post-consultation guidance, prescriptions, and doctor recommendations will appear here after your appointments.
       </p>
     </div>

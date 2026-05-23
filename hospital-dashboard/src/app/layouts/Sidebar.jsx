@@ -84,10 +84,10 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
             to={link.path}
             end={link.path.endsWith('dashboard')}
             title={isCollapsed ? link.name : undefined}
-            className={({ isActive }) =>
+             className={({ isActive }) =>
               `flex items-center ${isCollapsed ? 'justify-center p-2 mx-auto w-12 h-12' : 'gap-md px-md py-sm'} rounded-xl transition-all duration-300 border-l-4 btn-press-effect ${
                 isActive
-                  ? 'bg-white/15 text-nav-active border-nav-active font-semibold shadow-md'
+                  ? 'nav-link-active'
                   : 'text-nav-text hover:text-nav-active hover:bg-white/10 border-transparent'
               }`
             }

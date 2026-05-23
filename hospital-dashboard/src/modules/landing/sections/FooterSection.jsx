@@ -9,14 +9,14 @@ export default function FooterSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 min-w-0">
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#3B82F6]/20">
                 <span className="material-symbols-outlined text-white text-xl">local_hospital</span>
               </div>
               <span className="text-lg font-bold text-slate-900">Cure<span className="text-[#06B6D4]">Pulse</span></span>
             </div>
-            <p className="text-sm text-[#475569] leading-relaxed max-w-sm">
+            <p className="text-sm text-[#475569] leading-relaxed max-w-sm w-full whitespace-normal break-words">
               AI-powered enterprise hospital management platform. Trusted by 200+ healthcare institutions to deliver better patient outcomes.
             </p>
             <div className="flex gap-3 mt-6">

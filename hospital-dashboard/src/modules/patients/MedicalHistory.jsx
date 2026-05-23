@@ -64,8 +64,8 @@ export default function MedicalHistory() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={patient.vitalsTimeline || []}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                  <XAxis dataKey="date" stroke={isDark ? '#cbd5e1' : '#475569'} />
-                  <YAxis stroke={isDark ? '#cbd5e1' : '#475569'} />
+                  <XAxis dataKey="date" stroke={isDark ? '#94A3B8' : '#475569'} />
+                  <YAxis stroke={isDark ? '#94A3B8' : '#475569'} />
                   <Tooltip />
                   <Line type="monotone" dataKey="heartRate" stroke="#ba1a1a" strokeWidth={3} name="Heart Rate" />
                   <Line type="monotone" dataKey="bloodPressure" stroke="#00355f" strokeWidth={3} name="Blood Pressure" />
@@ -111,7 +111,7 @@ export default function MedicalHistory() {
             </thead>
             <tbody className="divide-y divide-outline-variant/30 dark:divide-outline/30">
               {patientAppointments.length ? patientAppointments.map((appointment) => (
-                <tr key={appointment.id} className="hover:bg-surface-container-lowest dark:hover:bg-[#1a2d42]/40">
+                <tr key={appointment.id} className="hover:bg-surface-container-lowest dark:hover:bg-surface-container-low/40">
                   <td className="py-4 text-body-md font-bold text-on-surface dark:text-white">{formatDateTime(appointment.date, appointment.time)}</td>
                   <td className="py-4 text-body-md text-on-surface dark:text-white">{appointment.doctor}</td>
                   <td className="py-4 text-body-md text-on-surface-variant">

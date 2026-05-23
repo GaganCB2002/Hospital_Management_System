@@ -135,7 +135,7 @@ export default function Billing() {
               </thead>
               <tbody className="divide-y divide-outline-variant dark:divide-[#233144]">
                 {filteredBilling.map((invoice) => (
-                  <tr key={invoice.id} className="transition-colors hover:bg-surface-container-lowest dark:hover:bg-[#1a2d42]/50">
+                  <tr key={invoice.id} className="transition-colors hover:bg-surface-container-lowest dark:hover:bg-surface-container-low/50">
                     <td className="p-4 text-sm font-medium text-on-surface ">{invoice.id}</td>
                     <td className="p-4 text-sm text-on-surface ">{invoice.patient}</td>
                     <td className="p-4 text-sm text-outline">{formatDate(invoice.date)}</td>
