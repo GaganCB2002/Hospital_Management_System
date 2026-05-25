@@ -51,14 +51,13 @@ Once started, the application runs locally at `http://localhost:5173`.
 
 ## 📁 Key File Structure
 
-```
-src/
-├── app/layouts/      # Global Layout Shells (Sidebar, Navbar, Dashboard shell)
-├── context/          # React State Providers (Auth, Theme, Hospital Data, Notifications)
-├── modules/          # Feature Pages (Dashboard views, login screen panels, landing)
-├── routes/           # Router configurations and role-based route guards
-└── services/         # Mock API (persists data with 120-240ms network latency simulation)
-```
+| Folder / File | Purpose & Description |
+| :--- | :--- |
+| 📦 **`src/app/layouts/`** | Global interface shells, side navigation sidebar panel, and top alert navbar |
+| 📦 **`src/context/`** | React state providers managing theme toggles, authenticated sessions, notifications, and hospital data CRUDs |
+| 📦 **`src/modules/`** | Feature pages divided by role domains (Admin tools, Doctor diagnostics, Receptionist bookings, Patient tracking) |
+| 📦 **`src/routes/`** | Route definitions with lazy-loaded components and strict role validation router guards |
+| 📦 **`src/services/`** | Mock REST api service executing requests with temporal latency and browser database sync |
 
 ---
 
@@ -132,41 +131,47 @@ graph TD
 
 ## 🔄 Core Project Workflows
 
-Here is the operational workflow path for each of the four role actors:
+Here is the operational workflow path for each of the four role actors, styled by module domains:
 
 ```mermaid
 graph TD
+    classDef start fill:#f3f4f6,stroke:#4b5563,stroke-width:2px,color:#1f2937;
+    classDef patient fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af;
+    classDef doctor fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#065f46;
+    classDef recep fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#9a3412;
+    classDef admin fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b;
+
     Start([User Landing Page]) --> Select{Choose Portal}
-    Select -->|Sign In / Sign Up| Auth[Unified login/signup screen]
+    Select -->|Sign In / Sign Up| Auth[Unified login/signup screen]:::start
     
-    Auth -->|Role: Patient| P_Flow[Patient Workflow]
-    Auth -->|Role: Doctor| D_Flow[Doctor Workflow]
-    Auth -->|Role: Receptionist| R_Flow[Receptionist Workflow]
-    Auth -->|Role: Admin| A_Flow[Admin Workflow]
+    Auth -->|Role: Patient| P1[Dashboard Vitals]:::patient
+    Auth -->|Role: Doctor| D1[Appointment Queue]:::doctor
+    Auth -->|Role: Receptionist| R1[Online Bookings Triage]:::recep
+    Auth -->|Role: Admin| A1[Track Financial Revenue]:::admin
 
     subgraph P_Flow ["Patient Operations"]
-        P1[Dashboard Vitals] --> P2[Book Appointment]
-        P2 --> P3[Check Medication Taken]
-        P3 --> P4[AI Symptom Checker]
-        P4 --> P5[Virtual Clinic Video Consult]
+        P1 --> P2[Book Appointment]:::patient
+        P2 --> P3[Check Medication Taken]:::patient
+        P3 --> P4[AI Symptom Checker]:::patient
+        P4 --> P5[Virtual Clinic Video Consult]:::patient
     end
 
     subgraph D_Flow ["Doctor Operations"]
-        D1[Appointment Queue] --> D2[AI Diagnostic Assistant]
-        D2 --> D3[Smart Prescribing]
-        D3 --> D4[Save Consultation PDF]
+        D1 --> D2[AI Diagnostic Assistant]:::doctor
+        D2 --> D3[Smart Prescribing]:::doctor
+        D3 --> D4[Save Consultation PDF]:::doctor
     end
 
     subgraph R_Flow ["Receptionist Operations"]
-        R1[Online Bookings Triage] --> R2[Confirm/Reject Booking]
-        R2 --> R3[Walk-in Registration]
-        R3 --> R4[Assign Available Bed]
+        R1 --> R2[Confirm/Reject Booking]:::recep
+        R2 --> R3[Walk-in Registration]:::recep
+        R3 --> R4[Assign Available Bed]:::recep
     end
 
     subgraph A_Flow ["Admin Operations"]
-        A1[Track Financial Revenue] --> A2[Doctor Shift Scheduling]
-        A2 --> A3[Pharmacy Stock Levels]
-        A3 --> A4[Active Emergency Alerts]
+        A1 --> A2[Doctor Shift Scheduling]:::admin
+        A2 --> A3[Pharmacy Stock Levels]:::admin
+        A3 --> A4[Active Emergency Alerts]:::admin
     end
 ```
 
