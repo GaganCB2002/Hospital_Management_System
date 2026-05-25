@@ -880,115 +880,95 @@ export default function NurseDashboard() {
 
             <div className="p-5">
               {patientDetailTab === 'info' && (
-                <div className="grid grid-cols-12 gap-5">
-                  <div className="col-span-5 space-y-4">
-                    {editingPatient ? (
-                      <div className="space-y-3 bg-background rounded-xl p-4">
-                        <h3 className="font-bold text-on-background text-sm">Edit Patient Details</h3>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="col-span-2">
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Full Name</label>
-                            <input type="text" value={editForm.name || ''} onChange={(e) => setEditForm(f => ({ ...f, name: e.target.value }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
-                          </div>
-                          <div>
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Age</label>
-                            <input type="number" value={editForm.age || ''} onChange={(e) => setEditForm(f => ({ ...f, age: Number(e.target.value) }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
-                          </div>
-                          <div>
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Gender</label>
-                            <select value={editForm.gender || ''} onChange={(e) => setEditForm(f => ({ ...f, gender: e.target.value }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary">
-                              <option>Male</option><option>Female</option><option>Other</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Ward</label>
-                            <input type="text" value={editForm.ward || ''} onChange={(e) => setEditForm(f => ({ ...f, ward: e.target.value }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
-                          </div>
-                          <div>
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Condition</label>
-                            <input type="text" value={editForm.condition || ''} onChange={(e) => setEditForm(f => ({ ...f, condition: e.target.value }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
-                          </div>
-                          <div className="col-span-2">
-                            <label className="text-[10px] text-on-surface-variant block mb-1">Notes</label>
-                            <textarea value={editForm.notes || ''} onChange={(e) => setEditForm(f => ({ ...f, notes: e.target.value }))}
-                              className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" rows={3} />
-                          </div>
+                <div className="space-y-3">
+                  {editingPatient ? (
+                    <div className="space-y-3 bg-background rounded-xl p-4">
+                      <h3 className="font-bold text-on-background text-sm">Edit Patient</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="col-span-2">
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Full Name</label>
+                          <input type="text" value={editForm.name || ''} onChange={(e) => setEditForm(f => ({ ...f, name: e.target.value }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
                         </div>
-                        <div className="flex gap-2 pt-2">
-                          <button onClick={handleSaveEdit} className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 cursor-pointer border-none">Save</button>
-                          <button onClick={() => setEditingPatient(false)} className="px-4 py-2 rounded-xl bg-white/10 text-on-surface-variant text-xs font-bold hover:bg-white/20 cursor-pointer border-none">Cancel</button>
+                        <div>
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Age</label>
+                          <input type="number" value={editForm.age || ''} onChange={(e) => setEditForm(f => ({ ...f, age: Number(e.target.value) }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Gender</label>
+                          <select value={editForm.gender || ''} onChange={(e) => setEditForm(f => ({ ...f, gender: e.target.value }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary">
+                            <option>Male</option><option>Female</option><option>Other</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Ward</label>
+                          <input type="text" value={editForm.ward || ''} onChange={(e) => setEditForm(f => ({ ...f, ward: e.target.value }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Condition</label>
+                          <input type="text" value={editForm.condition || ''} onChange={(e) => setEditForm(f => ({ ...f, condition: e.target.value }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" />
+                        </div>
+                        <div className="col-span-2">
+                          <label className="text-[10px] text-on-surface-variant block mb-1">Notes</label>
+                          <textarea value={editForm.notes || ''} onChange={(e) => setEditForm(f => ({ ...f, notes: e.target.value }))}
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-surface text-on-background border border-white/10 outline-none focus:border-primary" rows={3} />
                         </div>
                       </div>
-                    ) : (
-                      <div className="space-y-2">
-                        <div className="grid grid-cols-2 gap-2">
-                          {[
-                            { label: 'Age', value: selectedPatient.age }, { label: 'Gender', value: selectedPatient.gender },
-                            { label: 'Blood Type', value: selectedPatient.bloodType }, { label: 'Ward', value: selectedPatient.ward },
-                            { label: 'Department', value: selectedPatient.department }, { label: 'Condition', value: selectedPatient.condition },
-                            { label: 'Doctor', value: selectedPatient.doctor }, { label: 'Admitted', value: selectedPatient.admittedDate || 'N/A' },
-                          ].map(f => (
-                            <div key={f.label} className="flex justify-between px-3 py-2 rounded-xl bg-background text-xs">
-                              <span className="text-on-surface-variant">{f.label}</span>
-                              <span className="font-semibold text-on-background text-right ml-2">{f.value || '—'}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {selectedPatient.allergies?.map((a, i) => (
-                            <span key={i} className="px-2 py-0.5 rounded-lg bg-rose-500/15 text-rose-400 text-[10px] font-semibold flex items-center gap-1"><FiAlertCircle className="text-[8px]" /> {a}</span>
-                          ))}
-                        </div>
-                        {selectedPatient.notes && (
-                          <div className="p-3 rounded-xl bg-background">
-                            <p className="text-[10px] text-on-surface-variant mb-1 font-semibold">Clinical Notes</p>
-                            <p className="text-xs text-on-background">{selectedPatient.notes}</p>
-                          </div>
-                        )}
-                        <button onClick={startEditing} className="w-full py-2 rounded-xl bg-primary/10 text-primary text-xs font-bold hover:bg-primary/20 cursor-pointer border-none flex items-center justify-center gap-1.5 mt-1"><FiEdit2 /> Update Details</button>
-                      </div>
-                    )}
-                  </div>
-                  <div className="col-span-7 space-y-4">
-                    <div>
-                      <h3 className="font-bold text-on-background text-sm mb-2 flex items-center gap-2"><FiHeart className="text-rose-400" /> Vitals</h3>
-                      <div className="grid grid-cols-4 gap-3">
-                        {(selectedPatient.vitalsTimeline?.length > 0 ? [selectedPatient.vitalsTimeline[selectedPatient.vitalsTimeline.length - 1]] : []).map((v, i) => (
-                          <div key={i} className="p-3 rounded-xl bg-background text-center"><FiHeart className="text-rose-400 mx-auto mb-1" /><p className="text-lg font-black text-on-background">{v.heartRate}</p><p className="text-[9px] text-on-surface-variant">HR (bpm)</p></div>
-                        ))}
-                        {(selectedPatient.vitalsTimeline?.length > 0 ? [selectedPatient.vitalsTimeline[selectedPatient.vitalsTimeline.length - 1]] : []).map((v, i) => (
-                          <div key={i} className="p-3 rounded-xl bg-background text-center"><FiThermometer className="text-amber-400 mx-auto mb-1" /><p className="text-lg font-black text-on-background">{v.bloodPressure}/{v.bloodPressure - 20}</p><p className="text-[9px] text-on-surface-variant">BP</p></div>
-                        ))}
-                        {(selectedPatient.vitalsTimeline?.length > 0 ? [selectedPatient.vitalsTimeline[selectedPatient.vitalsTimeline.length - 1]] : []).map((v, i) => (
-                          <div key={i} className="p-3 rounded-xl bg-background text-center"><FiThermometer className="text-amber-400 mx-auto mb-1" /><p className="text-lg font-black text-on-background">{v.temperature}°</p><p className="text-[9px] text-on-surface-variant">Temp</p></div>
-                        ))}
-                        {(selectedPatient.vitalsTimeline?.length > 0 ? [selectedPatient.vitalsTimeline[selectedPatient.vitalsTimeline.length - 1]] : []).map((v, i) => (
-                          <div key={i} className="p-3 rounded-xl bg-background text-center"><FiWind className="text-sky-400 mx-auto mb-1" /><p className="text-lg font-black text-on-background">{v.oxygen}%</p><p className="text-[9px] text-on-surface-variant">SpO2</p></div>
-                        ))}
-                        {(!selectedPatient.vitalsTimeline || selectedPatient.vitalsTimeline.length === 0) && (
-                          <p className="col-span-4 text-xs text-on-surface-variant text-center py-4 bg-background rounded-xl">No vitals — go to "Record Vitals" tab</p>
-                        )}
+                      <div className="flex gap-2 pt-2">
+                        <button onClick={handleSaveEdit} className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 cursor-pointer border-none">Save</button>
+                        <button onClick={() => setEditingPatient(false)} className="px-4 py-2 rounded-xl bg-white/10 text-on-surface-variant text-xs font-bold hover:bg-white/20 cursor-pointer border-none">Cancel</button>
                       </div>
                     </div>
-                    {selectedPatient.vitalsTimeline?.length > 1 && (
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-3 md:grid-cols-6 gap-1.5">
+                        {[
+                          { label: 'Age', value: selectedPatient.age },
+                          { label: 'Blood', value: selectedPatient.bloodType },
+                          { label: 'Ward', value: selectedPatient.ward },
+                          { label: 'Condition', value: selectedPatient.condition },
+                          { label: 'Doctor', value: selectedPatient.doctor },
+                          { label: 'Admitted', value: selectedPatient.admittedDate || 'N/A' },
+                        ].map(f => (
+                          <div key={f.label} className="flex flex-col px-2 py-1.5 rounded-lg bg-background">
+                            <span className="text-[9px] text-on-surface-variant">{f.label}</span>
+                            <span className="text-xs font-semibold text-on-background">{f.value || '—'}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {selectedPatient.allergies?.map((a, i) => (
+                          <span key={i} className="px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-400 text-[9px] font-semibold">⚠ {a}</span>
+                        ))}
+                        <button onClick={startEditing} className="ml-auto px-2 py-1 rounded-lg bg-primary/10 text-primary text-[9px] font-bold hover:bg-primary/20 cursor-pointer border-none flex items-center gap-1"><FiEdit2 size={10} /> Edit</button>
+                      </div>
+                      {selectedPatient.notes && (
+                        <p className="text-[10px] text-on-surface-variant bg-background rounded-lg px-2.5 py-1.5">{selectedPatient.notes}</p>
+                      )}
                       <div>
-                        <h3 className="font-bold text-on-background text-sm mb-2">History</h3>
-                        <div className="max-h-36 overflow-y-auto space-y-1.5">
-                          {selectedPatient.vitalsTimeline.slice(-6).reverse().map((v, i) => (
-                            <div key={i} className="flex items-center justify-between px-3 py-2 rounded-lg bg-background text-xs">
-                              <span className="text-on-surface-variant">{v.date || v.recordedAt?.split('T')[0] || 'N/A'}</span>
-                              <span className="text-on-background font-semibold">HR {v.heartRate} · BP {v.bloodPressure}/{v.bloodPressure - 20} · T {v.temperature}° · SpO2 {v.oxygen}%</span>
-                            </div>
-                          ))}
+                        <h3 className="font-bold text-on-background text-xs mb-1">Latest Vitals</h3>
+                        <div className="grid grid-cols-4 gap-1.5">
+                          {selectedPatient.vitalsTimeline?.length > 0 ? (
+                            (() => {
+                              const v = selectedPatient.vitalsTimeline[selectedPatient.vitalsTimeline.length - 1];
+                              return <>
+                                <div className="p-1.5 rounded-lg bg-background text-center"><FiHeart className="text-rose-400 mx-auto mb-0.5 text-[10px]" /><p className="text-sm font-black text-on-background">{v.heartRate}</p><p className="text-[7px] text-on-surface-variant">HR</p></div>
+                                <div className="p-1.5 rounded-lg bg-background text-center"><FiThermometer className="text-amber-400 mx-auto mb-0.5 text-[10px]" /><p className="text-sm font-black text-on-background">{v.bloodPressure}/{v.bloodPressure - 20}</p><p className="text-[7px] text-on-surface-variant">BP</p></div>
+                                <div className="p-1.5 rounded-lg bg-background text-center"><FiThermometer className="text-amber-400 mx-auto mb-0.5 text-[10px]" /><p className="text-sm font-black text-on-background">{v.temperature}°</p><p className="text-[7px] text-on-surface-variant">Temp</p></div>
+                                <div className="p-1.5 rounded-lg bg-background text-center"><FiWind className="text-sky-400 mx-auto mb-0.5 text-[10px]" /><p className="text-sm font-black text-on-background">{v.oxygen}%</p><p className="text-[7px] text-on-surface-variant">SpO2</p></div>
+                              </>;
+                            })()
+                          ) : (
+                            <p className="col-span-4 text-[10px] text-on-surface-variant text-center py-2 bg-background rounded-lg">No vitals recorded</p>
+                          )}
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -1108,6 +1088,27 @@ export default function NurseDashboard() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Patient Navigation */}
+            <div className="flex items-center justify-between px-5 py-3 border-t border-white/5 bg-background/30">
+              <button onClick={() => {
+                const idx = patients.findIndex(p => p.id === selectedPatient?.id);
+                if (idx > 0) handleViewPatient(patients[idx - 1]);
+              }} disabled={patients.findIndex(p => p.id === selectedPatient?.id) <= 0}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer border-none disabled:opacity-30 disabled:cursor-not-allowed bg-white/5 text-on-surface-variant hover:bg-white/10 hover:text-on-background">
+                ← Previous
+              </button>
+              <span className="text-[10px] text-on-surface-variant">
+                {patients.findIndex(p => p.id === selectedPatient?.id) + 1} / {patients.length}
+              </span>
+              <button onClick={() => {
+                const idx = patients.findIndex(p => p.id === selectedPatient?.id);
+                if (idx < patients.length - 1) handleViewPatient(patients[idx + 1]);
+              }} disabled={patients.findIndex(p => p.id === selectedPatient?.id) >= patients.length - 1}
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer border-none bg-primary text-white hover:bg-primary/90">
+                Next →
+              </button>
             </div>
           </motion.div>
         )}

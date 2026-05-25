@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { HospitalProvider } from './context/HospitalContext';
 import AppRoutes from './routes/AppRoutes';
+import AIHelpBot from './components/common/AIHelpBot';
 import { Toaster } from 'react-hot-toast';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'demo';
@@ -19,6 +20,7 @@ function App() {
               <HospitalProvider>
                 <AppRoutes />
                 <Toaster position="top-right" />
+                <AIHelpBot />
               </HospitalProvider>
             </NotificationProvider>
           </AuthProvider>
