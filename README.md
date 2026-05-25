@@ -62,26 +62,71 @@ src/
 
 ---
 
-## 🔄 Project Data Flow
+## 🔄 Core Project Flow & Architecture
 
-The following visual diagram tracks how a user request flows from routing to database simulation:
+CurePulse utilizes a reactive, client-side data architecture. The detailed flow diagram below traces a user's request lifecycle from the initial router hits to context data binding and local storage commits:
 
 ```mermaid
 graph TD
-    User([User / Browser]) -->|Routes request| Router[React Router AppRoutes]
-    Router -->|Validates session| Guard{ProtectedRoute}
-    Guard -->|Not authenticated| Login[Unified Login Panel]
-    Guard -->|Authenticated| Shell[Dashboard Shell Layout]
-    Shell -->|Injects state variables| DataContext[HospitalContext Provider]
-    DataContext -->|Reads / Writes| MockAPI[hospitalApi REST Sim]
-    MockAPI -->|Persists client data| Storage[(Browser localStorage)]
+    classDef route fill:#fae8ff,stroke:#d946ef,stroke-width:2px,color:#86198f;
+    classDef auth fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b;
+    classDef context fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0369a1;
+    classDef view fill:#fef9c3,stroke:#ca8a04,stroke-width:2px,color:#854d0e;
+    classDef api fill:#ecfdf5,stroke:#10b981,stroke-width:2px,color:#065f46;
+
+    Start([User visits App URL]) --> Path{URL Path?}
+    
+    Path -->|/| Landing[LandingPage.jsx - Home & Features]:::route
+    Path -->|/login or /signup| AuthScreen[Login.jsx - Unified Auth Form]:::route
+    Path -->|/admin/* or /doctor/* or /receptionist/* or /patient/*| Guard{ProtectedRoute Guard}:::route
+
+    %% Auth Checks
+    Guard -->|No session| Redirect[Redirect to /login]:::auth
+    Guard -->|Valid session| Shell[Mount DashboardLayout Shell]:::auth
+    AuthScreen -->|Authenticates| Session[AuthContext - Save Session]:::auth
+    Session -->|Redirect| Shell
+
+    %% Layout Shell
+    Shell --> Layout[Render Sidebar & Navbar Controls]:::view
+    Shell --> Outlet[Mount Active Page Component Route]:::view
+
+    %% Global Context Injection
+    Outlet --> HospContext[HospitalContext - Load DB State]:::context
+    Outlet --> NotifContext[NotificationContext - Broadcast Alerts]:::context
+
+    %% Role Workflows
+    Outlet -->|Patient| P_Work[Patient Modules: Vitals, medication tracking, clinic room]:::view
+    Outlet -->|Doctor| D_Work[Doctor Modules: Appointment queue, AI Diagnostic Assistant]:::view
+    Outlet -->|Recep| R_Work[Receptionist Modules: Online bookings triage, Bed mapping]:::view
+    Outlet -->|Admin| A_Work[Admin Modules: Revenue analytics, Shift schedules]:::view
+
+    %% Data Actions & CRUD Flow
+    P_Work & D_Work & R_Work & A_Work -->|Action Triggered| Handlers[HospitalContext state handlers]:::context
+    Handlers -->|Call REST simulation| APIClient[hospitalApi.js client methods]:::api
+    APIClient -->|Simulate 120-240ms network latency| Latency[simulateRequest delay]:::api
+    Latency -->|Commit updates| DB[(localStorage Client DB)]:::api
+    DB -.->|Broadcast State Change| Handlers
+    Handlers -.->|Update Component Views| Outlet
 ```
 
-### Simplified Flow Explained:
-1. **Authentication Guard**: Visiting a URL passes through a `ProtectedRoute`. The session is verified with `AuthContext`.
-2. **Dashboard Shell & Layout**: Logged-in users load `DashboardLayout.jsx`, which wraps the `Sidebar` and dynamic sub-route `Outlet` page contents.
-3. **Reactive Global State**: Page actions (like booking a slot or adding a prescription) invoke handlers inside `HospitalContext.jsx`.
-4. **Mock API Storage**: State alterations flow to `hospitalApi.js`, simulating database latency, before saving to `localStorage`.
+### Detailed Flow Explanation:
+
+1. **Routing & Authentication Guarding (`AppRoutes.jsx`)**:
+   - Every page request is triaged by React Router. Public routes (`/`, `/login`, `/signup`) render without credentials.
+   - Protected paths (e.g. `/patient/*`, `/admin/*`) pass through `<ProtectedRoute>`. If no session is active in `AuthContext`, the user is immediately redirected to `/login`.
+   
+2. **Layout Shell Rendering (`DashboardLayout.jsx`)**:
+   - Once validated, the layout shell mounts. It initializes the `Sidebar` and `Navbar` with the user's role-based links and displays the sub-route component inside the `<Outlet />` area.
+
+3. **Global State Synchronization (`HospitalContext.jsx`)**:
+   - The active component binds directly to `HospitalContext` to access global entities (patients list, active appointments, financials, beds occupancy data).
+   - Any client action (e.g., admitting a patient, saving a prescription, logging a medication) invokes a handler inside `HospitalContext`.
+
+4. **Simulated REST Client & Persistence (`hospitalApi.js`)**:
+   - Context handlers call `hospitalApi.js` REST simulation methods.
+   - The API client wraps CRUD operations inside an asynchronous `simulateRequest` wrapper, which adds a mock network delay of **120-240ms** before reading or writing data.
+   - All finalized data changes are committed directly to the browser's `localStorage` (under the key `curepulse_hospital_db_v3`), keeping changes persisted across page reloads.
+
 
 ---
 
