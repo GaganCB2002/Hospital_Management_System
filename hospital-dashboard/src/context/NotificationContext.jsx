@@ -1,8 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 
 const NotificationContext = createContext(null);
+const NOTIF_KEY = 'curepulse_notifications_v2';
 
 const initialNotifications = [
   {
@@ -12,7 +13,8 @@ const initialNotifications = [
     details: 'We have updated the portal framework to version 4.2. This release improves dashboard rendering, stabilizes charts under heavy loads, and optimizes clinical record exports. All connections are fully encrypted.',
     time: '10m ago',
     read: false,
-    type: 'info'
+    type: 'info',
+    scope: 'all',
   },
   {
     id: 'welcome',
@@ -21,7 +23,8 @@ const initialNotifications = [
     details: 'Your user profile has been provisioned successfully. You now have access to medical charts, appointment logs, live queue details, and reports based on your authorized role permissions.',
     time: '1h ago',
     read: false,
-    type: 'success'
+    type: 'success',
+    scope: 'all',
   },
   {
     id: 'schedule-reminder',
@@ -30,48 +33,73 @@ const initialNotifications = [
     details: 'Friendly reminder that your cardiology follow-up with Dr. Sarah Chen is scheduled for today. Please check in at least 15 minutes prior to your time slot.',
     time: '2h ago',
     read: true,
-    type: 'warning'
+    type: 'warning',
+    scope: 'all',
   }
 ];
 
+function loadNotifications() {
+  try {
+    const raw = localStorage.getItem(NOTIF_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch { /* ignore parse errors */ }
+  return initialNotifications;
+}
+
 export function NotificationProvider({ children }) {
-  const [notifications, setNotifications] = useState(initialNotifications);
+  const [notifications, setNotifications] = useState(loadNotifications);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications));
+    } catch { /* ignore storage errors */ }
+  }, [notifications]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const markAsRead = (id) => {
+  const markAsRead = useCallback((id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  };
+  }, []);
 
-  const markAsUnread = (id) => {
+  const markAsUnread = useCallback((id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: false } : n));
-  };
+  }, []);
 
-  const markAllAsRead = () => {
+  const markAllAsRead = useCallback(() => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  };
+  }, []);
 
-  const clearAllNotifications = () => {
+  const clearAllNotifications = useCallback(() => {
     setNotifications([]);
-  };
+  }, []);
 
-  const addNotification = (notification) => {
+  const addNotification = useCallback((notification) => {
     const newNotification = {
       ...notification,
-      id: Date.now().toString(),
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
       time: 'Just now',
       read: false,
       shortDescription: notification.shortDescription || notification.message || '',
       details: notification.details || notification.message || '',
-      type: notification.type || 'info'
+      type: notification.type || 'info',
+      scope: notification.scope || 'all',
+      createdAt: new Date().toISOString(),
     };
     setNotifications(prev => [newNotification, ...prev]);
     toast.success(notification.title);
-  };
+    return newNotification;
+  }, []);
 
-  const deleteNotification = (id) => {
+  const deleteNotification = useCallback((id) => {
     setNotifications(prev => prev.filter(n => n.id !== id));
-  };
+  }, []);
+
+  const getNurseNotifications = useCallback(() => {
+    return notifications.filter(n => n.scope === 'nurse' || n.scope === 'all');
+  }, [notifications]);
 
   return (
     <NotificationContext.Provider value={{
@@ -82,7 +110,8 @@ export function NotificationProvider({ children }) {
       markAllAsRead,
       clearAllNotifications,
       addNotification,
-      deleteNotification
+      deleteNotification,
+      getNurseNotifications,
     }}>
       {children}
     </NotificationContext.Provider>

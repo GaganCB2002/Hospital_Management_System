@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis,
-  LineChart, Line, AreaChart, Area,
 } from 'recharts';
 import EmptyState from '../../../components/common/EmptyState';
 import BedOccupancyPanel from '../../../components/common/BedOccupancyPanel';
@@ -11,21 +10,9 @@ import AIDiagnosticAssistant from './AIDiagnosticAssistant';
 import { useAuth } from '../../../context/AuthContext';
 import { useHospital } from '../../../context/HospitalContext';
 import { useTheme } from '../../../context/ThemeContext';
-import { formatDateTime, formatDate, formatInr, formatCompactInr } from '../../../lib/formatters';
+import { formatDateTime, formatCompactInr } from '../../../lib/formatters';
 
-function VitalSparkline({ data, dataKey, stroke, fill }) {
-  return (
-    <div className="h-10 w-full max-w-[100px] shrink-0">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
-          <Area type="monotone" dataKey={dataKey} stroke={stroke} strokeWidth={1.5} fill={fill} fillOpacity={0.15} dot={false} />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-function CircularGauge({ value, label, max = 100, isDark }) {
+function CircularGauge({ value, max = 100, isDark }) {
   const radius = 24;
   const circumference = 2 * Math.PI * radius;
   const progress = Math.min(value / max, 1);
@@ -49,7 +36,7 @@ function CircularGauge({ value, label, max = 100, isDark }) {
   );
 }
 
-function PatientCard({ patient, selected, onSelect, onViewDetails }) {
+function PatientCard({ patient, selected, onSelect }) {
   const latestVital = patient.vitalsTimeline?.[patient.vitalsTimeline.length - 1];
   return (
     <motion.div
@@ -93,7 +80,7 @@ function PatientCard({ patient, selected, onSelect, onViewDetails }) {
   );
 }
 
-function PatientDetailPanel({ patient, isDark, onClose }) {
+function PatientDetailPanel({ patient, onClose }) {
   if (!patient) return (
     <div className="flex flex-col items-center justify-center py-16 text-on-surface-variant">
       <span className="material-symbols-outlined text-5xl mb-3 opacity-30">personal_medical</span>
@@ -225,7 +212,7 @@ export default function DoctorDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isDark } = useTheme();
-  const { doctors, appointments, patients, billing, revenueData, departmentStats } = useHospital();
+  const { doctors, appointments, patients, revenueData, departmentStats } = useHospital();
 
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [activePanel, setActivePanel] = useState('patients');
@@ -257,6 +244,13 @@ export default function DoctorDashboard() {
   const totalBeds = departmentStats?.reduce((s, d) => s + (d.beds || 0), 0) || 0;
   const occupiedBeds = departmentStats?.reduce((s, d) => s + (d.occupied || 0), 0) || 0;
 
+  const enhancedPatients = useMemo(() =>
+    myPatients.map((p) => {
+      const fullPatient = patients.find((fp) => fp.id === p.id);
+      return fullPatient || p;
+    }),
+  [myPatients, patients]);
+
   if (!doctor) {
     return (
       <EmptyState
@@ -266,13 +260,6 @@ export default function DoctorDashboard() {
       />
     );
   }
-
-  const enhancedPatients = useMemo(() =>
-    myPatients.map((p) => {
-      const fullPatient = patients.find((fp) => fp.id === p.id);
-      return fullPatient || p;
-    }),
-  [myPatients, patients]);
 
   const tabs = [
     { id: 'patients', label: 'Patients', icon: 'patient_list' },
@@ -367,7 +354,6 @@ export default function DoctorDashboard() {
                       patient={patient}
                       selected={selectedPatient}
                       onSelect={(p) => setSelectedPatient(p)}
-                      onViewDetails={(p) => setSelectedPatient(p)}
                     />
                   ))}
                   {enhancedPatients.length === 0 && (
@@ -379,7 +365,7 @@ export default function DoctorDashboard() {
                 </div>
               </div>
               <div className="col-span-1 lg:col-span-7 xl:col-span-8 rounded-2xl border border-outline-variant dark:border-outline bg-surface p-5 shadow-sm w-full min-w-0 max-w-full">
-                <PatientDetailPanel patient={selectedPatient} isDark={isDark} onClose={() => setSelectedPatient(null)} />
+                <PatientDetailPanel patient={selectedPatient} onClose={() => setSelectedPatient(null)} />
               </div>
             </div>
           </motion.div>
@@ -463,19 +449,20 @@ export default function DoctorDashboard() {
                   <p className="text-body-md text-on-surface-variant mb-4">Select a patient for AI-assisted health risk assessment</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full min-w-0">
                     {enhancedPatients.slice(0, 4).map((p) => {
+                      const hash = p.id.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
                       const risks = {
-                        cardiac: p.condition?.toLowerCase().includes('cardiac') || p.condition?.toLowerCase().includes('heart') ? 60 + Math.floor(Math.random() * 20) : 10 + Math.floor(Math.random() * 20),
-                        diabetic: p.condition?.toLowerCase().includes('diabet') ? 60 + Math.floor(Math.random() * 20) : 10 + Math.floor(Math.random() * 20),
-                        respiratory: p.condition?.toLowerCase().includes('respiratory') || p.condition?.toLowerCase().includes('lung') ? 50 + Math.floor(Math.random() * 20) : 10 + Math.floor(Math.random() * 15),
+                        cardiac: p.condition?.toLowerCase().includes('cardiac') || p.condition?.toLowerCase().includes('heart') ? 60 + (hash % 20) : 10 + (hash * 7 % 20),
+                        diabetic: p.condition?.toLowerCase().includes('diabet') ? 60 + (hash * 3 % 20) : 10 + (hash * 11 % 20),
+                        respiratory: p.condition?.toLowerCase().includes('respiratory') || p.condition?.toLowerCase().includes('lung') ? 50 + (hash * 5 % 20) : 10 + (hash * 13 % 15),
                       };
                       return (
                         <div key={p.id} className="rounded-xl border border-outline-variant dark:border-outline p-3 bg-surface-container-lowest dark:bg-[#0f172a] w-full min-w-0">
                           <p className="text-sm font-bold text-on-surface dark:text-white truncate">{p.name}</p>
                           <p className="text-[10px] text-on-surface-variant mb-2">{p.condition}</p>
                           <div className="flex items-center justify-around">
-                            <CircularGauge value={risks.cardiac} label="Cardiac" isDark={isDark} max={100} />
-                            <CircularGauge value={risks.diabetic} label="Diabetic" isDark={isDark} max={100} />
-                            <CircularGauge value={risks.respiratory} label="Respiratory" isDark={isDark} max={100} />
+                            <CircularGauge value={risks.cardiac} isDark={isDark} max={100} />
+                            <CircularGauge value={risks.diabetic} isDark={isDark} max={100} />
+                            <CircularGauge value={risks.respiratory} isDark={isDark} max={100} />
                           </div>
                         </div>
                       );

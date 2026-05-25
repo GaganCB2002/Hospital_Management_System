@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiUser, FiCalendar, FiActivity, FiClipboard } from 'react-icons/fi';
+import { FiSearch, FiUser } from 'react-icons/fi';
 import { useHospital } from '../../context/HospitalContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -104,7 +104,7 @@ function TabButton({ active, onClick, icon, label, count }) {
   );
 }
 
-function PatientDetailView({ patient, isDark }) {
+function PatientDetailView({ patient }) {
   const [activeTab, setActiveTab] = useState('overview');
 
   if (!patient) {

@@ -30,7 +30,36 @@ export default function PatientDashboard() {
   const { isDark } = useTheme();
   const { patients, appointments, billing, updateAppointment } = useHospital();
   const { addNotification } = useNotifications();
-  
+
+  // Local storage key for linked family members to render emerald dot on tab
+  const [linkedFamily] = useState(() => {
+    const saved = localStorage.getItem(`curepulse_linked_family_${user?.id || 'guest'}`);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch { /* ignore */ }
+    }
+    return [
+      { id: 'PT-4473', relationship: 'Sibling' },
+      { id: 'PT-4420', relationship: 'Spouse' }
+    ];
+  });
+
+  const patient = useMemo(
+    () => patients.find((entry) => entry.name === user?.name || entry.email === user?.email),
+    [patients, user],
+  );
+
+  const familyMembers = useMemo(() => {
+    return patients.filter(p => linkedFamily.some(f => f.id === p.id)).map(p => {
+      const match = linkedFamily.find(f => f.id === p.id);
+      return {
+        ...p,
+        relationship: match ? match.relationship : 'Relative'
+      };
+    });
+  }, [patients, linkedFamily]);
+
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [rescheduleTarget, setRescheduleTarget] = useState(null);
   const [cancelTarget, setCancelTarget] = useState(null);
@@ -45,11 +74,6 @@ export default function PatientDashboard() {
   const [isAlerting, setIsAlerting] = useState(false);
   const [alertDispatched, setAlertDispatched] = useState(false);
 
-  const patient = useMemo(
-    () => patients.find((entry) => entry.name === user?.name || entry.email === user?.email),
-    [patients, user],
-  );
-
   const myAppointments = useMemo(
     () => appointments.filter((appointment) => appointment.patientId === patient?.id || appointment.patient === user?.name),
     [appointments, patient, user],
@@ -57,6 +81,7 @@ export default function PatientDashboard() {
   const upcomingAppointments = myAppointments.filter((appointment) => ['Pending', 'Confirmed', 'Checked In'].includes(appointment.status));
   const nextAppointment = upcomingAppointments[0] || null;
   const unpaidInvoices = billing.filter((invoice) => invoice.patientId === patient?.id && invoice.status === 'Pending');
+  
   const appointmentStats = [
     { name: 'Pending', value: myAppointments.filter((appointment) => appointment.status === 'Pending').length, color: isDark ? '#F59E0B' : '#B7791F' },
     { name: 'Confirmed', value: myAppointments.filter((appointment) => appointment.status === 'Confirmed').length, color: isDark ? '#10B981' : '#006b5f' },
@@ -118,24 +143,24 @@ export default function PatientDashboard() {
       setIsAlerting(false);
       setAlertDispatched(true);
       
-      const doctorName = patient.assignedDoctor?.name || 'Dr. Sarah Chen';
+      const doctorName = patient?.assignedDoctor?.name || 'Dr. Sarah Chen';
       const reason = emergencyReason;
       const notes = emergencyNotes;
-      const latestVitals = patient.vitalsTimeline?.[0] || null;
+      const latestVitals = patient?.vitalsTimeline?.[0] || null;
 
       // 1. Alert Receptionist
       addNotification({
         title: '🚨 CRITICAL EMERGENCY ALERT',
-        shortDescription: `Patient ${patient.name} requested emergency assistance for ${reason}.`,
-        details: `PATIENT PROFILE:\n- Name: ${patient.name}\n- Registered Email: ${patient.email}\n- Phone: ${patient.phone || '+91 98765 43210'}\n- Age/Gender: ${patient.age || '42'} / ${patient.gender || 'Male'}\n\nEMERGENCY DETAILS:\n- Primary Complaint: ${reason}\n- Patient Notes: "${notes || 'No additional details provided'}"\n- Current Vitals (EHR): HR: ${latestVitals?.heartRate || '74'} bpm, SpO2: ${latestVitals?.oxygen || '98'}%\n\nACTION REQUIRED:\n1. Contact patient at registered mobile.\n2. Coordinate ambulance dispatch immediately.\n3. Verify ER bed availability (Active Bed Occupancy: ER).`,
+        shortDescription: `Patient ${patient?.name} requested emergency assistance for ${reason}.`,
+        details: `PATIENT PROFILE:\n- Name: ${patient?.name}\n- Registered Email: ${patient?.email}\n- Phone: ${patient?.phone || '+91 98765 43210'}\n- Age/Gender: ${patient?.age || '42'} / ${patient?.gender || 'Male'}\n\nEMERGENCY DETAILS:\n- Primary Complaint: ${reason}\n- Patient Notes: "${notes || 'No additional details provided'}"\n- Current Vitals (EHR): HR: ${latestVitals?.heartRate || '74'} bpm, SpO2: ${latestVitals?.oxygen || '98'}%\n\nACTION REQUIRED:\n1. Contact patient at registered mobile.\n2. Coordinate ambulance dispatch immediately.\n3. Verify ER bed availability (Active Bed Occupancy: ER).`,
         type: 'emergency',
       });
 
       // 2. Alert Assigned Doctor
       addNotification({
         title: `🚨 PATIENT EMERGENCY: ${doctorName}`,
-        shortDescription: `Your assigned patient ${patient.name} triggered a ${reason} alert.`,
-        details: `ATTENTION: ${doctorName}\n\nPatient ${patient.name} has reported a critical emergency.\n\nCLINICAL STATUS:\n- Complaint: ${reason}\n- Symptoms/Notes: "${notes || 'No additional details provided'}"\n- Assigned Doctor: ${doctorName}\n- Department: ${patient.assignedDoctor?.department || 'Cardiology'}\n- Last Recorded Vitals:\n  * Heart Rate: ${latestVitals?.heartRate || '74'} bpm\n  * Oxygen Saturation (SpO2): ${latestVitals?.oxygen || '98'}%\n\nACTION REQUESTED:\nPlease contact the ER desk or review clinical history to guide the triage team.`,
+        shortDescription: `Your assigned patient ${patient?.name} triggered a ${reason} alert.`,
+        details: `ATTENTION: ${doctorName}\n\nPatient ${patient?.name} has reported a critical emergency.\n\nCLINICAL STATUS:\n- Complaint: ${reason}\n- Symptoms/Notes: "${notes || 'No additional details provided'}"\n- Assigned Doctor: ${doctorName}\n- Department: ${patient?.assignedDoctor?.department || 'Cardiology'}\n- Last Recorded Vitals:\n  * Heart Rate: ${latestVitals?.heartRate || '74'} bpm\n  * Oxygen Saturation (SpO2): ${latestVitals?.oxygen || '98'}%\n\nACTION REQUESTED:\nPlease contact the ER desk or review clinical history to guide the triage team.`,
         type: 'emergency',
       });
 
@@ -185,6 +210,8 @@ export default function PatientDashboard() {
     },
   ];
 
+  const activeTab = 'my-health';
+
   return (
     <div className="space-y-6 pb-8 w-full min-w-0 max-w-full">
       <section className="flex flex-col gap-2 w-full min-w-0 max-w-full">
@@ -194,315 +221,436 @@ export default function PatientDashboard() {
         </p>
       </section>
 
-      {/* Emergency Assistance Banner */}
-      <section className="relative overflow-hidden rounded-2xl border border-error/30 bg-gradient-to-r from-error/5 to-error/15 dark:from-error/10 dark:to-error/25 p-5 shadow-sm w-full min-w-0 max-w-full">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full min-w-0 max-w-full">
-          <div className="flex items-center gap-4 min-w-0 flex-1">
-            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-error text-white shadow-md">
-              <span className="material-symbols-outlined text-2xl animate-pulse">emergency</span>
-              <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-200"></span>
-              </span>
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-base font-bold text-error dark:text-error-container break-words whitespace-normal">Emergency Medical Assistance</h2>
-              <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">Need immediate medical attention? Contact our 24/7 hotline or request emergency ambulance & staff dispatch.</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2.5 shrink-0">
-            <a href="tel:+918045678100" className="inline-flex items-center gap-2 rounded-xl bg-error px-4 py-2.5 text-sm font-extrabold text-white hover:bg-error/95 hover:shadow-lg transition-all active:scale-95">
-              <span className="material-symbols-outlined text-lg">call</span>
-              Call 24/7 Hotline
-            </a>
-            <button type="button" onClick={() => {
-              setIsEmergencyModalOpen(true);
-              setEmergencyReason('Cardiac / Chest Pain');
-              setEmergencyNotes('');
-              setAlertDispatched(false);
-              setIsAlerting(false);
-            }} className="inline-flex items-center gap-2 rounded-xl border border-error bg-surface px-4 py-2.5 text-sm font-extrabold text-error hover:bg-error/5 dark:hover:bg-error/10 transition-all active:scale-95 cursor-pointer">
-              <span className="material-symbols-outlined text-lg">emergency_share</span>
-              Request Dispatch
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Cards Grid */}
-      <section className="grid w-full min-w-0 max-w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {cards.map((card) => (
-          <div key={card.title} className="w-full min-w-0 max-w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
-            <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant break-words whitespace-normal">{card.title}</p>
-            <p className="mt-3 text-xl font-bold text-on-surface break-words whitespace-normal">{card.value}</p>
-            <p className="mt-2 text-sm text-on-surface-variant break-words whitespace-normal">{card.detail}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
-        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
-          <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
-            <div className="min-w-0 flex-1">
-              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Vitals Timeline</h2>
-              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Live view of your latest recorded vitals.</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => navigate('/patient/history')}
-              className="rounded-xl border border-outline-variant px-4 py-2 text-sm font-bold text-on-surface hover:bg-surface-container-low transition-colors shrink-0 cursor-pointer dark:border-outline"
-            >
-              View full history
-            </button>
-          </div>
-          <div className="mt-6 h-72 w-full min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={patient.vitalsTimeline || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
-                <XAxis dataKey="date" stroke="var(--color-on-surface-variant)" fontSize={12} />
-                <YAxis stroke="var(--color-on-surface-variant)" fontSize={12} />
-                <Tooltip
-                  contentStyle={{
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-outline)',
-                    borderRadius: '8px',
-                    color: 'var(--color-on-surface)',
-                  }}
-                />
-                <Line type="monotone" dataKey="heartRate" stroke="#D64545" strokeWidth={3} name="Heart Rate" activeDot={{ r: 6 }} />
-                <Line type="monotone" dataKey="oxygen" stroke="#0F4C81" strokeWidth={3} name="Oxygen" activeDot={{ r: 6 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
-          <div className="w-full min-w-0 max-w-full">
-            <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Appointment Status Mix</h2>
-            <p className="text-sm text-on-surface-variant break-words whitespace-normal">Every doctor booking in your portal.</p>
-          </div>
-          <div className="mt-6 h-72 w-full min-w-0">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={appointmentStats}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
-                <XAxis dataKey="name" stroke="var(--color-on-surface-variant)" fontSize={12} />
-                <YAxis allowDecimals={false} stroke="var(--color-on-surface-variant)" fontSize={12} />
-                <Tooltip
-                  contentStyle={{
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-outline)',
-                    borderRadius: '8px',
-                    color: 'var(--color-on-surface)',
-                  }}
-                />
-                <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                  {appointmentStats.map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
+      {/* Tabs Selector */}
+      <div className="flex border-b border-outline-variant dark:border-outline gap-2 flex-wrap">
+        <button
+          onClick={() => navigate('/patient/dashboard')}
+          className={`pb-3 px-4 font-bold text-sm transition-all border-b-2 flex items-center gap-2 cursor-pointer ${
+            activeTab === 'my-health'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">patient_list</span>
+          My Health Dashboard
+        </button>
+        <button
+          onClick={() => navigate('/patient/medication-tracker')}
+          className={`pb-3 px-4 font-bold text-sm transition-all border-b-2 flex items-center gap-2 cursor-pointer ${
+            activeTab === 'medication-tracker'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">medical_services</span>
+          Medication Tracker
+        </button>
+        <button
+          onClick={() => navigate('/patient/symptom-checker')}
+          className={`pb-3 px-4 font-bold text-sm transition-all border-b-2 flex items-center gap-2 cursor-pointer ${
+            activeTab === 'symptom-checker'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">stethoscope</span>
+          AI Symptom Checker
+        </button>
+        <button
+          onClick={() => navigate('/patient/virtual-clinic')}
+          className={`pb-3 px-4 font-bold text-sm transition-all border-b-2 flex items-center gap-2 cursor-pointer relative ${
+            activeTab === 'virtual-clinic'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">videocam</span>
+          Virtual Clinic (Live)
+          <span className="absolute right-0 top-1.5 flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+        </button>
+        <button
+          onClick={() => navigate('/patient/family-tracker')}
+          className={`pb-3 px-4 font-bold text-sm transition-all border-b-2 flex items-center gap-2 cursor-pointer relative ${
+            activeTab === 'family-tracker'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">group</span>
+          Family Health Monitor
+          {familyMembers.some(f => f.status === 'Admitted' || f.status === 'Emergency') && (
+            <span className="absolute right-0 top-1.5 flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+          )}
+        </button>
       </div>
 
-      {/* Discharge Report Section */}
-      {patient.dischargeSummary && patient.status === 'Discharged' && (
-        <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
-          <div className="flex items-center gap-3 mb-4 w-full min-w-0 max-w-full">
-            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-secondary">assignment</span>
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Discharge Report</h2>
-              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Summary of your treatment and follow-up plan</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full min-w-0 max-w-full">
-            <div className="lg:col-span-2 space-y-4 w-full min-w-0 max-w-full">
-              <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
-                <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Disease / Condition Details</p>
-                <p className="text-sm text-on-surface leading-relaxed break-words whitespace-normal">{patient.dischargeSummary}</p>
+      {activeTab === 'my-health' && (
+        <>
+          {/* Emergency Assistance Banner */}
+          <section className="relative overflow-hidden rounded-2xl border border-error/30 bg-gradient-to-r from-error/5 to-error/15 dark:from-error/10 dark:to-error/25 p-5 shadow-sm w-full min-w-0 max-w-full">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full min-w-0 max-w-full">
+              <div className="flex items-center gap-4 min-w-0 flex-1">
+                <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-error text-white shadow-md">
+                  <span className="material-symbols-outlined text-2xl animate-pulse">emergency</span>
+                  <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-200"></span>
+                  </span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-bold text-error dark:text-error-container break-words whitespace-normal">Emergency Medical Assistance</h2>
+                  <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">Need immediate medical attention? Contact our 24/7 hotline or request emergency ambulance & staff dispatch.</p>
+                </div>
               </div>
-              {patient.diagnosisHistory?.length ? (
-                <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-                  <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Diagnosis History</p>
-                  <div className="space-y-2">
-                    {patient.diagnosisHistory.map((dx, i) => (
-                      <div key={i} className="flex items-start gap-2 text-sm">
-                        <span className="material-symbols-outlined text-base text-primary mt-0.5">stethoscope</span>
-                        <div>
-                          <p className="font-medium text-on-surface">{dx.diagnosis}</p>
-                          <p className="text-xs text-on-surface-variant">{dx.doctor} &bull; {dx.date}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-              {patient.prescriptions?.length ? (
-                <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-                  <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Ongoing Medications</p>
-                  <div className="space-y-2">
-                    {patient.prescriptions.map((rx, i) => (
-                      <div key={i} className="flex items-center justify-between text-sm p-2 rounded-lg bg-white/50 dark:bg-black/10">
-                        <span className="font-medium text-on-surface">{rx.medication}</span>
-                        <span className="text-xs text-on-surface-variant">{rx.dosage} &bull; {rx.frequency} &bull; {rx.duration}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
+              <div className="flex flex-wrap gap-2.5 shrink-0">
+                <a href="tel:+918045678100" className="inline-flex items-center gap-2 rounded-xl bg-error px-4 py-2.5 text-sm font-extrabold text-white hover:bg-error/95 hover:shadow-lg transition-all active:scale-95">
+                  <span className="material-symbols-outlined text-lg">call</span>
+                  Call 24/7 Hotline
+                </a>
+                <button type="button" onClick={() => {
+                  setIsEmergencyModalOpen(true);
+                  setEmergencyReason('Cardiac / Chest Pain');
+                  setEmergencyNotes('');
+                  setAlertDispatched(false);
+                  setIsAlerting(false);
+                }} className="inline-flex items-center gap-2 rounded-xl border border-error bg-surface px-4 py-2.5 text-sm font-extrabold text-error hover:bg-error/5 dark:hover:bg-error/10 transition-all active:scale-95 cursor-pointer">
+                  <span className="material-symbols-outlined text-lg">emergency_share</span>
+                  Request Dispatch
+                </button>
+              </div>
             </div>
-            <div className="space-y-4">
-              {patient.documents?.length ? (
-                <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-                  <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Documents ({patient.documents.length})</p>
-                  <div className="space-y-2">
-                    {patient.documents.map((doc, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm p-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer">
-                        <span className="material-symbols-outlined text-base text-primary">description</span>
-                        <span className="text-on-surface text-xs truncate">{doc.name || `Document ${i + 1}`}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-[10px] text-on-surface-variant mt-2 italic">These documents can be viewed and downloaded for future reference.</p>
-                </div>
-              ) : null}
-              {patient.labReports?.length ? (
-                <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-                  <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Lab Reports</p>
-                  <div className="space-y-1.5">
-                    {patient.labReports.map((r, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs">
-                        <span className="material-symbols-outlined text-base text-secondary">lab_profile</span>
-                        <span className="text-on-surface">{r.name}</span>
-                        <span className="text-on-surface-variant ml-auto">{r.date}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-              {patient.surgeryHistory?.length ? (
-                <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
-                  <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Surgery History</p>
-                  {patient.surgeryHistory.map((s, i) => (
-                    <div key={i} className="text-sm py-1">
-                      <p className="font-medium text-on-surface">{s.name}</p>
-                      <p className="text-xs text-on-surface-variant">{s.date} &bull; {s.outcome}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </section>
-      )}
+          </section>
 
-      {/* Visits & Instructions Grid */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
-        <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
-          <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
-            <div className="min-w-0 flex-1">
-              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Upcoming Visits</h2>
-              <p className="text-sm text-on-surface-variant break-words whitespace-normal">Appointments booked from online and front desk channels.</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => navigate('/patient/book')}
-              className="rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary/90 transition-colors shrink-0 cursor-pointer"
-            >
-              Book appointment
-            </button>
-          </div>
-          <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
-            {upcomingAppointments.slice(0, 5).map((appointment) => (
-              <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline w-full min-w-0 max-w-full">
-                <div className="flex flex-col gap-3 w-full min-w-0 max-w-full">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full min-w-0 max-w-full">
-                    <div className="flex-1 min-w-0 w-full max-w-full">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedAppointment(appointment)}
-                        className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0 break-words whitespace-normal"
-                      >
-                        {appointment.doctor}
-                      </button>
-                      <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">
-                        {appointment.type} &bull; {appointment.department} &bull; {formatDateTime(appointment.date, appointment.time)}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs font-semibold text-primary break-words whitespace-normal">{appointment.bookingMode || 'Clinic'}</span>
-                      <span className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 whitespace-nowrap ${
-                        appointment.status === 'Confirmed'
-                          ? 'bg-confirmed-bg text-confirmed-text'
-                          : appointment.status === 'Pending'
-                          ? 'bg-pending-bg text-pending-text'
-                          : 'bg-surface-container-high text-on-surface-variant'
-                      }`}>
-                        {appointment.status}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50 flex-wrap w-full min-w-0 max-w-full">
-                    <button
-                      type="button"
-                      onClick={() => openReschedule(appointment)}
-                      className="px-3 py-1.5 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors cursor-pointer border-none"
-                    >
-                      Reschedule
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setCancelTarget(appointment)}
-                      className="px-3 py-1.5 text-xs font-bold text-error bg-error/10 hover:bg-error/20 rounded-lg transition-colors cursor-pointer border-none"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedAppointment(appointment)}
-                      className="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer border-none ml-auto"
-                    >
-                      View Details
-                    </button>
-                  </div>
+          {/* Call Nurse Banner */}
+          <section className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-r from-primary/5 to-secondary/15 dark:from-primary/10 dark:to-secondary/25 p-5 shadow-sm w-full min-w-0 max-w-full">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full min-w-0 max-w-full">
+              <div className="flex items-center gap-4 min-w-0 flex-1">
+                <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-white shadow-md">
+                  <span className="material-symbols-outlined text-2xl">local_hospital</span>
+                  <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                  </span>
                 </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-bold text-primary dark:text-primary-container break-words whitespace-normal">Need a Nurse?</h2>
+                  <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">Request assistance from the nursing station. A nurse will be notified with your bed number and details.</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2.5 shrink-0">
+                <button type="button" onClick={() => {
+                  const notif = addNotification({
+                    title: `Patient ${patient.name} needs assistance`,
+                    shortDescription: `Ward: ${patient.ward} · Bed/ID: ${patient.id} · ${patient.department}`,
+                    details: `Patient ${patient.name} (${patient.id}) requires nursing assistance.\nWard: ${patient.ward}\nDepartment: ${patient.department}\nDoctor: ${patient.assignedDoctor?.name || 'Unassigned'}\nCondition: ${patient.condition}\n\nClick to attend this request.`,
+                    type: 'warning',
+                    scope: 'nurse',
+                    patientId: patient.id,
+                    patientName: patient.name,
+                    ward: patient.ward,
+                    bedNumber: patient.id,
+                  });
+                  localStorage.setItem('curepulse_last_patient_call', JSON.stringify({
+                    id: patient.id,
+                    name: patient.name,
+                    ward: patient.ward,
+                    department: patient.department,
+                    doctor: patient.assignedDoctor?.name || 'Unassigned',
+                    condition: patient.condition,
+                    time: new Date().toISOString(),
+                    notificationId: notif.id,
+                  }));
+                  toast.success('Nurse has been notified!');
+                }} className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-extrabold text-white hover:bg-primary/95 transition-all active:scale-95 cursor-pointer shadow-sm">
+                  <span className="material-symbols-outlined text-lg">local_hospital</span>
+                  Call Nurse
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Cards Grid */}
+          <section className="grid w-full min-w-0 max-w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {cards.map((card) => (
+              <div key={card.title} className="w-full min-w-0 max-w-full rounded-2xl border border-outline-variant bg-surface p-5 shadow-sm transition-shadow hover:shadow-md dark:border-outline">
+                <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant break-words whitespace-normal">{card.title}</p>
+                <p className="mt-3 text-xl font-bold text-on-surface break-words whitespace-normal">{card.value}</p>
+                <p className="mt-2 text-sm text-on-surface-variant break-words whitespace-normal">{card.detail}</p>
               </div>
             ))}
-            {upcomingAppointments.length === 0 && (
-              <div className="text-center py-8 w-full min-w-0">
-                <span className="material-symbols-outlined text-3xl text-on-surface-variant/50 mb-2 block">event_busy</span>
-                <p className="text-sm text-on-surface-variant">No upcoming appointments</p>
-              </div>
-            )}
-          </div>
-        </section>
+          </section>
 
-        <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
-          <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Latest Doctor Instructions</h2>
-          <p className="text-sm text-on-surface-variant mb-4 break-words whitespace-normal">Post-consultation guidance and notes.</p>
-          <div className="space-y-3 w-full min-w-0 max-w-full">
-            {patient.doctorInstructionLog?.length ? patient.doctorInstructionLog.slice(0, 4).map((instruction) => (
-              <ClinicalNotesCard
-                key={instruction.id}
-                doctorName={instruction.doctorName}
-                date={formatDate(instruction.createdAt)}
-                notes={instruction.note}
-                priority="medium"
-                patientName={patient.name}
-                patientId={patient.id}
-                patientAge={patient.age ? `${patient.age} yrs` : undefined}
-                patientDob={patient.dob}
-              />
-            )) : (
-              <NotesEmptyState />
-            )}
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
+            <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+              <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Vitals Timeline</h2>
+                  <p className="text-sm text-on-surface-variant break-words whitespace-normal">Live view of your latest recorded vitals.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate('/patient/history')}
+                  className="rounded-xl border border-outline-variant px-4 py-2 text-sm font-bold text-on-surface hover:bg-surface-container-low transition-colors shrink-0 cursor-pointer dark:border-outline"
+                >
+                  View full history
+                </button>
+              </div>
+              <div className="mt-6 h-72 w-full min-w-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={patient.vitalsTimeline || []}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
+                    <XAxis dataKey="date" stroke="var(--color-on-surface-variant)" fontSize={12} />
+                    <YAxis stroke="var(--color-on-surface-variant)" fontSize={12} />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'var(--color-surface)',
+                        border: '1px solid var(--color-outline)',
+                        borderRadius: '8px',
+                        color: 'var(--color-on-surface)',
+                      }}
+                    />
+                    <Line type="monotone" dataKey="heartRate" stroke="#D64545" strokeWidth={3} name="Heart Rate" activeDot={{ r: 6 }} />
+                    <Line type="monotone" dataKey="oxygen" stroke="#0F4C81" strokeWidth={3} name="Oxygen" activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </section>
+
+            <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+              <div className="w-full min-w-0 max-w-full">
+                <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Appointment Status Mix</h2>
+                <p className="text-sm text-on-surface-variant break-words whitespace-normal">Every doctor booking in your portal.</p>
+              </div>
+              <div className="mt-6 h-72 w-full min-w-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={appointmentStats}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-outline)" opacity={0.3} />
+                    <XAxis dataKey="name" stroke="var(--color-on-surface-variant)" fontSize={12} />
+                    <YAxis allowDecimals={false} stroke="var(--color-on-surface-variant)" fontSize={12} />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'var(--color-surface)',
+                        border: '1px solid var(--color-outline)',
+                        borderRadius: '8px',
+                        color: 'var(--color-on-surface)',
+                      }}
+                    />
+                    <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                      {appointmentStats.map((entry) => (
+                        <Cell key={entry.name} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
+
+          {/* Discharge Report Section */}
+          {patient.dischargeSummary && patient.status === 'Discharged' && (
+            <section className="rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+              <div className="flex items-center gap-3 mb-4 w-full min-w-0 max-w-full">
+                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-secondary">assignment</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Discharge Report</h2>
+                  <p className="text-sm text-on-surface-variant break-words whitespace-normal">Summary of your treatment and follow-up plan</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full min-w-0 max-w-full">
+                <div className="lg:col-span-2 space-y-4 w-full min-w-0 max-w-full">
+                  <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline w-full min-w-0 max-w-full">
+                    <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Disease / Condition Details</p>
+                    <p className="text-sm text-on-surface leading-relaxed break-words whitespace-normal">{patient.dischargeSummary}</p>
+                  </div>
+                  {patient.diagnosisHistory?.length ? (
+                    <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+                      <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Diagnosis History</p>
+                      <div className="space-y-2">
+                        {patient.diagnosisHistory.map((dx, i) => (
+                          <div key={i} className="flex items-start gap-2 text-sm">
+                            <span className="material-symbols-outlined text-base text-primary mt-0.5">stethoscope</span>
+                            <div>
+                              <p className="font-medium text-on-surface">{dx.diagnosis}</p>
+                              <p className="text-xs text-on-surface-variant">{dx.doctor} &bull; {dx.date}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                  {patient.prescriptions?.length ? (
+                    <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+                      <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Ongoing Medications</p>
+                      <div className="space-y-2">
+                        {patient.prescriptions.map((rx, i) => (
+                          <div key={i} className="flex items-center justify-between text-sm p-2 rounded-lg bg-white/50 dark:bg-black/10">
+                            <span className="font-medium text-on-surface">{rx.medication}</span>
+                            <span className="text-xs text-on-surface-variant">{rx.dosage} &bull; {rx.frequency} &bull; {rx.duration}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="space-y-4">
+                  {patient.documents?.length ? (
+                    <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+                      <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Documents ({patient.documents.length})</p>
+                      <div className="space-y-2">
+                        {patient.documents.map((doc, i) => (
+                          <div key={i} className="flex items-center gap-2 text-sm p-2 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer">
+                            <span className="material-symbols-outlined text-base text-primary">description</span>
+                            <span className="text-on-surface text-xs truncate">{doc.name || `Document ${i + 1}`}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-on-surface-variant mt-2 italic">These documents can be viewed and downloaded for future reference.</p>
+                    </div>
+                  ) : null}
+                  {patient.labReports?.length ? (
+                    <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+                      <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Lab Reports</p>
+                      <div className="space-y-1.5">
+                        {patient.labReports.map((r, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs">
+                            <span className="material-symbols-outlined text-base text-secondary">lab_profile</span>
+                            <span className="text-on-surface">{r.name}</span>
+                            <span className="text-on-surface-variant ml-auto">{r.date}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                  {patient.surgeryHistory?.length ? (
+                    <div className="rounded-xl bg-surface-container-low p-4 border border-outline-variant dark:border-outline">
+                      <p className="text-xs font-bold uppercase text-on-surface-variant mb-2">Surgery History</p>
+                      {patient.surgeryHistory.map((s, i) => (
+                        <div key={i} className="text-sm py-1">
+                          <p className="font-medium text-on-surface">{s.name}</p>
+                          <p className="text-xs text-on-surface-variant">{s.date} &bull; {s.outcome}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Visits & Instructions Grid */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 w-full min-w-0 max-w-full">
+            <section className="col-span-1 lg:col-span-7 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+              <div className="flex items-center justify-between gap-4 w-full min-w-0 max-w-full">
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Upcoming Visits</h2>
+                  <p className="text-sm text-on-surface-variant break-words whitespace-normal">Appointments booked from online and front desk channels.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate('/patient/book')}
+                  className="rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary/90 transition-colors shrink-0 cursor-pointer"
+                >
+                  Book appointment
+                </button>
+              </div>
+              <div className="mt-4 space-y-3 w-full min-w-0 max-w-full">
+                {upcomingAppointments.slice(0, 5).map((appointment) => (
+                  <div key={appointment.id} className="rounded-xl border border-outline-variant p-4 bg-surface dark:border-outline w-full min-w-0 max-w-full">
+                    <div className="flex flex-col gap-3 w-full min-w-0 max-w-full">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full min-w-0 max-w-full">
+                        <div className="flex-1 min-w-0 w-full max-w-full">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedAppointment(appointment)}
+                            className="text-left text-sm font-bold text-primary hover:underline cursor-pointer border-none bg-transparent p-0 break-words whitespace-normal"
+                          >
+                            {appointment.doctor}
+                          </button>
+                          <p className="text-sm text-on-surface-variant mt-0.5 break-words whitespace-normal">
+                            {appointment.type} &bull; {appointment.department} &bull; {formatDateTime(appointment.date, appointment.time)}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-xs font-semibold text-primary break-words whitespace-normal">{appointment.bookingMode || 'Clinic'}</span>
+                          <span className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 whitespace-nowrap ${
+                            appointment.status === 'Confirmed'
+                              ? 'bg-confirmed-bg text-confirmed-text'
+                              : appointment.status === 'Pending'
+                              ? 'bg-pending-bg text-pending-text'
+                              : 'bg-surface-container-high text-on-surface-variant'
+                          }`}>
+                            {appointment.status}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 pt-1 border-t border-outline-variant/50 dark:border-outline/50 flex-wrap w-full min-w-0 max-w-full">
+                        <button
+                          type="button"
+                          onClick={() => openReschedule(appointment)}
+                          className="px-3 py-1.5 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors cursor-pointer border-none"
+                        >
+                          Reschedule
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCancelTarget(appointment)}
+                          className="px-3 py-1.5 text-xs font-bold text-error bg-error/10 hover:bg-error/20 rounded-lg transition-colors cursor-pointer border-none"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedAppointment(appointment)}
+                          className="px-3 py-1.5 text-xs font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors cursor-pointer border-none ml-auto"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {upcomingAppointments.length === 0 && (
+                  <div className="text-center py-8 w-full min-w-0">
+                    <span className="material-symbols-outlined text-3xl text-on-surface-variant/50 mb-2 block">event_busy</span>
+                    <p className="text-sm text-on-surface-variant">No upcoming appointments</p>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="col-span-1 lg:col-span-5 rounded-2xl border border-outline-variant bg-surface p-6 shadow-sm dark:border-outline w-full min-w-0 max-w-full">
+              <h2 className="text-lg font-bold text-on-surface break-words whitespace-normal">Latest Doctor Instructions</h2>
+              <p className="text-sm text-on-surface-variant mb-4 break-words whitespace-normal">Post-consultation guidance and notes.</p>
+              <div className="space-y-3 w-full min-w-0 max-w-full">
+                {patient.doctorInstructionLog?.length ? patient.doctorInstructionLog.slice(0, 4).map((instruction) => (
+                  <ClinicalNotesCard
+                    key={instruction.id}
+                    doctorName={instruction.doctorName}
+                    date={formatDate(instruction.createdAt)}
+                    notes={instruction.note}
+                    priority="medium"
+                    patientName={patient.name}
+                    patientId={patient.id}
+                    patientAge={patient.age ? `${patient.age} yrs` : undefined}
+                    patientDob={patient.dob}
+                  />
+                )) : (
+                  <NotesEmptyState />
+                )}
+              </div>
+            </section>
+          </div>
+        </>
+      )}
 
       {/* Reschedule Modal */}
       <Modal isOpen={!!rescheduleTarget} onClose={() => setRescheduleTarget(null)} title="Reschedule Appointment" size="sm">
@@ -704,7 +852,7 @@ export default function PatientDashboard() {
               </div>
               <div className="flex gap-2 items-center text-on-surface font-bold">
                 <span className="material-symbols-outlined text-sm text-emerald-500">done</span>
-                <span>Dr. {patient.assignedDoctor?.name || 'Sarah Chen'} notified</span>
+                <span>Dr. {patient?.assignedDoctor?.name || 'Sarah Chen'} notified</span>
               </div>
               <div className="flex gap-2 items-center text-on-surface font-bold">
                 <span className="material-symbols-outlined text-sm text-emerald-500">done</span>

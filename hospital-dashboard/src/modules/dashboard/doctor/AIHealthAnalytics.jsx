@@ -1,9 +1,8 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   LineChart, Line, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from 'recharts';
-import { useAuth } from '../../../context/AuthContext';
 import { useHospital } from '../../../context/HospitalContext';
 import { useTheme } from '../../../context/ThemeContext';
 
@@ -110,14 +109,8 @@ function VitalCard({ title, value, unit, sparklineData, sparklineKey, sparklineC
 }
 
 export default function AIHealthAnalytics() {
-  const { user } = useAuth();
-  const { patients, doctors } = useHospital();
+  const { patients } = useHospital();
   const { isDark } = useTheme();
-
-  const doctor = useMemo(
-    () => doctors.find((entry) => entry.name === user?.name || entry.email === user?.email),
-    [doctors, user]
-  );
 
   const combinedPatients = useMemo(() => {
     const realMapped = patients.map((p) => {

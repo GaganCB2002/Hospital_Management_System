@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../app/layouts/DashboardLayout';
 import Login from '../modules/auth/Login';
-import Signup from '../modules/auth/Signup';
 import LandingPage from '../modules/landing/LandingPage';
 
 // Admin Pages
@@ -34,12 +33,18 @@ import Billing from '../modules/billing/Billing';
 import ReceptionistPatients from '../modules/receptionist/ReceptionistPatients';
 import ReceptionistOnlineBookings from '../modules/receptionist/ReceptionistOnlineBookings';
 
-// Patient Pages
 import PatientDashboard from '../modules/dashboard/patient/PatientDashboard';
+import MedicationTracker from '../modules/dashboard/patient/MedicationTracker';
+import SymptomChecker from '../modules/dashboard/patient/SymptomChecker';
+import VirtualClinic from '../modules/dashboard/patient/VirtualClinic';
+import FamilyTracker from '../modules/dashboard/patient/FamilyTracker';
 import BookAppointment from '../modules/appointments/BookAppointment';
 import MedicalHistory from '../modules/patients/MedicalHistory';
 import PatientDoctors from '../modules/patients/PatientDoctors';
 import PatientDoctorHistory from '../modules/patients/PatientDoctorHistory';
+
+// Nurse Pages
+import NurseDashboard from '../modules/dashboard/nurse/NurseDashboard';
 
 function ProtectedRoute({ children, allowedRole }) {
   const { user, loading } = useAuth();
@@ -72,7 +77,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to={`/${user.role}/dashboard`} replace /> : <Login />} />
-      <Route path="/signup" element={user ? <Navigate to={`/${user.role}/dashboard`} replace /> : <Signup />} />
+      <Route path="/signup" element={user ? <Navigate to={`/${user.role}/dashboard`} replace /> : <Login />} />
 
       <Route path="/admin" element={<ProtectedRoute allowedRole="admin"><DashboardLayout /></ProtectedRoute>}>
         <Route path="dashboard" element={<AdminDashboard />} />
@@ -112,8 +117,18 @@ export default function AppRoutes() {
         <Route path="settings" element={<SettingsModule />} />
       </Route>
 
+      <Route path="/nurse" element={<ProtectedRoute allowedRole="nurse"><DashboardLayout /></ProtectedRoute>}>
+        <Route path="dashboard" element={<NurseDashboard />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="settings" element={<SettingsModule />} />
+      </Route>
+
       <Route path="/patient" element={<ProtectedRoute allowedRole="patient"><DashboardLayout /></ProtectedRoute>}>
         <Route path="dashboard" element={<PatientDashboard />} />
+        <Route path="medication-tracker" element={<MedicationTracker />} />
+        <Route path="symptom-checker" element={<SymptomChecker />} />
+        <Route path="virtual-clinic" element={<VirtualClinic />} />
+        <Route path="family-tracker" element={<FamilyTracker />} />
         <Route path="book" element={<BookAppointment />} />
         <Route path="doctors" element={<PatientDoctors />} />
         <Route path="doctor-history" element={<PatientDoctorHistory />} />

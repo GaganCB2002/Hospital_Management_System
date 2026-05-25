@@ -7,27 +7,6 @@ import { useHospital } from '../../context/HospitalContext';
 import { useTheme } from '../../context/ThemeContext';
 import { formatCompactInr, formatDate, formatInr } from '../../lib/formatters';
 
-function generateDailyData(revenueData) {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  const daily = [];
-  revenueData.forEach((m, mi) => {
-    const daysInMonth = 28 + ((mi * 3) % 4);
-    const dailyAvg = Math.round(m.revenue / daysInMonth);
-    for (let d = 1; d <= daysInMonth; d += 3) {
-      const variance = 0.7 + Math.random() * 0.6;
-      const dayRev = Math.round(dailyAvg * variance);
-      const dayExp = Math.round(dayRev * (0.45 + Math.random() * 0.2));
-      daily.push({
-        label: `${months[mi]} ${d}`,
-        revenue: dayRev,
-        expenses: dayExp,
-        month: months[mi],
-      });
-    }
-  });
-  return daily;
-}
-
 function generateQuarterlyData(revenueData) {
   const quarters = [];
   for (let i = 0; i < revenueData.length; i += 3) {
@@ -43,26 +22,6 @@ function generateQuarterlyData(revenueData) {
     });
   }
   return quarters;
-}
-
-function generateWeeklyData(revenueData) {
-  const weekly = [];
-  revenueData.forEach((m, mi) => {
-    const weeksInMonth = 4 + (mi % 2 === 0 ? 1 : 0);
-    const weeklyAvg = Math.round(m.revenue / weeksInMonth);
-    for (let w = 1; w <= weeksInMonth; w++) {
-      const variance = 0.75 + Math.random() * 0.5;
-      const weekRev = Math.round(weeklyAvg * variance);
-      const weekExp = Math.round(weekRev * (0.5 + Math.random() * 0.15));
-      weekly.push({
-        label: `${m.month} W${w}`,
-        revenue: weekRev,
-        expenses: weekExp,
-        month: m.month,
-      });
-    }
-  });
-  return weekly;
 }
 
 function TransactionDetailModal({ invoice, onClose, isDark }) {

@@ -56,7 +56,12 @@ export default function NavbarSection() {
           {/* Logo */}
           <button onClick={() => scrollTo('hero')} className="flex items-center gap-2.5 cursor-pointer border-none bg-transparent group">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3B82F6] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#3B82F6]/20 group-hover:shadow-[#3B82F6]/40 transition-shadow duration-300">
-              <span className="material-symbols-outlined text-white text-xl">local_hospital</span>
+              <svg viewBox="0 0 36 36" className="w-5.5 h-5.5 fill-white">
+                <path d="M18 4C12 4 8 8 8 14v2a2 2 0 002 2h2v-4c0-3.3 2.7-6 6-6s6 2.7 6 6v4h2a2 2 0 002-2v-2c0-6-4-10-10-10z" opacity="0.85"/>
+                <path d="M14 18h-4a2 2 0 00-2 2v2c0 6 4 10 10 10s10-4 10-10v-2a2 2 0 00-2-2h-4v2a4 4 0 01-8 0v-2z"/>
+                <rect x="16.5" y="14" width="3" height="10" rx="1"/>
+                <rect x="12" y="17.5" width="12" height="3" rx="1"/>
+              </svg>
             </div>
             <span className="text-lg font-bold text-slate-900">
               Cure<span className="text-[#06B6D4]">Pulse</span>

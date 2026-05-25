@@ -18,7 +18,7 @@ export default function ReceptionistPatients() {
       try {
         await deletePatient(patientId, 'Receptionist');
         toast.success(`Patient ${patientName} deleted successfully`);
-      } catch (error) {
+      } catch {
         toast.error('Failed to delete patient');
       }
     }

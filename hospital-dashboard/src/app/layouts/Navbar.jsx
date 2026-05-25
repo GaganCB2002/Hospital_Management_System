@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import Modal from '../../components/common/Modal';
@@ -298,9 +298,9 @@ export default function Navbar() {
           {user?.role === 'admin' && (
             <div className="hidden items-center gap-md md:flex">
               <nav className="flex gap-md">
-                <button onClick={() => navigate('/admin/dashboard')} className="border-b-2 border-secondary pb-xs text-label-md font-bold text-secondary">Ward View</button>
-                <button onClick={() => navigate('/admin/emergency')} className="text-label-md text-on-surface-variant transition-colors hover:text-primary">Emergency</button>
-                <button onClick={() => navigate('/admin/inventory')} className="text-label-md text-on-surface-variant transition-colors hover:text-primary">Pharmacy</button>
+                <NavLink to="/admin/dashboard" end className={({ isActive }) => `${isActive ? 'border-b-2 border-secondary text-secondary' : 'text-on-surface-variant hover:text-primary'} pb-xs text-label-md font-bold transition-colors`}>Ward View</NavLink>
+                <NavLink to="/admin/emergency" className={({ isActive }) => `${isActive ? 'border-b-2 border-error text-error' : 'text-on-surface-variant hover:text-error'} pb-xs text-label-md font-bold transition-colors`}>Emergency</NavLink>
+                <NavLink to="/admin/inventory" className={({ isActive }) => `${isActive ? 'border-b-2 border-primary text-primary' : 'text-on-surface-variant hover:text-primary'} pb-xs text-label-md font-bold transition-colors`}>Pharmacy</NavLink>
               </nav>
               <div className="ml-4 flex items-center gap-sm rounded-full border border-outline-variant bg-surface-container-lowest px-md py-1 text-[10px] font-bold tracking-wider">
                 <span className="uppercase text-on-surface-variant">Doctors:</span>
