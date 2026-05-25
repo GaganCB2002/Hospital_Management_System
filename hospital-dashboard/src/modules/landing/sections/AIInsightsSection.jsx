@@ -37,7 +37,7 @@ const insights = [
 
 export default function AIInsightsSection() {
   return (
-    <section id="ai-insights" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50">
+    <section id="ai-insights" className="relative py-24 lg:py-32 bg-[#F8FAFC] dark:bg-[#0B1120] border-t border-slate-200/50 dark:border-slate-800/50">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#06B6D4]/3 blur-[100px]" />
       </div>
@@ -46,12 +46,12 @@ export default function AIInsightsSection() {
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#06B6D4] mb-4 break-words whitespace-normal">AI & Machine Learning</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight break-words whitespace-normal">
               Intelligence that transforms
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] to-[#3B82F6] break-words whitespace-normal">every clinical decision</span>
             </h2>
-            <p className="mt-4 text-[#64748B] text-lg max-w-2xl mx-auto break-words whitespace-normal">
+            <p className="mt-4 text-[#64748B] dark:text-slate-400 text-lg max-w-2xl mx-auto break-words whitespace-normal">
               Purpose-built AI models trained on millions of clinical encounters to augment medical expertise.
             </p>
           </div>
@@ -77,7 +77,7 @@ function InsightCard({ item, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.06 }}
-      className="relative group p-6 rounded-2xl border border-slate-200/60 bg-white hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-300"
+      className="relative group p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white dark:bg-[#1E293B] hover:bg-slate-50/50 dark:hover:bg-[#1E293B]/80 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300"
     >
       <div
         className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
@@ -85,9 +85,9 @@ function InsightCard({ item, index }) {
       >
         <span className="material-symbols-outlined text-xl" style={{ color: item.color }}>{item.icon}</span>
       </div>
-      <h3 className="text-base font-bold text-slate-900 mb-2">{item.title}</h3>
-      <p className="text-sm text-[#64748B] leading-relaxed">{item.desc}</p>
-      <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-slate-100">
+      <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
+      <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">{item.desc}</p>
+      <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
         {item.metrics.map((m) => (
           <span
             key={m}

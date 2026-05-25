@@ -32,7 +32,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-[#F8FAFC] text-slate-800 min-h-screen w-full">
+    <div className="bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-800 dark:text-slate-200 min-h-screen w-full">
       <FloatingParticles count={40} />
       <NavbarSection />
       <HeroSection />

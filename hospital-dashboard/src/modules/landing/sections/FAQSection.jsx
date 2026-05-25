@@ -36,17 +36,17 @@ function FAQItem({ faq, index, isOpen, toggle }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="rounded-xl border border-slate-200/60 overflow-hidden bg-white shadow-sm hover:border-slate-300 transition-colors"
+      className="rounded-xl border border-slate-200/60 dark:border-slate-700/60 overflow-hidden bg-white dark:bg-[#1E293B] shadow-sm hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
     >
       <button
         onClick={toggle}
         className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer border-none bg-transparent"
       >
-        <span className="text-sm font-semibold text-slate-900 pr-4 break-words whitespace-normal w-full min-w-0 text-left">{faq.q}</span>
+        <span className="text-sm font-semibold text-slate-900 dark:text-white pr-4 break-words whitespace-normal w-full min-w-0 text-left">{faq.q}</span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="material-symbols-outlined text-[#64748B] shrink-0"
+          className="material-symbols-outlined text-[#64748B] dark:text-slate-400 shrink-0"
         >
           expand_more
         </motion.span>
@@ -60,7 +60,7 @@ function FAQItem({ faq, index, isOpen, toggle }) {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="px-5 pb-4 text-sm text-[#64748B] leading-relaxed break-words whitespace-normal">{faq.a}</p>
+            <p className="px-5 pb-4 text-sm text-[#64748B] dark:text-slate-400 leading-relaxed break-words whitespace-normal">{faq.a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -72,12 +72,12 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section id="faq" className="relative py-24 lg:py-32 bg-[#F8FAFC] border-t border-slate-200/50">
+    <section id="faq" className="relative py-24 lg:py-32 bg-[#F8FAFC] dark:bg-[#0B1120] border-t border-slate-200/50 dark:border-slate-800/50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4 break-words whitespace-normal">FAQ</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight break-words whitespace-normal">
               Frequently asked
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] break-words whitespace-normal">questions</span>

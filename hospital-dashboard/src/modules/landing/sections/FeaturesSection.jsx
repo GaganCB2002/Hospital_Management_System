@@ -70,7 +70,7 @@ function FeatureCard({ feature, index }) {
         const rect = e.currentTarget.getBoundingClientRect();
         setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       }}
-      className="relative group p-6 rounded-2xl border border-slate-200/60 bg-white hover:bg-slate-50/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+      className="relative group p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white dark:bg-[#1E293B] hover:bg-slate-50/50 dark:hover:bg-[#1E293B]/80 shadow-sm hover:shadow-md dark:hover:shadow-slate-900/50 transition-all duration-300 overflow-hidden"
     >
       {/* Spotlight */}
       <div
@@ -94,9 +94,9 @@ function FeatureCard({ feature, index }) {
         >
           <span className="material-symbols-outlined text-xl" style={{ color: feature.color }}>{feature.icon}</span>
         </div>
-        <h3 className="text-base font-bold text-slate-900 mb-2 break-words whitespace-normal">{feature.title}</h3>
-        <p className="text-sm text-[#64748B] leading-relaxed break-words whitespace-normal">{feature.desc}</p>
-        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100">
+        <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2 break-words whitespace-normal">{feature.title}</h3>
+        <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed break-words whitespace-normal">{feature.desc}</p>
+        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: feature.color }} />
           <span className="text-xs font-medium" style={{ color: feature.color }}>{feature.stat}</span>
         </div>
@@ -107,7 +107,7 @@ function FeatureCard({ feature, index }) {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="relative py-24 lg:py-32 bg-[#F8FAFC]">
+    <section id="features" className="relative py-24 lg:py-32 bg-[#F8FAFC] dark:bg-[#0B1120]">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#3B82F6]/3 blur-[120px]" />
       </div>
@@ -116,12 +116,12 @@ export default function FeaturesSection() {
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#3B82F6] mb-4 break-words whitespace-normal">Platform Features</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight break-words whitespace-normal">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight break-words whitespace-normal">
               Everything you need to run a
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] break-words whitespace-normal">world-class hospital</span>
             </h2>
-            <p className="mt-4 text-[#64748B] text-lg max-w-2xl mx-auto break-words whitespace-normal">
+            <p className="mt-4 text-[#64748B] dark:text-slate-400 text-lg max-w-2xl mx-auto break-words whitespace-normal">
               From advanced clinical diagnostics to real-time emergency response — one integrated platform for every department.
             </p>
           </div>

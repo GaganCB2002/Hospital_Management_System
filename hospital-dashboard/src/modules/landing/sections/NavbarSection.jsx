@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../../../context/ThemeContext';
 
 const navItems = [
   { label: 'Features', href: 'features' },
@@ -13,6 +14,7 @@ const navItems = [
 
 export default function NavbarSection() {
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
@@ -47,7 +49,7 @@ export default function NavbarSection() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-[#F8FAFC]/80 backdrop-blur-xl border-b border-slate-200/50 shadow-sm'
+          ? 'bg-[#F8FAFC]/80 dark:bg-[#0B1120]/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm'
           : 'bg-transparent'
       }`}
     >
@@ -63,7 +65,7 @@ export default function NavbarSection() {
                 <rect x="12" y="17.5" width="12" height="3" rx="1"/>
               </svg>
             </div>
-            <span className="text-lg font-bold text-slate-900">
+            <span className="text-lg font-bold text-slate-900 dark:text-white">
               Cure<span className="text-[#06B6D4]">Pulse</span>
               <span className="ml-1.5 px-1.5 py-0.5 text-[9px] font-bold bg-[#3B82F6]/15 text-[#3B82F6] rounded border border-[#3B82F6]/20 uppercase tracking-wider">Enterprise</span>
             </span>
@@ -78,13 +80,13 @@ export default function NavbarSection() {
                 className={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-300 cursor-pointer border-none ${
                   activeSection === item.href
                     ? 'text-[#3B82F6] font-bold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 {activeSection === item.href && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className="absolute inset-0 bg-slate-100 rounded-lg border border-slate-200/50"
+                    className="absolute inset-0 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200/50 dark:border-slate-700/50"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -95,9 +97,20 @@ export default function NavbarSection() {
 
           {/* CTA Buttons */}
           <div className="flex items-center gap-3">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border-none bg-transparent"
+              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              <span className="material-symbols-outlined text-slate-600 dark:text-slate-400">
+                {isDark ? 'light_mode' : 'dark_mode'}
+              </span>
+            </button>
+
             <button
               onClick={() => navigate('/login')}
-              className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer border-none bg-transparent"
+              className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer border-none bg-transparent"
             >
               Sign In
             </button>
@@ -114,9 +127,9 @@ export default function NavbarSection() {
             </button>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer border-none bg-transparent"
+              className="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border-none bg-transparent"
             >
-              <span className="material-symbols-outlined text-slate-800">{mobileOpen ? 'close' : 'menu'}</span>
+              <span className="material-symbols-outlined text-slate-800 dark:text-white">{mobileOpen ? 'close' : 'menu'}</span>
             </button>
           </div>
         </div>
@@ -130,7 +143,7 @@ export default function NavbarSection() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden border-t border-slate-200/50 backdrop-blur-xl bg-[#F8FAFC]/95"
+            className="md:hidden border-t border-slate-200/50 dark:border-slate-800/50 backdrop-blur-xl bg-[#F8FAFC]/95 dark:bg-[#0B1120]/95"
           >
             <div className="px-4 py-4 space-y-1">
               {navItems.map((item) => (
@@ -139,17 +152,17 @@ export default function NavbarSection() {
                   onClick={() => scrollTo(item.href)}
                   className={`w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition-colors cursor-pointer border-none ${
                     activeSection === item.href
-                      ? 'text-[#3B82F6] bg-slate-100'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      ? 'text-[#3B82F6] bg-slate-100 dark:bg-slate-800'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   {item.label}
                 </button>
               ))}
-              <div className="pt-2 mt-2 border-t border-slate-200/50">
+              <div className="pt-2 mt-2 border-t border-slate-200/50 dark:border-slate-800/50">
                 <button
                   onClick={() => navigate('/login')}
-                  className="w-full text-left px-3 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg cursor-pointer border-none bg-transparent"
+                  className="w-full text-left px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg cursor-pointer border-none bg-transparent"
                 >
                   Sign In
                 </button>
