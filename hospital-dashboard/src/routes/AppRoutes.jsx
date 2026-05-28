@@ -15,6 +15,7 @@ import FinancialsBilling from '../modules/admin/FinancialsBilling';
 import RevenueReports from '../modules/admin/RevenueReports';
 import SettingsModule from '../modules/settings/SettingsModule';
 import EmployeeManagement from '../modules/admin/EmployeeManagement';
+import VisitorDetails from '../modules/admin/VisitorDetails';
 import ProfilePage from '../modules/profile/ProfilePage';
 
 // Doctor Pages
@@ -89,6 +90,7 @@ export default function AppRoutes() {
         <Route path="financials" element={<FinancialsBilling />} />
         <Route path="revenue" element={<RevenueReports />} />
         <Route path="employees" element={<EmployeeManagement />} />
+        <Route path="visitors" element={<VisitorDetails />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="settings" element={<SettingsModule />} />
       </Route>

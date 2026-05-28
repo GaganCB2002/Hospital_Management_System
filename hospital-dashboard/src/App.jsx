@@ -7,8 +7,14 @@ import { HospitalProvider } from './context/HospitalContext';
 import AppRoutes from './routes/AppRoutes';
 import AIHelpBot from './components/common/AIHelpBot';
 import { Toaster } from 'react-hot-toast';
+import { useVisitorTracker } from './hooks/useVisitorTracker';
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'demo';
+
+function VisitorTrackerInit() {
+  useVisitorTracker();
+  return null;
+}
 
 function App() {
   return (
@@ -18,6 +24,7 @@ function App() {
           <AuthProvider>
             <NotificationProvider>
               <HospitalProvider>
+                <VisitorTrackerInit />
                 <AppRoutes />
                 <Toaster position="top-right" />
                 <AIHelpBot />

@@ -33,6 +33,7 @@ export default function Sidebar({ isCollapsed, toggleSidebar }) {
           { name: 'Staff Schedule', path: '/admin/doctors', icon: 'calendar_month' },
           { name: 'Financials', path: '/admin/financials', icon: 'account_balance' },
           { name: 'Revenue', path: '/admin/revenue', icon: 'payments' },
+          { name: 'Visitor Details', path: '/admin/visitors', icon: 'visibility' },
         ];
       case 'doctor':
         return [
